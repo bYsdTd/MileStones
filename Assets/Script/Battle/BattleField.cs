@@ -6,6 +6,8 @@ public class BattleField
 {
 	MapSaveData	map_data;
 	BattleGridRenderer _battle_grid_renderer;
+	BattleFieldInputHandle battle_field_input_handle;
+
 
 	public void SetBattleGridRenderer(BattleGridRenderer battle_grid_renderer)
 	{
@@ -51,6 +53,13 @@ public class BattleField
 		hero_unit = UnitManager.Instance().CreateHeroUnit(4);
 		hero_unit.SetPosition(new Vector3(12, 0, 12));
 
+	}
+
+	public void InitInputHandle()
+	{
+		battle_field_input_handle = new BattleFieldInputHandle();
+
+		battle_field_input_handle.RegisterEvent();
 	}
 
 	public bool IsBlock(int x, int y)

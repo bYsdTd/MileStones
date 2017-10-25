@@ -3,8 +3,9 @@ using System.Collections;
 
 public class Battle: MonoBehaviour
 {
-	BattleField		battle_field;
 	public BattleGridRenderer battle_grid_renderer;
+
+	BattleField		battle_field;
 
 	// Use this for initialization
 	void Start () 
@@ -20,7 +21,7 @@ public class Battle: MonoBehaviour
 		battle_field.LoadMap(map_path);
 		battle_field.SetBattleGridRenderer(battle_grid_renderer);
 		battle_field.InitUnit();
-
+		battle_field.InitInputHandle();
 	}
 	
 	// Update is called once per frame
