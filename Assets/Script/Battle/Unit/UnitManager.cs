@@ -33,6 +33,18 @@ public class UnitManager
 
 	public Dictionary<int, HeroUnit>	hero_unit_list = new Dictionary<int, HeroUnit>();
 
+	public HeroUnit GetHeroUnit(int unit_id)
+	{
+		if(hero_unit_list.ContainsKey(unit_id))
+		{
+			return hero_unit_list[unit_id];
+		}
+		else
+		{
+			return null;
+		}
+	}
+
 	public void Tick(float delta_time)
 	{
 		var enumerator = hero_unit_list.GetEnumerator();

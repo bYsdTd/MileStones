@@ -1,17 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class HeroUnit : MonoBehaviour 
 {
 	public Animator animator;
 
-	// 每秒0.5格
 	public int unit_id = -1;
+	// 每秒0.5格
 	public float move_speed = 0.5f;
 	public Vector3 _position;
 
 
 	private Transform cache_transform;
+
+	private CommandBase	current_command = null;
 
 	// Use this for initialization
 	void Start () 
@@ -23,9 +26,30 @@ public class HeroUnit : MonoBehaviour
 		cache_transform = gameObject.transform;	
 	}
 
+	// 指令队列
+	public void AddCommand(CommandBase new_command)
+	{
+		if(current_command != null)
+		{
+			// 如果当前行为没有执行完，应该直接结束，并且重新计算结束帧，比如移动停止的位置
+			current_command.end_frame = new_command.start_frame;
+			current_command.OnEnd();
+		}
+
+		current_command = new_command;
+		current_command.OnStart();
+	}
+
 	public void Tick(float delta_time)
 	{
-		
+		if(current_command != null)
+		{
+			if(current_command.Tick(delta_time))
+			{
+				// 这条指令执行完了
+				current_command = null;
+			}
+		}
 	}
 
 	public void SetPosition(Vector3 position)

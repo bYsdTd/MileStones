@@ -10,7 +10,8 @@ public class BattleFieldInputHandle
 
 	public void OnBattleFieldClick(params System.Object[] all_params)
 	{
-		Vector3 position = (Vector3)all_params[0];
-		Debug.Log("OnBattleFieldClick " + position);
+		//Vector2 screen_position = (Vector2)all_params[0];
+
+
 	}
 }
