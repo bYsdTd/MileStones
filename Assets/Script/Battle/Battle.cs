@@ -19,11 +19,15 @@ public class Battle: MonoBehaviour
 
 		battle_field.LoadMap(map_path);
 		battle_field.SetBattleGridRenderer(battle_grid_renderer);
+		battle_field.InitUnit();
+
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
 		TimerManager.Instance().Tick(Time.deltaTime);
+		UnitManager.Instance().Tick(Time.deltaTime);
+
 	}
 }

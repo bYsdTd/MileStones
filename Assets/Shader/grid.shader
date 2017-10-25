@@ -1,4 +1,4 @@
-﻿Shader "Unlit/grid"
+﻿Shader "Custom/grid"
 {
 	Properties
 	{

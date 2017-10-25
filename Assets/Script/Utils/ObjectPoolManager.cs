@@ -34,6 +34,14 @@ public class ObjectPoolManager
 
 	private Dictionary<string, ObjectPool> pools_ = new Dictionary<string, ObjectPool>();
 
+	public void Destory()
+	{
+		if(timer_id_ >= 0)
+		{
+			TimerManager.Instance().DestroyTimer(timer_id_);
+			timer_id_ = -1;
+		}
+	}
 
 	public GameObject GetRoot()
 	{

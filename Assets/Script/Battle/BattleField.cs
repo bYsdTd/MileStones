@@ -34,6 +34,25 @@ public class BattleField
 		}
 	}
 
+	public void InitUnit()
+	{
+		HeroUnit hero_unit = UnitManager.Instance().CreateHeroUnit(0);
+		hero_unit.SetPosition(new Vector3(10, 0, 10));
+
+		hero_unit = UnitManager.Instance().CreateHeroUnit(1);
+		hero_unit.SetPosition(new Vector3(12, 0, 10));
+
+		hero_unit = UnitManager.Instance().CreateHeroUnit(2);
+		hero_unit.SetPosition(new Vector3(13, 0, 10));
+
+		hero_unit = UnitManager.Instance().CreateHeroUnit(3);
+		hero_unit.SetPosition(new Vector3(13, 0, 11));
+
+		hero_unit = UnitManager.Instance().CreateHeroUnit(4);
+		hero_unit.SetPosition(new Vector3(12, 0, 12));
+
+	}
+
 	public bool IsBlock(int x, int y)
 	{
 		if(map_data == null)

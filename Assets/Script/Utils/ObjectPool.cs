@@ -23,7 +23,7 @@ public class ObjectPool
 	{
 		key_ = key;
 
-		prefab_assets_ = Resources.Load<GameObject>(key);
+		prefab_assets_ = Resources.Load<GameObject>(AssetsPathConfig.assets_path_config[key]);
 	}
 
 	public int GetPoolCount()
