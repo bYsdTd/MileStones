@@ -5,10 +5,12 @@ using System.Collections.Generic;
 
 public class BattleField 
 {
+	public static BattleField battle_field = null;
+
 	public static int FRAME_RATE = 30;
 	public static float TIME_PER_FRAME = 1.0f / FRAME_RATE;
 
-	MapSaveData	map_data;
+	public MapSaveData	map_data;
 	BattleGridRenderer _battle_grid_renderer;
 	BattleFieldInputHandle battle_field_input_handle;
 
@@ -91,6 +93,22 @@ public class BattleField
 		{10,  0, 10, },
 		{14, 10, 14, },
 	};
+
+	public Vector3 GridToWorldPosition(int grid_x, int grid_y)
+	{
+		float half_step = map_data.map_step * 0.5f;
+		Vector3 world_positin = new Vector3(grid_x * map_data.map_step + half_step, 0, grid_y * map_data.map_step + half_step);
+
+		return world_positin;
+	}
+
+	public float DistanceByGridXY(int x1, int y1, int x2, int y2)
+	{
+		Vector3 pos1 = GridToWorldPosition(x1, y1);
+		Vector3 pos2 = GridToWorldPosition(x2, y2);
+
+		return (pos1 - pos2).magnitude;
+	}
 
 	public List<AStarNode> FindPath(int x_start, int y_start, int x_end, int y_end)
 	{

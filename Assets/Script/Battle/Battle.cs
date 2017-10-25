@@ -12,6 +12,7 @@ public class Battle: MonoBehaviour
 	{
 		// 初始化
 		battle_field = new BattleField();
+		BattleField.battle_field = battle_field;
 
 		string map_path = "";
 		#if UNITY_EDITOR
@@ -23,7 +24,6 @@ public class Battle: MonoBehaviour
 		battle_field.InitUnit();
 		battle_field.InitInputHandle();
 
-		CommandManager.Instance().battle_field = battle_field;
 
 		CommandMove move_command = new CommandMove();
 		move_command.unit_id = 1;

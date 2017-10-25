@@ -20,9 +20,10 @@ public class UnitManager
 	{
 		HeroUnit hero_unit = ObjectPoolManager.Instance().GetObject("KnightWarrior").GetComponent<HeroUnit>();
 
-		hero_unit.Init();
-
 		hero_unit.unit_id = id;
+		hero_unit.move_speed_grid = 2.0f;
+
+		hero_unit.Init();
 
 		hero_unit.PlayIdle();
 

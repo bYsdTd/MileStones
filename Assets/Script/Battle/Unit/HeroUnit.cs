@@ -6,9 +6,14 @@ public class HeroUnit : MonoBehaviour
 {
 	public Animator animator;
 
+	[HideInInspector]
 	public int unit_id = -1;
 	// 每秒0.5格
-	public float move_speed = 0.5f;
+	[HideInInspector]
+	public float move_speed_grid = 2f;
+	[HideInInspector]
+	public float move_speed = 0;
+	[HideInInspector]
 	public Vector3 _position;
 
 
@@ -24,6 +29,7 @@ public class HeroUnit : MonoBehaviour
 	public void Init()
 	{
 		cache_transform = gameObject.transform;	
+		move_speed = BattleField.battle_field.map_data.map_step * move_speed_grid;
 	}
 
 	// 指令队列
@@ -60,6 +66,12 @@ public class HeroUnit : MonoBehaviour
 
 			cache_transform.position = position;	
 		}
+	}
+
+	public void SetDirection(Vector3 dir)
+	{
+		Quaternion rotation = Quaternion.LookRotation(dir);
+		cache_transform.rotation = rotation;
 	}
 
 	public void PlayMove()

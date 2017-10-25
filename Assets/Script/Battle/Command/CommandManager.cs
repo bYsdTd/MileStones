@@ -16,8 +16,6 @@ public class CommandManager
 		return instance;
 	}
 
-	public BattleField battle_field = null;
-
 	public void DispatchCommand(CommandBase command)
 	{
 		HeroUnit hero_unit = UnitManager.Instance().GetHeroUnit(command.unit_id);
