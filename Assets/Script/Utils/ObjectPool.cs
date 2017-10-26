@@ -79,7 +79,7 @@ public class ObjectPool
 
 			data.obj_instance.transform.SetParent(ObjectPoolManager.Instance().GetRoot().transform, false);
 
-			data.obj_instance.transform.position = new Vector3(99999.0f, 99999.0f, 99999.0f);
+			data.obj_instance.transform.position = new Vector3(999.0f, 999.0f, 999.0f);
 
 			data.last_return_time_stamp = System.Environment.TickCount;
 

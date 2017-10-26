@@ -16,9 +16,22 @@ public class UnitManager
 		return instance;
 	}
 
+	private Transform cache_root_unit_node = null;
+
 	public HeroUnit CreateHeroUnit(int id)
 	{
-		HeroUnit hero_unit = ObjectPoolManager.Instance().GetObject("KnightWarrior").GetComponent<HeroUnit>();
+		if(cache_root_unit_node == null)
+		{
+			GameObject root_node = new GameObject("RootUnitNode");
+			cache_root_unit_node = root_node.transform;
+
+			cache_root_unit_node.position = Vector3.zero;
+		}
+
+		GameObject hero_unit_gameobj = ObjectPoolManager.Instance().GetObject("KnightWarrior");
+		hero_unit_gameobj.transform.SetParent(cache_root_unit_node);
+
+		HeroUnit hero_unit = hero_unit_gameobj.GetComponent<HeroUnit>();
 
 		hero_unit.unit_id = id;
 		hero_unit.move_speed_grid = 2.0f;

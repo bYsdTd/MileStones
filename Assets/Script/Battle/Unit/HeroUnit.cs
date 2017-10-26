@@ -21,6 +21,8 @@ public class HeroUnit : MonoBehaviour
 
 	private CommandBase	current_command = null;
 
+	private GameObject	cache_select_effect;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -72,6 +74,27 @@ public class HeroUnit : MonoBehaviour
 	{
 		Quaternion rotation = Quaternion.LookRotation(dir);
 		cache_transform.rotation = rotation;
+	}
+
+	public void SetSelected(bool is_selected)
+	{
+		if(is_selected)
+		{
+			if(cache_select_effect == null)
+			{
+				cache_select_effect = ObjectPoolManager.Instance().GetObject("UnitSelectCircle");	
+			}
+
+			cache_select_effect.transform.localPosition = new Vector3(0, 0.1f, 0);
+			cache_select_effect.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+
+			cache_select_effect.transform.SetParent( cache_transform, false );
+
+		}
+		else
+		{
+			ObjectPoolManager.Instance().ReturnObject("UnitSelectCircle", cache_select_effect);
+		}
 	}
 
 	public void PlayMove()
