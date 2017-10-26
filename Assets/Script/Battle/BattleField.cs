@@ -65,7 +65,7 @@ public class BattleField
 	{
 		battle_field_input_handle = new BattleFieldInputHandle();
 
-		battle_field_input_handle.RegisterEvent();
+		battle_field_input_handle.Init();
 	}
 
 	public bool IsBlock(int x, int y)
