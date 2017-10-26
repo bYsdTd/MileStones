@@ -31,15 +31,20 @@ public class CommandMove : CommandBase
 			time_at_node = new List<float>();
 			postion_at_node = new List<Vector3>();
 
+			// 第一个节点不必是格子的中心点， 有可能之前的没哟走完，就接着走
 			for(int node_index = 0; node_index < path_nodes.Count; ++node_index)
 			{
-				Vector3 world_position = BattleField.battle_field.Grid2WorldPosition(path_nodes[node_index]._x, path_nodes[node_index]._y);
-				postion_at_node.Add(world_position);
-
 				if(node_index == 0)
 				{
 					time_at_node.Add(0);
+
+					postion_at_node.Add(hero_unit._position);
 					continue;
+				}
+				else
+				{
+					Vector3 world_position = BattleField.battle_field.Grid2WorldPosition(path_nodes[node_index]._x, path_nodes[node_index]._y);
+					postion_at_node.Add(world_position);	
 				}
 
 				AStarNode pre_node = path_nodes[node_index-1];
