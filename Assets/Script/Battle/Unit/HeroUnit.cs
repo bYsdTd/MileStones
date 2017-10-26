@@ -94,6 +94,8 @@ public class HeroUnit : MonoBehaviour
 		else
 		{
 			ObjectPoolManager.Instance().ReturnObject("UnitSelectCircle", cache_select_effect);
+
+			cache_select_effect = null;
 		}
 	}
 
