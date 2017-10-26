@@ -40,7 +40,7 @@ public class HeroUnit : MonoBehaviour
 		if(current_command != null)
 		{
 			// 如果当前行为没有执行完，应该直接结束，并且重新计算结束帧，比如移动停止的位置
-			current_command.end_frame = new_command.start_frame;
+			//current_command.end_frame = new_command.start_frame;
 			current_command.OnEnd();
 		}
 

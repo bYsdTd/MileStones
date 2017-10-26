@@ -21,10 +21,10 @@ public class CommandMove : CommandBase
 
 		path_nodes = BattleField.battle_field.FindPath(start_grid_x, start_grid_y, end_grid_x, end_grid_y);
 
-		for(int i = 0; i < path_nodes.Count; ++i)
-		{
-			Debug.Log(path_nodes[i]._x + "  " + path_nodes[i]._y);
-		}
+//		for(int i = 0; i < path_nodes.Count; ++i)
+//		{
+//			Debug.Log(path_nodes[i]._x + "  " + path_nodes[i]._y);
+//		}
 
 		if(path_nodes != null)
 		{
@@ -33,7 +33,7 @@ public class CommandMove : CommandBase
 
 			for(int node_index = 0; node_index < path_nodes.Count; ++node_index)
 			{
-				Vector3 world_position = BattleField.battle_field.GridToWorldPosition(path_nodes[node_index]._x, path_nodes[node_index]._y);
+				Vector3 world_position = BattleField.battle_field.Grid2WorldPosition(path_nodes[node_index]._x, path_nodes[node_index]._y);
 				postion_at_node.Add(world_position);
 
 				if(node_index == 0)
@@ -73,9 +73,9 @@ public class CommandMove : CommandBase
 
 		time_elapsed += delta_time;
 
-		int frame_elapsed = (int)(time_elapsed / BattleField.TIME_PER_FRAME);
+		//int frame_elapsed = (int)(time_elapsed / BattleField.TIME_PER_FRAME);
 
-		current_frame = start_frame + frame_elapsed;
+		//current_frame = start_frame + frame_elapsed;
 
 		float node_time_all = 0;
 

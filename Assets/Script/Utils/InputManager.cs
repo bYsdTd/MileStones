@@ -19,8 +19,6 @@ public class InputManager
 	private Vector2 last_touch_down_position = Vector2.zero;
 	private Vector2 last_touch_move_position = Vector2.zero;
 
-	private	Plane map_grid_plane = new Plane(Vector3.up, Vector3.zero);
-
 	public void Tick(float delta_time)
 	{
 		#if UNITY_EDITOR
@@ -78,30 +76,35 @@ public class InputManager
 	{
 		//Debug.Log("began " + touch_position);
 
-		Ray camera_ray = Camera.main.ScreenPointToRay(new Vector3(touch_position.x, touch_position.y, 0));
+//		Ray camera_ray = Camera.main.ScreenPointToRay(new Vector3(touch_position.x, touch_position.y, 0));
+//
+//		float distance = 0;
+//
+//		bool hit_map_grid = map_grid_plane.Raycast(camera_ray, out distance);
+//		Vector3 hit_position = Vector3.zero;
+//
+//		if(hit_map_grid)
+//		{
+//			hit_position = camera_ray.GetPoint(distance);
+//		}
+//
+//		EventManager.Instance().PostEvent(EventConfig.EVENT_SCENE_CLICK_DOWN, new object[]{touch_position, camera_ray, hit_map_grid, hit_position});
 
-		float distance = 0;
 
-		bool hit_map_grid = map_grid_plane.Raycast(camera_ray, out distance);
-		Vector3 hit_position = Vector3.zero;
-
-		if(hit_map_grid)
-		{
-			hit_position = camera_ray.GetPoint(distance);
-		}
-
-		EventManager.Instance().PostEvent(EventConfig.EVENT_SCENE_CLICK, new object[]{touch_position, camera_ray, hit_map_grid, hit_position});
+		EventManager.Instance().PostEvent(EventConfig.EVENT_SCENE_CLICK_DOWN, new object[]{touch_position});
 	}
 
 	private void HandleTouchMove(Vector2 touch_position, Vector2 delta_position)
 	{
 		//Debug.Log("HandleTouchMove " + touch_position + " delta_position " + delta_position);
 
-		EventManager.Instance().PostEvent(EventConfig.EVENT_SCENE_DRAG_MOVE, new object[]{delta_position, touch_position});
+		EventManager.Instance().PostEvent(EventConfig.EVENT_SCENE_CLICK_MOVE, new object[]{delta_position, touch_position});
 	}
 
 	private void HandleTouchEnded(Vector2 touch_position)
 	{
 		//Debug.Log("HandleTouchEnded " + touch_position);
+
+		EventManager.Instance().PostEvent(EventConfig.EVENT_SCENE_CLICK_UP, new object[]{touch_position});
 	}
 }

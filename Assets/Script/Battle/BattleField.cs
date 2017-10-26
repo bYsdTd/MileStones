@@ -94,7 +94,7 @@ public class BattleField
 		{14, 10, 14, },
 	};
 
-	public Vector3 GridToWorldPosition(int grid_x, int grid_y)
+	public Vector3 Grid2WorldPosition(int grid_x, int grid_y)
 	{
 		float half_step = map_data.map_step * 0.5f;
 		Vector3 world_positin = new Vector3(grid_x * map_data.map_step + half_step, 0, grid_y * map_data.map_step + half_step);
@@ -102,10 +102,28 @@ public class BattleField
 		return world_positin;
 	}
 
+	public bool WorldPositon2Grid(Vector3 world_position, out int grid_x, out int grid_y)
+	{
+		int x = (int)(world_position.x / map_data.map_step);
+		int y = (int)(world_position.z / map_data.map_step);
+
+		if(x >= 0 && x < map_data.map_width && y >= 0 && y < map_data.map_height)
+		{
+			grid_x = x;
+			grid_y = y;
+			return true;
+		}
+
+		grid_x = -1;
+		grid_y = -1;
+
+		return false;
+	}
+
 	public float DistanceByGridXY(int x1, int y1, int x2, int y2)
 	{
-		Vector3 pos1 = GridToWorldPosition(x1, y1);
-		Vector3 pos2 = GridToWorldPosition(x2, y2);
+		Vector3 pos1 = Grid2WorldPosition(x1, y1);
+		Vector3 pos2 = Grid2WorldPosition(x2, y2);
 
 		return (pos1 - pos2).magnitude;
 	}
