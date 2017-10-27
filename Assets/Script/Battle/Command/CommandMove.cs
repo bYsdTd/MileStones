@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
+using Pathfinding.RVO;
+
 public class CommandMove : CommandBase 
 {
 	public int start_grid_x;
@@ -115,6 +117,7 @@ public class CommandMove : CommandBase
 
 		Vector3 dir = current_end_pos - current_start_pos;
 
+		dir.Normalize();
 		hero_unit.SetPosition(current_pos);
 		hero_unit.SetDirection(dir);
 
