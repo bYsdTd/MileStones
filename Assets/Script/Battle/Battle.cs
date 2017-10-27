@@ -25,15 +25,21 @@ public class Battle: MonoBehaviour
 		battle_field.InitInputHandle();
 
 
-//		CommandMove move_command = new CommandMove();
-//		move_command.unit_id = 1;
-//		move_command.start_frame = 10;
-//		move_command.start_grid_x = 0;
-//		move_command.start_grid_y = 0;
-//		move_command.end_grid_x = 10;
-//		move_command.end_grid_y = 5;
-//
-//		CommandManager.Instance().DispatchCommand(move_command);
+		// test
+
+
+		TimerManager.Instance().RepeatCallFunc(delegate(float dt) {
+
+			HeroUnit unit1 = UnitManager.Instance().GetHeroUnit(1);
+			HeroUnit unit2 = UnitManager.Instance().GetHeroUnit(2);
+
+			unit1.PlayAttack();
+
+			unit1.SetDirection(unit2._position - unit1._position);
+
+			unit2.PlayHited();
+
+		}, 1);
 	}
 	
 	// Update is called once per frame

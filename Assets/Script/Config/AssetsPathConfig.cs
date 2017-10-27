@@ -8,5 +8,8 @@ public class AssetsPathConfig
 	{
 		{"KnightWarrior", "HeroUnit/KnightWarrior/Prefabs/KnightWarrior"},
 		{"UnitSelectCircle", "Effect/UnitSelectCircle"},
+		{"fire_effect", "Effect/fire_effect"},
+		{"hit_effect1", "Effect/hit_effect1"},
+		{"hit_effect2", "Effect/hit_effect2"},
 	};
 }

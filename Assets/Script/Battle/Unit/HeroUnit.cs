@@ -5,6 +5,8 @@ using System.Collections.Generic;
 public class HeroUnit : MonoBehaviour 
 {
 	public Animator animator;
+	public Transform fire_node;
+	public Transform hited_node;
 
 	[HideInInspector]
 	public int unit_id = -1;
@@ -113,6 +115,18 @@ public class HeroUnit : MonoBehaviour
 
 	public void PlayAttack()
 	{
-		animator.SetTrigger("Attack1Trigger");
+		//animator.SetTrigger("Attack1Trigger");
+
+		GameObject fire_effect = ObjectPoolManager.Instance().GetObject("fire_effect");
+
+		fire_effect.transform.SetParent(fire_node, false);
+	}
+
+	// 击中效果
+	public void PlayHited()
+	{
+		GameObject hit_effect = ObjectPoolManager.Instance().GetObject("hit_effect1");
+
+		hit_effect.transform.SetParent(hited_node, false);
 	}
 }

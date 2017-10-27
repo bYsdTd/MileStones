@@ -98,7 +98,7 @@ public class BattleGridRenderer : MonoBehaviour
 				uvs[vertIndex + 3] = new Vector2(0, 1);
 
 				// colors
-				Color grid_color = Color.white;
+				Color grid_color = Color.grey;
 
 				if(battle_field.IsBlock(x, y))
 				{
