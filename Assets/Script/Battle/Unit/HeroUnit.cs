@@ -12,7 +12,7 @@ public class HeroUnit : MonoBehaviour
 	public int unit_id = -1;
 	// 每秒0.5格
 	[HideInInspector]
-	public float move_speed_grid = 2f;
+	private float _move_speed_grid = 0;
 	[HideInInspector]
 	public float move_speed = 0;
 	[HideInInspector]
@@ -54,7 +54,6 @@ public class HeroUnit : MonoBehaviour
 	public void Init()
 	{
 		cache_transform = gameObject.transform;	
-		move_speed = BattleField.battle_field.map_data.map_step * move_speed_grid;
 
 		attack_ai = new AttackAI();
 		attack_ai.my_unit = this;
@@ -121,6 +120,16 @@ public class HeroUnit : MonoBehaviour
 	public int GetTeamID()
 	{
 		return _team_id;	
+	}
+
+	public void SetMoveSpeedGrid(int move_spped_grid)
+	{
+		if(_move_speed_grid != move_spped_grid)
+		{
+			_move_speed_grid = move_spped_grid;
+
+			move_speed = BattleField.battle_field.map_data.map_step * _move_speed_grid;
+		}
 	}
 
 	public void SetAttackVision(float attack_vision)
@@ -206,22 +215,47 @@ public class HeroUnit : MonoBehaviour
 		animator.SetBool("Running", false);
 	}
 
+	public void AddEffect(Transform node,  string effect_name)
+	{
+		GameObject effect_object = ObjectPoolManager.Instance().GetObject(effect_name);
+
+		effect_object.transform.SetParent(node, false);
+
+
+		ParticleSystem[] all_particles = effect_object.GetComponentsInChildren<ParticleSystem>();
+		for(int i = 0; i < all_particles.Length; ++i)
+		{
+			all_particles[i].Play();
+		}
+
+		ParticleEffectConfig particle_system_config = effect_object.GetComponent<ParticleEffectConfig>();
+
+		TimerManager.Instance().DelayCallFunc(delegate(float dt) {
+
+			ParticleSystem[] all_particles_stop = effect_object.GetComponentsInChildren<ParticleSystem>();
+			for(int i = 0; i < all_particles.Length; ++i)
+			{
+				all_particles_stop[i].Stop();
+			}
+
+			ObjectPoolManager.Instance().ReturnObject(effect_name, effect_object);
+
+		}, particle_system_config.effect_duration);
+	}
+
 	public void PlayAttack(HeroUnit enemy_unit)
 	{
 		//animator.SetTrigger("Attack1Trigger");
 
-		GameObject fire_effect = ObjectPoolManager.Instance().GetObject("fire_effect");
-
-		fire_effect.transform.SetParent(fire_node, false);
+		AddEffect(fire_node, "fire_effect");
 
 		SetDirection(enemy_unit._position - _position);
+
 	}
 
 	// 击中效果
 	public void PlayHited()
 	{
-		GameObject hit_effect = ObjectPoolManager.Instance().GetObject("hit_effect1");
-
-		hit_effect.transform.SetParent(hited_node, false);
+		AddEffect(hited_node, "hit_effect1");
 	}
 }

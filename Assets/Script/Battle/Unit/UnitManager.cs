@@ -33,8 +33,12 @@ public class UnitManager
 
 		HeroUnit hero_unit = hero_unit_gameobj.GetComponent<HeroUnit>();
 
+		// 属性相关设置
 		hero_unit.unit_id = id;
-		hero_unit.move_speed_grid = 2.0f;
+		hero_unit.SetMoveSpeedGrid(2);
+		hero_unit.SetAttackRange(2);
+		hero_unit.SetAttackVision(3);
+
 
 		hero_unit.Init();
 
