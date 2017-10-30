@@ -11,8 +11,10 @@ public class BattleField
 	public static float TIME_PER_FRAME = 1.0f / FRAME_RATE;
 
 	public MapSaveData	map_data;
+	public RealTimeBattleLogic	real_time_battle_logic = null;
+
+
 	BattleGridRenderer _battle_grid_renderer;
-	BattleFieldInputHandle battle_field_input_handle;
 
 
 	public void SetBattleGridRenderer(BattleGridRenderer battle_grid_renderer)
@@ -46,26 +48,30 @@ public class BattleField
 	{
 		HeroUnit hero_unit = UnitManager.Instance().CreateHeroUnit(0);
 		hero_unit.SetPosition(new Vector3(10, 0, 10));
+		hero_unit.SetTeamID(1);
 
 		hero_unit = UnitManager.Instance().CreateHeroUnit(1);
 		hero_unit.SetPosition(new Vector3(12, 0, 10));
+		hero_unit.SetTeamID(1);
 
 		hero_unit = UnitManager.Instance().CreateHeroUnit(2);
 		hero_unit.SetPosition(new Vector3(13, 0, 10));
+		hero_unit.SetTeamID(2);
 
 		hero_unit = UnitManager.Instance().CreateHeroUnit(3);
 		hero_unit.SetPosition(new Vector3(13, 0, 11));
+		hero_unit.SetTeamID(2);
 
 		hero_unit = UnitManager.Instance().CreateHeroUnit(4);
 		hero_unit.SetPosition(new Vector3(12, 0, 12));
-
+		hero_unit.SetTeamID(2);
 	}
 
-	public void InitInputHandle()
+	public void InitRealTimeLogic()
 	{
-		battle_field_input_handle = new BattleFieldInputHandle();
-
-		battle_field_input_handle.Init();
+		// 我的team id，先写死为1
+		real_time_battle_logic = new RealTimeBattleLogic();
+		real_time_battle_logic.Init(1);
 	}
 
 	public bool IsBlock(int x, int y)
@@ -307,5 +313,13 @@ public class BattleField
 
 
 		return null;
+	}
+
+	public void Tick(float delta_time)
+	{
+		if(real_time_battle_logic != null)
+		{
+			real_time_battle_logic.Tick(delta_time);
+		}
 	}
 }

@@ -17,13 +17,34 @@ public class HeroUnit : MonoBehaviour
 	public float move_speed = 0;
 	[HideInInspector]
 	public Vector3 _position;
+	[HideInInspector]
+	public int unit_hp = 100;
+	[HideInInspector]
+	public int unit_attack = 2;
+	[HideInInspector]
+	private int _team_id = -1;
+	[HideInInspector]
+	// 是否追逐状态，玩家操作A敌人的时候，设置成true
+	public bool is_pursue_state = false;
 
+	// 浮点数值区域
+	[HideInInspector]
+	public float attack_speed = 1;
+
+	private float _attack_range = 2;
+	private float _attack_vision = 3;
 
 	private Transform cache_transform;
 
 	private CommandBase	current_command = null;
 
 	private GameObject	cache_select_effect;
+
+	private float attack_vision_square = 1;
+	private float attack_range_square = 1;
+
+	AttackAI		attack_ai = null;
+
 
 	// Use this for initialization
 	void Start () 
@@ -34,6 +55,12 @@ public class HeroUnit : MonoBehaviour
 	{
 		cache_transform = gameObject.transform;	
 		move_speed = BattleField.battle_field.map_data.map_step * move_speed_grid;
+
+		attack_ai = new AttackAI();
+		attack_ai.my_unit = this;
+
+
+
 	}
 
 	// 指令队列
@@ -60,6 +87,72 @@ public class HeroUnit : MonoBehaviour
 				current_command = null;
 			}
 		}
+
+		if(attack_ai != null)
+		{
+			attack_ai.Tick(delta_time);
+		}
+	}
+
+	static Color[] team_color = new Color[]
+	{
+		Color.red,
+		Color.blue,
+		Color.green,
+		Color.cyan,
+		Color.yellow,
+	};
+
+	public void SetTeamID(int team_id)
+	{
+		if(_team_id != team_id)
+		{
+			_team_id = team_id;
+
+			SkinnedMeshRenderer[] mesh_renderer = GetComponentsInChildren<SkinnedMeshRenderer>();
+
+			for(int i = 0; i < mesh_renderer.Length; ++i)
+			{
+				mesh_renderer[i].material.SetColor("_Color", team_color[_team_id-1]);
+			}
+		}
+	}
+
+	public int GetTeamID()
+	{
+		return _team_id;	
+	}
+
+	public void SetAttackVision(float attack_vision)
+	{
+		_attack_vision = attack_vision;
+
+		attack_vision_square = _attack_vision * _attack_vision;
+	}
+
+	public void SetAttackRange(float attack_range)
+	{
+		_attack_range = attack_range;
+		attack_range_square = _attack_range * _attack_range;
+	}
+
+	public bool IsCanSeeUnit(HeroUnit enemy_unit)
+	{
+		float distance_square = (enemy_unit._position - _position).sqrMagnitude;
+
+		return attack_vision_square >= distance_square;
+	}
+
+	public bool IsCanAttack(HeroUnit enemy_unit)
+	{
+		float distance_square = (enemy_unit._position - _position).sqrMagnitude;
+
+		return attack_range_square >= distance_square;
+	}
+
+	public bool IsAlive()
+	{
+		return unit_hp > 0;	
 	}
 
 	public void SetPosition(Vector3 position)
@@ -113,13 +206,15 @@ public class HeroUnit : MonoBehaviour
 		animator.SetBool("Running", false);
 	}
 
-	public void PlayAttack()
+	public void PlayAttack(HeroUnit enemy_unit)
 	{
 		//animator.SetTrigger("Attack1Trigger");
 
 		GameObject fire_effect = ObjectPoolManager.Instance().GetObject("fire_effect");
 
 		fire_effect.transform.SetParent(fire_node, false);
+
+		SetDirection(enemy_unit._position - _position);
 	}
 
 	// 击中效果

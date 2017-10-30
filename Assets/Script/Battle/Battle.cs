@@ -22,24 +22,10 @@ public class Battle: MonoBehaviour
 		battle_field.LoadMap(map_path);
 		battle_field.SetBattleGridRenderer(battle_grid_renderer);
 		battle_field.InitUnit();
-		battle_field.InitInputHandle();
 
+		// 实时战斗的时候需要初始化这个
+		battle_field.InitRealTimeLogic();
 
-		// test
-
-
-		TimerManager.Instance().RepeatCallFunc(delegate(float dt) {
-
-			HeroUnit unit1 = UnitManager.Instance().GetHeroUnit(1);
-			HeroUnit unit2 = UnitManager.Instance().GetHeroUnit(2);
-
-			unit1.PlayAttack();
-
-			unit1.SetDirection(unit2._position - unit1._position);
-
-			unit2.PlayHited();
-
-		}, 1);
 	}
 	
 	// Update is called once per frame
@@ -49,5 +35,10 @@ public class Battle: MonoBehaviour
 		InputManager.Instance().Tick(delta_time);
 		TimerManager.Instance().Tick(delta_time);
 		UnitManager.Instance().Tick(delta_time);
+
+		if(battle_field != null)
+		{
+			battle_field.Tick(delta_time);
+		}
 	}
 }
