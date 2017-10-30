@@ -18,7 +18,7 @@ public class UnitManager
 
 	private Transform cache_root_unit_node = null;
 
-	public HeroUnit CreateHeroUnit(int id)
+	public HeroUnit CreateHeroUnit(int id, Vector3 pos, int team_id)
 	{
 		if(cache_root_unit_node == null)
 		{
@@ -38,9 +38,11 @@ public class UnitManager
 		hero_unit.SetMoveSpeedGrid(2);
 		hero_unit.SetAttackRange(2);
 		hero_unit.SetAttackVision(3);
+		hero_unit.attack_speed = 0.1f;
+		hero_unit.SetPosition(pos);
+		hero_unit.SetTeamID(team_id);
 
-
-		hero_unit.Init();
+		hero_unit.InitAfterAttribute();
 
 		hero_unit.PlayIdle();
 

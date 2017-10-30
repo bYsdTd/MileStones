@@ -1135,7 +1135,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 159844}
-  m_LocalRotation: {x: -0.7306809, y: -0.030807326, z: 0.6813276, w: 0.030807262}
+  m_LocalRotation: {x: -0.73068094, y: -0.030807327, z: 0.68132764, w: 0.030807264}
   m_LocalPosition: {x: -0.29094252, y: -0.00000010475516, z: 0.057713848}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1618,7 +1618,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 180302}
-  m_LocalRotation: {x: 0.7402964, y: 0.67038023, z: -0.040843923, w: 0.029720463}
+  m_LocalRotation: {x: 0.7402965, y: 0.6703803, z: -0.040843926, w: 0.029720465}
   m_LocalPosition: {x: -0.3996879, y: 1.3137013, z: -0.008871467}
   m_LocalScale: {x: 0.99999994, y: 1, z: 1}
   m_Children: []
@@ -1679,10 +1679,16 @@ MonoBehaviour:
   animator: {fileID: 9590292}
   fire_node: {fileID: 424382}
   hited_node: {fileID: 442474}
+  line_render_material: {fileID: 2100000, guid: 510ac69d14b754f7c879c177a17db7e3,
+    type: 2}
+  line_renderer: {fileID: 0}
   unit_id: -1
-  move_speed_grid: 2
   move_speed: 0.5
   _position: {x: 0, y: 0, z: 0}
+  unit_hp: 100
+  unit_attack: 2
+  is_pursue_state: 0
+  attack_speed: 1
 --- !u!137 &13780300
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

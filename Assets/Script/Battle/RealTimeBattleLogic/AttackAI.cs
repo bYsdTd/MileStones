@@ -55,9 +55,23 @@ public class AttackAI
 				}
 				else
 				{
-					
+					// 打不到，清空目标
+					target_unit = null;
 				}
 			}
+		}
+
+		if(target_unit != null)
+		{
+			my_unit.line_renderer.enabled = true;
+
+			my_unit.line_renderer.SetPosition(0, my_unit._position);
+			my_unit.line_renderer.SetPosition(1, target_unit._position);
+
+		}
+		else
+		{
+			my_unit.line_renderer.enabled = false;
 		}
 	}
 

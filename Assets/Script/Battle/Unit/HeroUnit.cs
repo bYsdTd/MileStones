@@ -7,6 +7,10 @@ public class HeroUnit : MonoBehaviour
 	public Animator animator;
 	public Transform fire_node;
 	public Transform hited_node;
+	public Material line_render_material;
+
+	[HideInInspector]
+	public LineRenderer	line_renderer;
 
 	[HideInInspector]
 	public int unit_id = -1;
@@ -51,15 +55,20 @@ public class HeroUnit : MonoBehaviour
 	{
 	}
 	
-	public void Init()
+	public void InitAfterAttribute()
 	{
 		cache_transform = gameObject.transform;	
 
 		attack_ai = new AttackAI();
 		attack_ai.my_unit = this;
 
+		line_renderer = gameObject.AddComponent<LineRenderer>();
+		line_renderer.material = line_render_material;
 
-
+		Color line_color = HeroUnit.team_color[GetTeamID() - 1];
+		line_renderer.SetColors(line_color, line_color);
+		line_renderer.SetVertexCount(2);
+		line_renderer.SetWidth(0.05f, 0.05f);
 	}
 
 	// 指令队列
@@ -93,7 +102,7 @@ public class HeroUnit : MonoBehaviour
 		}
 	}
 
-	static Color[] team_color = new Color[]
+	public static Color[] team_color = new Color[]
 	{
 		Color.red,
 		Color.blue,
@@ -170,7 +179,12 @@ public class HeroUnit : MonoBehaviour
 		{
 			_position = position;
 
-			cache_transform.position = position;	
+			if(cache_transform == null)
+			{
+				cache_transform = gameObject.transform;
+			}
+
+			cache_transform.position = position;
 		}
 	}
 
