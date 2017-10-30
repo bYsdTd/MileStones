@@ -31,6 +31,7 @@ public class BattleVisionControl
 				HeroUnit unit2 = unit_list2[i2];
 
 				if(unit1.GetTeamID() != unit2.GetTeamID() 
+					&& unit1.IsAlive() && unit2.IsAlive() 
 					&& unit1.IsCanSeeUnit(unit2))
 				{
 					if(!vision_enemy_units[unit1.GetTeamID()].Contains(unit2))

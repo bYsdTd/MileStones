@@ -281,7 +281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c9bedbdad221413eb202c632b5869bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effect_duration: 5.1
+  effect_duration: 1
 --- !u!198 &19800000
 ParticleSystem:
   m_ObjectHideFlags: 1

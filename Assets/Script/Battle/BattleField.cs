@@ -46,15 +46,15 @@ public class BattleField
 
 	public void InitUnit()
 	{
-		HeroUnit hero_unit = UnitManager.Instance().CreateHeroUnit(0, new Vector3(10, 0, 10), 1);
+		HeroUnit hero_unit = UnitManager.Instance().CreateHeroUnit("KnightWarrior", 0, new Vector3(10, 0, 10), 1);
 
-		hero_unit = UnitManager.Instance().CreateHeroUnit(1, new Vector3(12, 0, 10), 1);
+		hero_unit = UnitManager.Instance().CreateHeroUnit("KnightWarrior", 1, new Vector3(12, 0, 10), 1);
 
-		hero_unit = UnitManager.Instance().CreateHeroUnit(2, new Vector3(13, 0, 10), 2);
+		hero_unit = UnitManager.Instance().CreateHeroUnit("KnightWarrior", 2, new Vector3(13, 0, 10), 2);
 
-		hero_unit = UnitManager.Instance().CreateHeroUnit(3, new Vector3(13, 0, 11), 2);
+		hero_unit = UnitManager.Instance().CreateHeroUnit("KnightWarrior", 3, new Vector3(13, 0, 11), 2);
 
-		hero_unit = UnitManager.Instance().CreateHeroUnit(4, new Vector3(12, 0, 12), 2);
+		hero_unit = UnitManager.Instance().CreateHeroUnit("KnightWarrior", 4, new Vector3(12, 0, 12), 2);
 	}
 
 	public void InitRealTimeLogic()

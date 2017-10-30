@@ -43,21 +43,28 @@ public class AttackAI
 		}
 		else
 		{
-			if(my_unit.IsCanAttack(target_unit))
+			if(target_unit.IsAlive())
 			{
-				DoAttack(delta_time);
-			}
-			else
-			{
-				if(my_unit.is_pursue_state)
+				if(my_unit.IsCanAttack(target_unit))
 				{
-					// 向目标移动
+					DoAttack(delta_time);
 				}
 				else
 				{
-					// 打不到，清空目标
-					target_unit = null;
+					if(my_unit.is_pursue_state)
+					{
+						// 向目标移动
+					}
+					else
+					{
+						// 打不到，清空目标
+						target_unit = null;
+					}
 				}
+			}
+			else
+			{
+				target_unit = null;
 			}
 		}
 
@@ -81,7 +88,7 @@ public class AttackAI
 		{
 			my_unit.PlayAttack(target_unit);
 
-			target_unit.PlayHited();
+			target_unit.OnDamage(my_unit.unit_attack);
 
 			cool_down = my_unit.attack_speed;
 		}

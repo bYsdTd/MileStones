@@ -7,6 +7,7 @@ public class HeroUnit : MonoBehaviour
 	public Animator animator;
 	public Transform fire_node;
 	public Transform hited_node;
+	public Transform mesh_node;
 	public Material line_render_material;
 
 	[HideInInspector]
@@ -30,6 +31,8 @@ public class HeroUnit : MonoBehaviour
 	[HideInInspector]
 	// 是否追逐状态，玩家操作A敌人的时候，设置成true
 	public bool is_pursue_state = false;
+	[HideInInspector]
+	public string resource_key;
 
 	// 浮点数值区域
 	[HideInInspector]
@@ -87,6 +90,11 @@ public class HeroUnit : MonoBehaviour
 
 	public void Tick(float delta_time)
 	{
+		if(!IsAlive())
+		{
+			return;	
+		}
+
 		if(current_command != null)
 		{
 			if(current_command.Tick(delta_time))
@@ -229,7 +237,9 @@ public class HeroUnit : MonoBehaviour
 		animator.SetBool("Running", false);
 	}
 
-	public void AddEffect(Transform node,  string effect_name)
+	public delegate void EffectEndCallBack();
+
+	public void AddEffect(Transform node,  string effect_name, EffectEndCallBack effect_end_call_back = null)
 	{
 		GameObject effect_object = ObjectPoolManager.Instance().GetObject(effect_name);
 
@@ -254,6 +264,11 @@ public class HeroUnit : MonoBehaviour
 
 			ObjectPoolManager.Instance().ReturnObject(effect_name, effect_object);
 
+			if(effect_end_call_back != null)
+			{
+				effect_end_call_back.Invoke();
+			}
+
 		}, particle_system_config.effect_duration);
 	}
 
@@ -265,6 +280,35 @@ public class HeroUnit : MonoBehaviour
 
 		SetDirection(enemy_unit._position - _position);
 
+	}
+
+	public void OnDamage(int damage)
+	{
+		unit_hp -= damage;
+
+		if(unit_hp <= 0)
+		{
+			PlayDead();	
+		}
+		else
+		{
+			PlayHited();
+		}
+
+	}
+
+	public void PlayDead()
+	{
+		AddEffect(hited_node, "hit_effect2", delegate() {
+
+			gameObject.SetActive(false);
+			UnitManager.Instance().DestroyUnit(resource_key, unit_id);
+
+		});
+
+		mesh_node.gameObject.SetActive(false);
+
+		line_renderer.enabled = false;
 	}
 
 	// 击中效果
