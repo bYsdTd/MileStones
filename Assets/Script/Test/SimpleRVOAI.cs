@@ -14,7 +14,7 @@ public class SimpleRVOAI : MonoBehaviour {
 	// Update is called once per frame
 	public void Update () {
 		// Just some point far away
-		var targetPoint = transform.position + transform.forward * 100;
+		//var targetPoint = transform.position + transform.forward * 100;
 		// Set the desired point to move towards using a desired speed of 10 and a max speed of 12
 		controller.Move(10 * transform.forward);
 

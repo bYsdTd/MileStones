@@ -9,7 +9,7 @@ using Pathfinding.Poly2Tri;
 namespace Pathfinding.Util {
 	public class TileHandler {
 		RecastGraph _graph;
-		List<TileType> tileTypes = new List<TileType>();
+		//<TileType> tileTypes = new List<TileType>();
 
 		Clipper clipper;
 		int[] cached_int_array = new int[32];

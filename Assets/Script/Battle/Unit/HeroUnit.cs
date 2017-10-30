@@ -29,9 +29,6 @@ public class HeroUnit : MonoBehaviour
 	[HideInInspector]
 	private int _team_id = -1;
 	[HideInInspector]
-	// 是否追逐状态，玩家操作A敌人的时候，设置成true
-	public bool is_pursue_state = false;
-	[HideInInspector]
 	public string resource_key;
 
 	// 浮点数值区域
@@ -99,6 +96,7 @@ public class HeroUnit : MonoBehaviour
 		{
 			if(current_command.Tick(delta_time))
 			{
+				current_command.OnEnd();
 				// 这条指令执行完了
 				current_command = null;
 			}
@@ -223,6 +221,25 @@ public class HeroUnit : MonoBehaviour
 
 			cache_select_effect = null;
 		}
+	}
+
+	public void SetPursueTarget(HeroUnit pursue_target)
+	{
+		attack_ai.pursue_target = pursue_target;
+		attack_ai.target_unit = pursue_target;
+
+		// 这里需要播放一个效果
+
+
+	}
+
+	public void Move2Target(HeroUnit pursue_target)
+	{
+		CommandMove2Target move2target_command = new CommandMove2Target();
+		move2target_command.unit_id = unit_id;
+		move2target_command.pursue_target = pursue_target;
+
+		CommandManager.Instance().DispatchCommand(move2target_command);
 	}
 
 	public void PlayMove()

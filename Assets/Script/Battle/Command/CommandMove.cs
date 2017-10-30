@@ -104,8 +104,6 @@ public class CommandMove : CommandBase
 
 		if(current_pre_node_index < 0)
 		{
-			OnEnd();
-
 			return true;
 		}
 

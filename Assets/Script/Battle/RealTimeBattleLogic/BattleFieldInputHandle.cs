@@ -88,27 +88,41 @@ public class BattleFieldInputHandle
 
 		if(is_hit_unit)
 		{
+			// 点中的是单位
 			hit_unit = hit_info.transform.gameObject.GetComponent<HeroUnit>();
 
-			// 点中的是单位
-			if(current_select_hero_unit != null)
+			if(BattleField.battle_field.IsMyTeam(hit_unit.GetTeamID()))
 			{
-				current_select_hero_unit.SetSelected(false);
-
-				if(current_select_hero_unit != hit_unit)
+				if(current_select_hero_unit != null)
 				{
-					hit_unit.SetSelected(true);
-					current_select_hero_unit = hit_unit;
+					current_select_hero_unit.SetSelected(false);
+
+					if(current_select_hero_unit != hit_unit)
+					{
+						hit_unit.SetSelected(true);
+						current_select_hero_unit = hit_unit;
+					}
+					else
+					{
+						current_select_hero_unit = null;
+					}
 				}
 				else
 				{
-					current_select_hero_unit = null;
-				}
+					hit_unit.SetSelected(true);
+					current_select_hero_unit = hit_unit;
+				}	
 			}
 			else
 			{
-				hit_unit.SetSelected(true);
-				current_select_hero_unit = hit_unit;
+				if(current_select_hero_unit != null)
+				{
+					current_select_hero_unit.SetPursueTarget(hit_unit);
+				}
+				else
+				{
+					// 点中了敌方的单位，还不知道怎么处理，显示敌方信息?
+				}
 			}
 		}
 		else
@@ -119,23 +133,29 @@ public class BattleFieldInputHandle
 				int grid_x = 0;
 				int grid_y = 0;
 
+				current_select_hero_unit.SetPursueTarget(null);
+
 				if(BattleField.battle_field.WorldPositon2Grid(hit_position, out grid_x, out grid_y))
 				{
 					int current_x = 0;
 					int current_y = 0;
 
-					BattleField.battle_field.WorldPositon2Grid(current_select_hero_unit._position, out current_x, out current_y);
+					if(!BattleField.battle_field.IsBlock(grid_x, grid_y))
+					{
+						BattleField.battle_field.WorldPositon2Grid(current_select_hero_unit._position, out current_x, out current_y);
 
-					CommandMove move_command = new CommandMove();
-					move_command.unit_id = current_select_hero_unit.unit_id;
-					//move_command.start_frame = 10;
-					move_command.start_grid_x = current_x;
-					move_command.start_grid_y = current_y;
+						CommandMove move_command = new CommandMove();
+						move_command.unit_id = current_select_hero_unit.unit_id;
+						//move_command.start_frame = 10;
+						move_command.start_grid_x = current_x;
+						move_command.start_grid_y = current_y;
 
-					move_command.end_grid_x = grid_x;
-					move_command.end_grid_y = grid_y;
+						move_command.end_grid_x = grid_x;
+						move_command.end_grid_y = grid_y;
 
-					CommandManager.Instance().DispatchCommand(move_command);
+						CommandManager.Instance().DispatchCommand(move_command);
+					}
+
 				}
 			}
 		}

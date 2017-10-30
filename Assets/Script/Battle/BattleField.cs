@@ -46,15 +46,20 @@ public class BattleField
 
 	public void InitUnit()
 	{
-		HeroUnit hero_unit = UnitManager.Instance().CreateHeroUnit("KnightWarrior", 0, new Vector3(10, 0, 10), 1);
+		HeroUnit hero_unit1 = UnitManager.Instance().CreateHeroUnit("KnightWarrior", 0, new Vector3(10, 0, 10), 1);
 
-		hero_unit = UnitManager.Instance().CreateHeroUnit("KnightWarrior", 1, new Vector3(12, 0, 10), 1);
+		HeroUnit hero_unit2 = UnitManager.Instance().CreateHeroUnit("KnightWarrior", 1, new Vector3(12, 0, 10), 1);
 
-		hero_unit = UnitManager.Instance().CreateHeroUnit("KnightWarrior", 2, new Vector3(13, 0, 10), 2);
+		HeroUnit hero_unit3 = UnitManager.Instance().CreateHeroUnit("KnightWarrior", 2, new Vector3(13, 0, 10), 2);
 
-		hero_unit = UnitManager.Instance().CreateHeroUnit("KnightWarrior", 3, new Vector3(13, 0, 11), 2);
+		hero_unit3.SetPursueTarget(hero_unit1);
 
-		hero_unit = UnitManager.Instance().CreateHeroUnit("KnightWarrior", 4, new Vector3(12, 0, 12), 2);
+		HeroUnit hero_unit4 = UnitManager.Instance().CreateHeroUnit("KnightWarrior", 3, new Vector3(13, 0, 11), 2);
+		hero_unit4.SetPursueTarget(hero_unit1);
+
+		HeroUnit hero_unit5 = UnitManager.Instance().CreateHeroUnit("KnightWarrior", 4, new Vector3(12, 0, 12), 2);
+		hero_unit5.SetPursueTarget(hero_unit2);
+
 	}
 
 	public void InitRealTimeLogic()
@@ -62,6 +67,12 @@ public class BattleField
 		// 我的team id，先写死为1
 		real_time_battle_logic = new RealTimeBattleLogic();
 		real_time_battle_logic.Init(1);
+	}
+
+	// 实时操作接口，单位是不是自己的单位
+	public bool IsMyTeam(int team_id)
+	{
+		return real_time_battle_logic.my_team_id == team_id;
 	}
 
 	public bool IsBlock(int x, int y)

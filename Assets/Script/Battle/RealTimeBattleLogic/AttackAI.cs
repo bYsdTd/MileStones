@@ -7,7 +7,10 @@ public class AttackAI
 	public HeroUnit my_unit;
 	public HeroUnit target_unit;
 
-	private float cool_down = 0;
+	// 追击的目标
+	public HeroUnit pursue_target;
+
+	public float cool_down = 0;
 
 	private HeroUnit FindCanAttackTarget()
 	{
@@ -51,9 +54,10 @@ public class AttackAI
 				}
 				else
 				{
-					if(my_unit.is_pursue_state)
+					if(pursue_target != null)
 					{
 						// 向目标移动
+						my_unit.Move2Target(pursue_target);
 					}
 					else
 					{
