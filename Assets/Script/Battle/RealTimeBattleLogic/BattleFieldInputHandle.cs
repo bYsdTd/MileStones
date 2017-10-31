@@ -29,6 +29,7 @@ public class BattleFieldInputHandle
 		EventManager.Instance().UnRegisterEvent(EventConfig.EVENT_SCENE_CLICK_DOWN, OnBattleFieldClickDown);
 		EventManager.Instance().UnRegisterEvent(EventConfig.EVENT_SCENE_CLICK_MOVE, OnBattleFieldDragMove);
 		EventManager.Instance().UnRegisterEvent(EventConfig.EVENT_SCENE_CLICK_UP, OnBattleFieldClickUp);
+		EventManager.Instance().UnRegisterEvent(EventConfig.EVENT_HERO_UNIT_DEAD, OnHeroUnitDead);
 	}
 
 	public void RegisterEvent()
@@ -36,6 +37,17 @@ public class BattleFieldInputHandle
 		EventManager.Instance().RegisterEvent(EventConfig.EVENT_SCENE_CLICK_DOWN, OnBattleFieldClickDown);
 		EventManager.Instance().RegisterEvent(EventConfig.EVENT_SCENE_CLICK_MOVE, OnBattleFieldDragMove);
 		EventManager.Instance().RegisterEvent(EventConfig.EVENT_SCENE_CLICK_UP, OnBattleFieldClickUp);
+		EventManager.Instance().RegisterEvent(EventConfig.EVENT_HERO_UNIT_DEAD, OnHeroUnitDead);
+	}
+
+	public void OnHeroUnitDead(params System.Object[] all_params)
+	{
+		HeroUnit hero_unit_dead = (HeroUnit)all_params[0];
+
+		if(hero_unit_dead == current_select_hero_unit)
+		{
+			current_select_hero_unit = null;
+		}
 	}
 
 	public void OnBattleFieldClickDown(params System.Object[] all_params)
@@ -137,25 +149,26 @@ public class BattleFieldInputHandle
 
 				if(BattleField.battle_field.WorldPositon2Grid(hit_position, out grid_x, out grid_y))
 				{
-					int current_x = 0;
-					int current_y = 0;
+//					int current_x = 0;
+//					int current_y = 0;
+//
+//					if(!BattleField.battle_field.IsBlock(grid_x, grid_y))
+//					{
+//						BattleField.battle_field.WorldPositon2Grid(current_select_hero_unit._position, out current_x, out current_y);
+//
+//						CommandMove move_command = new CommandMove();
+//						move_command.unit_id = current_select_hero_unit.unit_id;
+//						//move_command.start_frame = 10;
+//						move_command.start_grid_x = current_x;
+//						move_command.start_grid_y = current_y;
+//
+//						move_command.end_grid_x = grid_x;
+//						move_command.end_grid_y = grid_y;
+//
+//						CommandManager.Instance().DispatchCommand(move_command);
+//					}
 
-					if(!BattleField.battle_field.IsBlock(grid_x, grid_y))
-					{
-						BattleField.battle_field.WorldPositon2Grid(current_select_hero_unit._position, out current_x, out current_y);
-
-						CommandMove move_command = new CommandMove();
-						move_command.unit_id = current_select_hero_unit.unit_id;
-						//move_command.start_frame = 10;
-						move_command.start_grid_x = current_x;
-						move_command.start_grid_y = current_y;
-
-						move_command.end_grid_x = grid_x;
-						move_command.end_grid_y = grid_y;
-
-						CommandManager.Instance().DispatchCommand(move_command);
-					}
-
+					current_select_hero_unit.Move(grid_x, grid_y);
 				}
 			}
 		}

@@ -30,6 +30,8 @@ public class HeroUnit : MonoBehaviour
 	private int _team_id = -1;
 	[HideInInspector]
 	public string resource_key;
+	[HideInInspector]
+	public float _pursue_rate = 0.5f;
 
 	// 浮点数值区域
 	[HideInInspector]
@@ -69,6 +71,11 @@ public class HeroUnit : MonoBehaviour
 		line_renderer.SetColors(line_color, line_color);
 		line_renderer.SetVertexCount(2);
 		line_renderer.SetWidth(0.05f, 0.05f);
+	}
+
+	public void Destroy()
+	{
+			
 	}
 
 	// 指令队列
@@ -226,21 +233,51 @@ public class HeroUnit : MonoBehaviour
 	public void SetPursueTarget(HeroUnit pursue_target)
 	{
 		attack_ai.pursue_target = pursue_target;
-		attack_ai.target_unit = pursue_target;
 
 		// 这里需要播放一个效果
-
-
 	}
 
-	public void Move2Target(HeroUnit pursue_target)
+	public void Idle()
 	{
-		CommandMove2Target move2target_command = new CommandMove2Target();
-		move2target_command.unit_id = unit_id;
-		move2target_command.pursue_target = pursue_target;
+		if(current_command != null)
+		{
+			current_command.OnEnd();
+			current_command = null;
+		}
 
-		CommandManager.Instance().DispatchCommand(move2target_command);
+		PlayIdle();
 	}
+
+	public void Move(int grid_x, int grid_y)
+	{
+		if(!BattleField.battle_field.IsBlock(grid_x, grid_y))
+		{
+			int current_x;
+			int current_y;
+
+			BattleField.battle_field.WorldPositon2Grid(_position, out current_x, out current_y);
+
+			CommandMove move_command = new CommandMove();
+			move_command.unit_id = unit_id;
+
+			move_command.start_grid_x = current_x;
+			move_command.start_grid_y = current_y;
+
+			move_command.end_grid_x = grid_x;
+			move_command.end_grid_y = grid_y;
+
+			CommandManager.Instance().DispatchCommand(move_command);
+		}
+	}
+
+//	public void Move2Target(HeroUnit pursue_target)
+//	{
+//		CommandMove2Target move2target_command = new CommandMove2Target();
+//		move2target_command.unit_id = unit_id;
+//		move2target_command.pursue_target = pursue_target;
+//
+//		CommandManager.Instance().DispatchCommand(move2target_command);
+//	}
 
 	public void PlayMove()
 	{
@@ -305,6 +342,7 @@ public class HeroUnit : MonoBehaviour
 
 		if(unit_hp <= 0)
 		{
+			EventManager.Instance().PostEvent(EventConfig.EVENT_HERO_UNIT_DEAD, new object[]{this});
 			PlayDead();	
 		}
 		else

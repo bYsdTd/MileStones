@@ -41,6 +41,9 @@ public class UnitManager
 		hero_unit.attack_speed = 1;
 		hero_unit.SetPosition(pos);
 		hero_unit.SetTeamID(team_id);
+		hero_unit.unit_attack = 10;
+		hero_unit.unit_hp = 100;
+
 		hero_unit.resource_key = resource_key;
 
 		hero_unit.InitAfterAttribute();
