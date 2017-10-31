@@ -23,12 +23,15 @@ public class BattleVisionControl
 		var unit_list1 = UnitManager.Instance().hero_unit_list;
 		var unit_list2 = UnitManager.Instance().hero_unit_list;
 
-		for(int i1 = 0; i1 < unit_list1.Count; ++i1)
+		var enumerator1 = unit_list1.GetEnumerator();
+		var enumerator2 = unit_list2.GetEnumerator();
+
+		while(enumerator1.MoveNext())
 		{
-			for(int i2 = 0; i2 < unit_list2.Count; ++i2)
+			while(enumerator2.MoveNext())
 			{
-				HeroUnit unit1 = unit_list1[i1];
-				HeroUnit unit2 = unit_list2[i2];
+				HeroUnit unit1 = enumerator1.Current.Value;
+				HeroUnit unit2 = enumerator2.Current.Value;
 
 				if(unit1.GetTeamID() != unit2.GetTeamID() 
 					&& unit1.IsAlive() && unit2.IsAlive() 
