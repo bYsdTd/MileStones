@@ -3,5 +3,5 @@ string,string,int,int,float,float,float,float
 单位名称,资源名称,血量,攻击力,攻速,攻击距离,视野,移动速度，格子／每秒
 key,,,,,,,
 0,,,,,,,
-soldier,ToonSoldier,100,2,0.5,2,10,3
-tank,BigTank,200,10,2,10,10,1
+soldier,ToonSoldier,200,2,0.5,2,10,3
+tank,BigTank,200,5,2,10,10,1
