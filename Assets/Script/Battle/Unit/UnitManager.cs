@@ -37,11 +37,11 @@ public class UnitManager
 		hero_unit.unit_id = id;
 		hero_unit.SetMoveSpeedGrid(2);
 		hero_unit.SetAttackRange(2);
-		hero_unit.SetAttackVision(3);
+		hero_unit.SetAttackVision(10);
 		hero_unit.attack_speed = 1;
 		hero_unit.SetPosition(pos);
 		hero_unit.SetTeamID(team_id);
-		hero_unit.unit_attack = 10;
+		hero_unit.unit_attack = 2;
 		hero_unit.unit_hp = 100;
 
 		hero_unit.resource_key = resource_key;

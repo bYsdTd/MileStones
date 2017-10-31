@@ -1,0 +1,78 @@
+package #NAMESPACE_STUB#
+
+import (
+	"fmt"
+	"strconv"
+	"strings"
+)
+
+#COMPOSE_DECLARE_STUB#
+
+type #CLASSNAME_STUB# struct {
+#FIELD_STUB#
+}
+
+type #CLASSNAME_STUB#Dict map[string]#CLASSNAME_STUB#
+
+var (
+	dict     map[string]#CLASSNAME_STUB#Dict
+	isInited bool = false
+)
+
+func Initialize(ver string, data [][]interface{}) {
+
+	i, _ := strconv.Atoi("12345")
+
+	i += 1
+	
+	if !isInited {
+		dict = make(map[string]#CLASSNAME_STUB#Dict)	
+		isInited = true
+	}
+
+	__dict := make(map[string]#CLASSNAME_STUB#)
+	for _, _strArray_ := range data {
+		_instance_ := CreateInstance(_strArray_)
+		key := _instance_.getKeyInDict()
+		__dict[key] = _instance_
+	}
+
+	dict[ver] = __dict
+}
+
+func CreateInstance(_data_ []interface{}) #CLASSNAME_STUB# {
+	_ret_ := #CLASSNAME_STUB#{}
+
+#INITIALIZE_STUB#	
+
+	return _ret_
+}
+
+func GetInstance(ver string, #KEY_ARGS_STUB#) *#CLASSNAME_STUB# {
+	if !isInited {
+		return nil
+	}
+	__dict := dict[ver]
+	_key_ := #KEY_COMBINER_STUB_WITHOUT_THIS#
+	_ret_ := __dict[_key_]
+	return &_ret_
+}
+
+func (_self_ *#CLASSNAME_STUB#) getKeyInDict() string {
+	return #KEY_COMBINER_STUB_WITH_THIS#
+}
+
+type #CLASSNAME_STUB#Filter func(b #CLASSNAME_STUB#) bool
+
+func Find(ver string, filter #CLASSNAME_STUB#Filter) []#CLASSNAME_STUB# {
+	ret := make([]#CLASSNAME_STUB#, 0)
+
+	__dict := dict[ver]
+	for _, val := range __dict {
+		if filter(val) {
+			ret = append(ret, val)
+		}
+	}
+
+	return ret
+}

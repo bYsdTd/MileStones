@@ -1,0 +1,132 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+
+namespace #NAMESPACE_STUB#
+{
+	public sealed partial class #CLASSNAME_STUB#
+	{
+		private static Dictionary<string, #CLASSNAME_STUB#> _dict_ = new Dictionary<string, #CLASSNAME_STUB#>();
+
+		#FIELD_STUB#
+
+		private static bool _isInited_ = false;
+
+		public static void Initialize(List<string[]> data)
+		{
+			if (_isInited_) return;
+
+			foreach (var objArr in data)
+			{
+				#CLASSNAME_STUB# _value_ = CreateInstance(objArr);
+				PostProcessor(_value_);
+				string _key_ = _value_.GetKeyInDict();
+
+				_dict_.Add(_key_, _value_);
+			}
+
+			_isInited_ = true;
+		}
+
+		private static #CLASSNAME_STUB# CreateInstance(string[] objArr)
+		{
+			#CLASSNAME_STUB# _ret_ = new #CLASSNAME_STUB#();
+			
+			#INITIALIZE_STUB#
+
+			return _ret_;
+		}
+
+		static partial void PostProcessor(#CLASSNAME_STUB# instance);
+
+		private string GetKeyInDict()
+		{
+			return #KEY_COMBINER_STUB_WITH_THIS#;
+		}
+
+		public delegate bool #CLASSNAME_STUB#Filter(#CLASSNAME_STUB# obj);
+		public static List<#CLASSNAME_STUB#> Find(#CLASSNAME_STUB#Filter filter)
+		{
+			if (null != _externalDataSource_)
+			{
+				throw new NotImplementedException();
+			}
+
+			List<#CLASSNAME_STUB#> _ret_ = new List<#CLASSNAME_STUB#>();
+
+			foreach(KeyValuePair<string, #CLASSNAME_STUB#> kvp in _dict_)
+			{
+				if (filter.Invoke(kvp.Value))
+				{
+					_ret_.Add(kvp.Value);
+				}
+			}
+
+			return _ret_;
+		}
+		
+		public static bool HasInstance(#KEY_ARGS_STUB#)
+		{
+			string _key_ = #KEY_COMBINER_STUB_WITHOUT_THIS#;
+			return _dict_.ContainsKey(_key_);
+		}
+
+		public static void AddInstance(#CLASSNAME_STUB# obj)
+		{
+			string _key_ = obj.GetKeyInDict();
+			if (_dict_.ContainsKey(_key_))
+			{
+				UnityEngine.Debug.LogWarning("在名为#CLASSNAME_STUB#的GDS文件中已经存在: " + _key_);
+				return;
+			}
+			_dict_.Add(_key_, obj);
+		}
+
+		public static #CLASSNAME_STUB# GetInstance(#KEY_ARGS_STUB#)
+		{
+			if (!_isInited_)
+			{
+				return null;
+			}
+			string _key_ = #KEY_COMBINER_STUB_WITHOUT_THIS#;
+			if (null != _externalDataSource_)
+			{
+				return _externalDataSource_.Invoke(typeof(#CLASSNAME_STUB#), _key_) as #CLASSNAME_STUB#;
+			}
+			else
+			{
+				#CLASSNAME_STUB# _ret_ = null;
+				if (!_dict_.TryGetValue(_key_, out _ret_))
+				{
+					throw new Exception("在名为#CLASSNAME_STUB#的GDS文件中没有发现key : " + _key_);
+				}
+				return _ret_;
+			}
+		}
+
+		private static Func<System.Type, string, object> _externalDataSource_;
+		public static void TransitionToExternalMode(Func<System.Type, string, object> externalHook, 
+													bool doDump, 
+													Action<System.Type, List<string>, List<object>> externalDumper)
+		{
+			_externalDataSource_ = externalHook;
+			if (doDump)
+			{
+				List<string> keys = new List<string>();
+				List<object> values = new List<object>();
+				foreach (var kvp in _dict_)
+				{
+					keys.Add(kvp.Key);
+					values.Add(kvp.Value);
+				}
+				externalDumper.Invoke(typeof(#CLASSNAME_STUB#), keys, values);
+			}
+			_dict_.Clear();
+		}
+
+		public static int GetCount()
+		{
+			return _dict_.Count;
+		}
+	}
+}

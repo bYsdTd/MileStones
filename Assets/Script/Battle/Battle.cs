@@ -10,6 +10,9 @@ public class Battle: MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
+		// 
+		GDSKit.GDSMgr.Instance().InitGDSData();
+
 		// 初始化
 		battle_field = new BattleField();
 		BattleField.battle_field = battle_field;

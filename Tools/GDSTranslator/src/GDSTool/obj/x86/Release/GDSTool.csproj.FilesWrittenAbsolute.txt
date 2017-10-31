@@ -1,0 +1,3 @@
+/Users/zhangyi/MileStones/Tools/GDSTranslator/src/GDSTool/obj/x86/Release/.NETFramework,Version=v4.0.AssemblyAttribute.cs
+/Users/zhangyi/MileStones/Tools/GDSTranslator/bin/GDSTool.exe
+/Users/zhangyi/MileStones/Tools/GDSTranslator/src/GDSTool/obj/x86/Release/GDSTool.exe
