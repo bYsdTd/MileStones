@@ -46,18 +46,18 @@ public class BattleField
 
 	public void InitUnit()
 	{
-		HeroUnit hero_unit1 = UnitManager.Instance().CreateHeroUnit("ToonSoldier", 0, new Vector3(10, 0, 10), 1);
+		HeroUnit hero_unit1 = UnitManager.Instance().CreateHeroUnit("soldier", 0, new Vector3(10, 0, 10), 1);
 
-		HeroUnit hero_unit2 = UnitManager.Instance().CreateHeroUnit("ToonSoldier", 1, new Vector3(12, 0, 10), 1);
+		HeroUnit hero_unit2 = UnitManager.Instance().CreateHeroUnit("soldier", 1, new Vector3(12, 0, 10), 1);
 
-		HeroUnit hero_unit3 = UnitManager.Instance().CreateHeroUnit("ToonSoldier", 2, new Vector3(13, 0, 10), 2);
+		HeroUnit hero_unit3 = UnitManager.Instance().CreateHeroUnit("soldier", 2, new Vector3(13, 0, 10), 2);
 
 		hero_unit3.SetPursueTarget(hero_unit1);
 
-		HeroUnit hero_unit4 = UnitManager.Instance().CreateHeroUnit("ToonSoldier", 3, new Vector3(13, 0, 11), 2);
+		HeroUnit hero_unit4 = UnitManager.Instance().CreateHeroUnit("soldier", 3, new Vector3(13, 0, 11), 2);
 		hero_unit4.SetPursueTarget(hero_unit1);
 
-		HeroUnit hero_unit5 = UnitManager.Instance().CreateHeroUnit("ToonSoldier", 4, new Vector3(12, 0, 12), 2);
+		HeroUnit hero_unit5 = UnitManager.Instance().CreateHeroUnit("soldier", 4, new Vector3(12, 0, 12), 2);
 		hero_unit5.SetPursueTarget(hero_unit2);
 
 	}

@@ -6,10 +6,11 @@ namespace GDSKit
 {
 	public partial class GDSMgr
 	{
-		private string[] gdsFiles = new string[2]
+		private string[] gdsFiles = new string[3]
 		{
 			"parameter.csv",
 			"shop.csv",
+			"unit.csv",
 			
 		};
 
@@ -29,6 +30,12 @@ namespace GDSKit
 				shop.Initialize(CSVParser.Parse(shop_data, CSVParser.PARSE_DATA).data);
 				// func.call("shop", shop_data);
 			}
+			string unit_data = GetGDSFileData(gdsFiles[2]);
+			if (!String.IsNullOrEmpty(unit_data))
+			{
+				unit.Initialize(CSVParser.Parse(unit_data, CSVParser.PARSE_DATA).data);
+				// func.call("unit", unit_data);
+			}
 			
 		}
 		
@@ -39,6 +46,10 @@ namespace GDSKit
 		public shop Getshop(string item_name)
 		{
 			return shop.GetInstance(item_name);
+		}
+		public unit Getunit(string unit_name)
+		{
+			return unit.GetInstance(unit_name);
 		}
 		
 	}

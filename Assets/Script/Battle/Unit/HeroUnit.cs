@@ -144,7 +144,7 @@ public class HeroUnit : MonoBehaviour
 		return _team_id;	
 	}
 
-	public void SetMoveSpeedGrid(int move_spped_grid)
+	public void SetMoveSpeedGrid(float move_spped_grid)
 	{
 		if(_move_speed_grid != move_spped_grid)
 		{
@@ -328,7 +328,7 @@ public class HeroUnit : MonoBehaviour
 
 	public void PlayAttack(HeroUnit enemy_unit)
 	{
-		//animator.SetTrigger("Attack1Trigger");
+		animator.SetTrigger("Attack1Trigger");
 
 		AddEffect(fire_node, "fire_effect");
 

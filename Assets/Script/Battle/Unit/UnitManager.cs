@@ -18,7 +18,7 @@ public class UnitManager
 
 	private Transform cache_root_unit_node = null;
 
-	public HeroUnit CreateHeroUnit(string resource_key, int id, Vector3 pos, int team_id)
+	public HeroUnit CreateHeroUnit(string unit_name, int id, Vector3 pos, int team_id)
 	{
 		if(cache_root_unit_node == null)
 		{
@@ -28,23 +28,25 @@ public class UnitManager
 			cache_root_unit_node.position = Vector3.zero;
 		}
 
-		GameObject hero_unit_gameobj = ObjectPoolManager.Instance().GetObject(resource_key);
+		GDSKit.unit unit_gds = GDSKit.unit.GetInstance(unit_name);
+
+		GameObject hero_unit_gameobj = ObjectPoolManager.Instance().GetObject(unit_gds.resource_name);
 		hero_unit_gameobj.transform.SetParent(cache_root_unit_node);
 
 		HeroUnit hero_unit = hero_unit_gameobj.GetComponent<HeroUnit>();
 
 		// 属性相关设置
 		hero_unit.unit_id = id;
-		hero_unit.SetMoveSpeedGrid(2);
-		hero_unit.SetAttackRange(2);
-		hero_unit.SetAttackVision(10);
-		hero_unit.attack_speed = 1;
+		hero_unit.SetMoveSpeedGrid(unit_gds.move_speed);
+		hero_unit.SetAttackRange(unit_gds.attack_range);
+		hero_unit.SetAttackVision(unit_gds.attack_vision);
+		hero_unit.attack_speed = unit_gds.attack_speed;
+		hero_unit.unit_attack = unit_gds.unit_attack;
+		hero_unit.unit_hp = unit_gds.unit_hp;
+		hero_unit.resource_key = unit_gds.resource_name;
+
 		hero_unit.SetPosition(pos);
 		hero_unit.SetTeamID(team_id);
-		hero_unit.unit_attack = 2;
-		hero_unit.unit_hp = 100;
-
-		hero_unit.resource_key = resource_key;
 
 		hero_unit.InitAfterAttribute();
 
