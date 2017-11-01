@@ -30,7 +30,7 @@ public class HeroUnit : MonoBehaviour
 	private int _team_id = -1;
 
 	[HideInInspector]
-	public bool attack_only_stop_move = false;
+	public bool is_move_attack = false;
 	[HideInInspector]
 	public bool is_fly = false;
 
@@ -114,20 +114,16 @@ public class HeroUnit : MonoBehaviour
 
 		if(attack_ai != null)
 		{
-			if(attack_only_stop_move)
-			{
-				if(!(current_command != null && current_command._type == CommandType.Move))
-				{
-					attack_ai.Tick(delta_time);	
-				}
-			}
-			else
-			{
-				attack_ai.Tick(delta_time);
-			}
+
+			attack_ai.Tick(delta_time);
 
 			attack_ai.DoAttackLineRender();
 		}
+	}
+
+	public bool IsMoveState()
+	{
+		return (current_command != null && current_command._type == CommandType.Move);
 	}
 
 	public static Color[] team_color = new Color[]

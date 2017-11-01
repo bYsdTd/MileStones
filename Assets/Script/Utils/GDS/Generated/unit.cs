@@ -16,7 +16,7 @@ namespace GDSKit
 		public float attack_range;
 		public float attack_vision;
 		public float move_speed;
-		public bool attack_only_stop_move;
+		public bool is_move_attack;
 		public bool is_fly;
 		
 
@@ -58,7 +58,7 @@ namespace GDSKit
 			
 			_ret_.move_speed = CSVParser.GetAsFloat(objArr[7]);
 			
-			_ret_.attack_only_stop_move = CSVParser.GetAsBool(objArr[8]);
+			_ret_.is_move_attack = CSVParser.GetAsBool(objArr[8]);
 			
 			_ret_.is_fly = CSVParser.GetAsBool(objArr[9]);
 			

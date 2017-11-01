@@ -70,33 +70,36 @@ public class AttackAI
 		}
 		else
 		{
-			if(target_unit == null)
+			if(my_unit.is_move_attack || (!my_unit.IsMoveState()))
 			{
-				target_unit = FindCanAttackTarget();
+				if(target_unit == null)
+				{
+					target_unit = FindCanAttackTarget();
 
-				if(target_unit != null)
-				{
-					DoAttack(delta_time);
-				}
-			}
-			else
-			{
-				if(target_unit.IsAlive())
-				{
-					if(my_unit.IsCanAttack(target_unit))
+					if(target_unit != null)
 					{
 						DoAttack(delta_time);
-					}
-					else
-					{
-						// 打不到，清空目标
-						target_unit = null;
 					}
 				}
 				else
 				{
-					target_unit = null;
-				}
+					if(target_unit.IsAlive())
+					{
+						if(my_unit.IsCanAttack(target_unit))
+						{
+							DoAttack(delta_time);
+						}
+						else
+						{
+							// 打不到，清空目标
+							target_unit = null;
+						}
+					}
+					else
+					{
+						target_unit = null;
+					}
+				}	
 			}
 		}
 	}
