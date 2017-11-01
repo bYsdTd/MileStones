@@ -19,6 +19,8 @@ public class CommandMove : CommandBase
 
 	public override void OnStart ()
 	{
+		_type = CommandType.Move;
+
 		base.OnStart ();
 
 		path_nodes = BattleField.battle_field.FindPath(start_grid_x, start_grid_y, end_grid_x, end_grid_y);

@@ -99,12 +99,9 @@ public class AttackAI
 				}
 			}
 		}
-
-
-		DoAttackLineRender();
 	}
 
-	private void DoAttackLineRender()
+	public void DoAttackLineRender()
 	{
 		if(target_unit != null)
 		{

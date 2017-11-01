@@ -16,6 +16,7 @@ namespace GDSKit
 		public float attack_range;
 		public float attack_vision;
 		public float move_speed;
+		public bool attack_only_stop_move;
 		
 
 		private static bool _isInited_ = false;
@@ -55,6 +56,8 @@ namespace GDSKit
 			_ret_.attack_vision = CSVParser.GetAsFloat(objArr[6]);
 			
 			_ret_.move_speed = CSVParser.GetAsFloat(objArr[7]);
+			
+			_ret_.attack_only_stop_move = CSVParser.GetAsBool(objArr[8]);
 			
 			
 

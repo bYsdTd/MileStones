@@ -16,7 +16,6 @@ public class HeroUnit : MonoBehaviour
 	[HideInInspector]
 	public int unit_id = -1;
 	// 每秒0.5格
-	[HideInInspector]
 	private float _move_speed_grid = 0;
 	[HideInInspector]
 	public float move_speed = 0;
@@ -27,15 +26,17 @@ public class HeroUnit : MonoBehaviour
 	[HideInInspector]
 	public int unit_attack = 2;
 	[HideInInspector]
-	private int _team_id = -1;
-	[HideInInspector]
 	public string resource_key;
+	private int _team_id = -1;
+
 	[HideInInspector]
-	public float _pursue_rate = 0.5f;
+	public bool attack_only_stop_move = false;
 
 	// 浮点数值区域
 	[HideInInspector]
 	public float attack_speed = 1;
+	[HideInInspector]
+	public float _pursue_rate = 0.5f;
 
 	private float _attack_range = 2;
 	private float _attack_vision = 3;
@@ -111,7 +112,19 @@ public class HeroUnit : MonoBehaviour
 
 		if(attack_ai != null)
 		{
-			attack_ai.Tick(delta_time);
+			if(attack_only_stop_move)
+			{
+				if(!(current_command != null && current_command._type == CommandType.Move))
+				{
+					attack_ai.Tick(delta_time);	
+				}
+			}
+			else
+			{
+				attack_ai.Tick(delta_time);
+			}
+
+			attack_ai.DoAttackLineRender();
 		}
 	}
 
@@ -130,7 +143,14 @@ public class HeroUnit : MonoBehaviour
 		{
 			_team_id = team_id;
 
-			SkinnedMeshRenderer[] mesh_renderer = GetComponentsInChildren<SkinnedMeshRenderer>();
+			SkinnedMeshRenderer[] skin_mesh_renderer = GetComponentsInChildren<SkinnedMeshRenderer>();
+
+			for(int i = 0; i < skin_mesh_renderer.Length; ++i)
+			{
+				skin_mesh_renderer[i].material.SetColor("_Color", team_color[_team_id-1]);
+			}
+
+			MeshRenderer[] mesh_renderer = GetComponentsInChildren<MeshRenderer>();
 
 			for(int i = 0; i < mesh_renderer.Length; ++i)
 			{
@@ -233,6 +253,8 @@ public class HeroUnit : MonoBehaviour
 	public void SetPursueTarget(HeroUnit pursue_target)
 	{
 		attack_ai.pursue_target = pursue_target;
+
+		attack_ai.target_unit = null;
 
 		// 这里需要播放一个效果
 	}

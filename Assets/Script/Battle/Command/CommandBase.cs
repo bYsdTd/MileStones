@@ -3,6 +3,8 @@ using System.Collections;
 
 public class CommandBase  
 {
+	public CommandType	_type = CommandType.None;
+
 	public int 	unit_id = -1;
 //	public int 	start_frame = -1;
 //	public int	end_frame = -1;

@@ -44,6 +44,7 @@ public class UnitManager
 		hero_unit.unit_attack = unit_gds.unit_attack;
 		hero_unit.unit_hp = unit_gds.unit_hp;
 		hero_unit.resource_key = unit_gds.resource_name;
+		hero_unit.attack_only_stop_move = unit_gds.attack_only_stop_move;
 
 		hero_unit.SetPosition(pos);
 		hero_unit.SetTeamID(team_id);

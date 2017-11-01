@@ -1,4 +1,4 @@
-SOURCE_DIR="csv/"
+SOURCE_DIR="../../../Assets/StreamingAssets/GDS/"
 BIN_DIR='../bin'
 INPUT_DIR='tmp/input'
 OUTPUT_DIR='tmp/output'

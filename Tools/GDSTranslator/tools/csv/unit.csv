@@ -1,6 +1,0 @@
-unit_name,resource_name,unit_hp,unit_attack,attack_speed,attack_range,attack_vision,move_speed
-string,string,int,int,float,float,float,float
-单位名称,资源名称,血量,攻击力,攻速,攻击距离,视野,移动速度，格子／每秒
-key,,,,,,,
-0,,,,,,,
-soldier,"ToonSoldier ",100,2,1,2,10,2
