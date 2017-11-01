@@ -645,8 +645,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 143006}
   m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5000001, w: 0.49999994}
-  m_LocalPosition: {x: 0, y: 4.85, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0, y: 0.236, z: 0}
+  m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
   m_Children:
   - {fileID: 443108}
   - {fileID: 411430}
@@ -675,7 +675,7 @@ Transform:
   m_GameObject: {fileID: 124660}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 483708}
   - {fileID: 488500}
@@ -1412,8 +1412,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 16.62, y: 9.04, z: 19.39}
-  m_Center: {x: -0.06, y: 4.8, z: -3.72}
+  m_Size: {x: 0.6825181, y: 0.5597414, z: 1.1955189}
+  m_Center: {x: 0.026545048, y: 0.24, z: -0.17574543}
 --- !u!95 &9564294
 Animator:
   serializedVersion: 3
@@ -1455,8 +1455,9 @@ MonoBehaviour:
   unit_hp: 100
   unit_attack: 2
   resource_key: 
-  _pursue_rate: 0.5
+  attack_only_stop_move: 0
   attack_speed: 1
+  _pursue_rate: 0.5
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
