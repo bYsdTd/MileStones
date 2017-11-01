@@ -148,6 +148,67 @@ public class BattleField
 		return (pos1 - pos2).magnitude;
 	}
 
+	public List<AStarNode> FindFlyPath(int x_start, int y_start, int x_end, int y_end)
+	{
+		if(map_data == null)
+		{
+			Debug.LogError("FindFlyPath 地图阻挡数组没有初始化! ");
+			return null;
+		}
+
+		if(x_start < 0 || x_start >= map_data.map_width ||
+			y_start < 0 || y_start >= map_data.map_height ||
+			x_end < 0 || x_end >= map_data.map_width ||
+			y_end < 0 || y_end >= map_data.map_height)
+		{
+			Debug.LogError("FindFlyPath 地图坐标不再范围内 x_start: " + x_start + " y_start: " + y_start + " x_end: " + x_end + " y_end: " + y_end);
+			return null;
+		}
+
+		int x_offset = x_end >= x_start ? 1 : -1;
+		int y_offset = y_end >= y_start ? 1 : -1;
+
+		int x_current = x_start;
+		int y_current = y_start;
+
+		List<AStarNode> path_nodes = new List<AStarNode>();
+
+		AStarNode node = new AStarNode();
+		node._x = x_start;
+		node._y = y_start;
+		path_nodes.Add(node);
+
+		do
+		{
+			if(x_current == x_end && y_current == y_end)
+			{
+				node = new AStarNode();
+				node._x = x_current;
+				node._y = y_current;
+				path_nodes.Add(node);
+				break;
+			}
+
+			if(x_current != x_end)
+			{
+				x_current += x_offset;
+			}
+
+			if(y_current != y_end)
+			{
+				y_current += y_offset;
+			}
+
+			node = new AStarNode();
+			node._x = x_current;
+			node._y = y_current;
+			path_nodes.Add(node);
+		}
+		while(true);
+
+		return path_nodes;
+	}
+
 	public List<AStarNode> FindPath(int x_start, int y_start, int x_end, int y_end)
 	{
 		if(map_data == null)

@@ -23,7 +23,15 @@ public class CommandMove : CommandBase
 
 		base.OnStart ();
 
-		path_nodes = BattleField.battle_field.FindPath(start_grid_x, start_grid_y, end_grid_x, end_grid_y);
+		if(hero_unit.is_fly)
+		{
+			path_nodes = BattleField.battle_field.FindFlyPath(start_grid_x, start_grid_y, end_grid_x, end_grid_y);
+		}
+		else
+		{
+			path_nodes = BattleField.battle_field.FindPath(start_grid_x, start_grid_y, end_grid_x, end_grid_y);
+		}
+
 
 //		for(int i = 0; i < path_nodes.Count; ++i)
 //		{

@@ -31,6 +31,8 @@ public class HeroUnit : MonoBehaviour
 
 	[HideInInspector]
 	public bool attack_only_stop_move = false;
+	[HideInInspector]
+	public bool is_fly = false;
 
 	// 浮点数值区域
 	[HideInInspector]
