@@ -8,6 +8,7 @@ public class AssetsPathConfig
 	{
 		{"ToonSoldier", "HeroUnit/Soldier/ToonSoldier"},
 		{"BigTank", "HeroUnit/Tank/BigTank"},
+		{"Stealth_Bomber", "HeroUnit/B2/Prefabs/Stealth_Bomber"},
 		{"UnitSelectCircle", "Effect/UnitSelectCircle"},
 		{"fire_effect", "Effect/fire_effect"},
 		{"hit_effect1", "Effect/hit_effect1"},

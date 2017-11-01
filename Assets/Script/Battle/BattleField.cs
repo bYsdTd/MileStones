@@ -55,16 +55,23 @@ public class BattleField
 		UnitManager.Instance().CreateHeroUnit("tank", 3, new Vector3(9, 0, 2), 1);
 		UnitManager.Instance().CreateHeroUnit("tank", 4, new Vector3(10, 0, 2), 1);
 
+		UnitManager.Instance().CreateHeroUnit("b2", 5, new Vector3(20, 0, 2), 1);
+		UnitManager.Instance().CreateHeroUnit("b2", 6, new Vector3(25, 0, 2), 1);
+
+
 		// team 2
 		HeroUnit hero_unit3 = UnitManager.Instance().CreateHeroUnit("soldier", 101, new Vector3(13, 0, 10), 2);
 
-		hero_unit3.SetPursueTarget(hero_unit1);
+		//hero_unit3.SetPursueTarget(hero_unit1);
 
 		HeroUnit hero_unit4 = UnitManager.Instance().CreateHeroUnit("soldier", 102, new Vector3(13, 0, 11), 2);
-		hero_unit4.SetPursueTarget(hero_unit1);
+		//hero_unit4.SetPursueTarget(hero_unit1);
 
 		HeroUnit hero_unit5 = UnitManager.Instance().CreateHeroUnit("soldier", 103, new Vector3(12, 0, 12), 2);
-		hero_unit5.SetPursueTarget(hero_unit2);
+		//hero_unit5.SetPursueTarget(hero_unit2);
+
+
+
 
 	}
 
