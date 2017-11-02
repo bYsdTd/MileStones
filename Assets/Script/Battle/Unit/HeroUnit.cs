@@ -226,11 +226,18 @@ public class HeroUnit : MonoBehaviour
 		UpdateCircleRenderer();
 	}
 
-	public bool IsCanSeeUnit(HeroUnit enemy_unit)
+	public bool IsCanSeeUnitCheckOnlyMyself(HeroUnit enemy_unit)
 	{
 		float distance_square = (enemy_unit._position - _position).sqrMagnitude;
 
 		return attack_vision_square >= distance_square;
+	}
+
+	public bool IsCanSeeUnit(HeroUnit enemy_unit)
+	{
+		HashSet<HeroUnit> vision_enemy_units = BattleField.battle_field.real_time_battle_logic.battle_vision_control.vision_enemy_units[GetTeamID()];
+
+		return vision_enemy_units.Contains(enemy_unit);
 	}
 
 	public bool IsCanAttack(HeroUnit enemy_unit)
