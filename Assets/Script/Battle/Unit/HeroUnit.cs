@@ -11,6 +11,11 @@ public class HeroUnit : MonoBehaviour
 	public Material line_render_material;
 
 	[HideInInspector]
+	public CircleRenderer attack_range_circle;
+	[HideInInspector]
+	public CircleRenderer vision_range_circle;
+
+	[HideInInspector]
 	public LineRenderer	line_renderer;
 
 	[HideInInspector]
@@ -74,6 +79,24 @@ public class HeroUnit : MonoBehaviour
 		line_renderer.SetColors(line_color, line_color);
 		line_renderer.SetVertexCount(2);
 		line_renderer.SetWidth(0.05f, 0.05f);
+
+		GameObject attack_range_obj = new GameObject("AttackRangeCircle");
+
+		attack_range_circle = attack_range_obj.AddComponent<CircleRenderer>();
+		attack_range_circle.Init(line_render_material);
+
+		attack_range_circle.SetColor(new Color(1, 0, 0, 0.2f));
+		attack_range_obj.transform.SetParent(cache_transform, false);
+
+		GameObject vision_range_obj = new GameObject("VisisonRangeCircle");
+		vision_range_circle = vision_range_obj.AddComponent<CircleRenderer>();
+		vision_range_circle.Init(line_render_material);
+
+		vision_range_circle.SetColor(new Color(1, 1, 0, 0.2f));
+		vision_range_obj.transform.SetParent(cache_transform, false);
+
+
+		UpdateCircleRenderer();
 	}
 
 	public void Destroy()
@@ -118,6 +141,20 @@ public class HeroUnit : MonoBehaviour
 			attack_ai.Tick(delta_time);
 
 			attack_ai.DoAttackLineRender();
+		}
+
+	}
+
+	private void UpdateCircleRenderer()
+	{
+		if(attack_range_circle)
+		{
+			attack_range_circle.SetCircle(_position, _attack_range);	
+		}
+
+		if(vision_range_circle)
+		{
+			vision_range_circle.SetCircle(_position, _attack_vision);
 		}
 	}
 
@@ -177,12 +214,16 @@ public class HeroUnit : MonoBehaviour
 		_attack_vision = attack_vision;
 
 		attack_vision_square = _attack_vision * _attack_vision;
+
+		UpdateCircleRenderer();
 	}
 
 	public void SetAttackRange(float attack_range)
 	{
 		_attack_range = attack_range;
 		attack_range_square = _attack_range * _attack_range;
+
+		UpdateCircleRenderer();
 	}
 
 	public bool IsCanSeeUnit(HeroUnit enemy_unit)
@@ -216,6 +257,8 @@ public class HeroUnit : MonoBehaviour
 			}
 
 			cache_transform.position = position;
+
+			UpdateCircleRenderer();
 		}
 	}
 
@@ -229,6 +272,9 @@ public class HeroUnit : MonoBehaviour
 	{
 		if(is_selected)
 		{
+			vision_range_circle.SetColor(new Color(1, 1, 0, 1));
+			attack_range_circle.SetColor(new Color(1, 0, 0, 1));
+
 			if(cache_select_effect == null)
 			{
 				cache_select_effect = ObjectPoolManager.Instance().GetObject("UnitSelectCircle");	
@@ -242,6 +288,9 @@ public class HeroUnit : MonoBehaviour
 		}
 		else
 		{
+			vision_range_circle.SetColor(new Color(1, 1, 0, 0.2f));
+			attack_range_circle.SetColor(new Color(1, 0, 0, 0.2f));
+
 			ObjectPoolManager.Instance().ReturnObject("UnitSelectCircle", cache_select_effect);
 
 			cache_select_effect = null;

@@ -875,8 +875,10 @@ MonoBehaviour:
   fire_node: {fileID: 497096}
   hited_node: {fileID: 459740}
   mesh_node: {fileID: 499522}
-  line_render_material: {fileID: 2100000, guid: 510ac69d14b754f7c879c177a17db7e3,
+  line_render_material: {fileID: 2100000, guid: ebae4fd737dc84571a5c6369e4ab9676,
     type: 2}
+  attack_range_circle: {fileID: 0}
+  vision_range_circle: {fileID: 0}
   line_renderer: {fileID: 0}
   unit_id: 0
   move_speed: 2
@@ -884,8 +886,10 @@ MonoBehaviour:
   unit_hp: 30
   unit_attack: 10
   resource_key: ToonSoldier
-  _pursue_rate: 0.5
+  is_move_attack: 0
+  is_fly: 0
   attack_speed: 1
+  _pursue_rate: 0.5
 --- !u!136 &13624142
 CapsuleCollider:
   m_ObjectHideFlags: 1
