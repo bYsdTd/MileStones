@@ -24,10 +24,11 @@ public class BattleVisionControl
 		var unit_list2 = UnitManager.Instance().hero_unit_list;
 
 		var enumerator1 = unit_list1.GetEnumerator();
-		var enumerator2 = unit_list2.GetEnumerator();
 
 		while(enumerator1.MoveNext())
 		{
+			var enumerator2 = unit_list2.GetEnumerator();
+
 			while(enumerator2.MoveNext())
 			{
 				HeroUnit unit1 = enumerator1.Current.Value;

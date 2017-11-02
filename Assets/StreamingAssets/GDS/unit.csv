@@ -4,5 +4,5 @@ string,string,int,int,float,float,float,float,bool,bool
 key,,,,,,,,,
 0,,,,,,,,,
 soldier,ToonSoldier,200,2,0.5,2,10,3,TRUE,FALSE
-tank,BigTank,200,5,2,10,10,1,FALSE,FALSE
+tank,BigTank,200,5,2,5,10,1,FALSE,FALSE
 b2,Stealth_Bomber,200,1,1,5,10,5,FALSE,TRUE
