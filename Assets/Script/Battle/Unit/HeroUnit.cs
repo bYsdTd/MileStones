@@ -178,19 +178,19 @@ public class HeroUnit : MonoBehaviour
 		{
 			_team_id = team_id;
 
-			SkinnedMeshRenderer[] skin_mesh_renderer = GetComponentsInChildren<SkinnedMeshRenderer>();
-
-			for(int i = 0; i < skin_mesh_renderer.Length; ++i)
-			{
-				skin_mesh_renderer[i].material.SetColor("_Color", team_color[_team_id-1]);
-			}
-
-			MeshRenderer[] mesh_renderer = GetComponentsInChildren<MeshRenderer>();
-
-			for(int i = 0; i < mesh_renderer.Length; ++i)
-			{
-				mesh_renderer[i].material.SetColor("_Color", team_color[_team_id-1]);
-			}
+//			SkinnedMeshRenderer[] skin_mesh_renderer = GetComponentsInChildren<SkinnedMeshRenderer>();
+//
+//			for(int i = 0; i < skin_mesh_renderer.Length; ++i)
+//			{
+//				skin_mesh_renderer[i].material.SetColor("_Color", team_color[_team_id-1]);
+//			}
+//
+//			MeshRenderer[] mesh_renderer = GetComponentsInChildren<MeshRenderer>();
+//
+//			for(int i = 0; i < mesh_renderer.Length; ++i)
+//			{
+//				mesh_renderer[i].material.SetColor("_Color", team_color[_team_id-1]);
+//			}
 		}
 	}
 
@@ -281,7 +281,7 @@ public class HeroUnit : MonoBehaviour
 			}
 
 			cache_select_effect.transform.localPosition = new Vector3(0, 0.1f, 0);
-			cache_select_effect.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+			cache_select_effect.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 
 			cache_select_effect.transform.SetParent( cache_transform, false );
 
@@ -319,7 +319,7 @@ public class HeroUnit : MonoBehaviour
 
 	public void Move(int grid_x, int grid_y)
 	{
-		if(!BattleField.battle_field.IsBlock(grid_x, grid_y))
+		if(!BattleField.battle_field.IsBlock(grid_x, grid_y) || is_fly)
 		{
 			int current_x;
 			int current_y;
