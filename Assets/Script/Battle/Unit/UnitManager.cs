@@ -57,7 +57,11 @@ public class UnitManager
 
 		hero_unit.SetTeamID(team_id);
 
-		hero_unit.InitAfterAttribute();
+		// 攻击AI
+		hero_unit.InitAttackAI();
+
+		// 调试辅助线
+		hero_unit.InitDebugGizmos();
 
 		hero_unit.PlayIdle();
 

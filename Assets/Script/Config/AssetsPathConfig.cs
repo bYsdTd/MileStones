@@ -14,5 +14,6 @@ public class AssetsPathConfig
 		{"fire_effect", "Effect/fire_effect"},
 		{"hit_effect1", "Effect/hit_effect1"},
 		{"hit_effect2", "Effect/hit_effect2"},
+		{"mat_line", "Grid/mat_line"},
 	};
 }

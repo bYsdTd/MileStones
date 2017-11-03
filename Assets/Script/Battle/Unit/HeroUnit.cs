@@ -2,37 +2,19 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class HeroUnit : MonoBehaviour 
+public class HeroUnit : BaseUnit 
 {
 	public Animator animator;
-	public Transform fire_node;
-	public Transform hited_node;
-	public Transform mesh_node;
-	public Material line_render_material;
 
-	[HideInInspector]
-	public CircleRenderer attack_range_circle;
-	[HideInInspector]
-	public CircleRenderer vision_range_circle;
-
-	[HideInInspector]
-	public LineRenderer	line_renderer;
-
-	[HideInInspector]
-	public int unit_id = -1;
+	// 英雄单位相关属性
 	// 每秒0.5格
 	private float _move_speed_grid = 0;
 	[HideInInspector]
 	public float move_speed = 0;
-	[HideInInspector]
-	public Vector3 _position;
-	[HideInInspector]
-	public int unit_hp = 100;
+
 	[HideInInspector]
 	public int unit_attack = 2;
-	[HideInInspector]
-	public string resource_key;
-	private int _team_id = -1;
+
 
 	[HideInInspector]
 	public bool is_move_attack = false;
@@ -49,52 +31,44 @@ public class HeroUnit : MonoBehaviour
 	[HideInInspector]
 	public float _pursue_rate = 0.5f;
 
-	private float _attack_range = 2;
-	private float _attack_vision = 3;
+	// 射程，视野
+	private float 			_attack_range = 2;
+	private float		 	_attack_vision = 3;
+	private float 			attack_vision_square = 1;
+	private float 			attack_range_square = 1;
 
-	private Transform cache_transform;
-
-	private CommandBase	current_command = null;
-
-	private GameObject	cache_select_effect;
-
-	private float attack_vision_square = 1;
-	private float attack_range_square = 1;
-
-	AttackAI		attack_ai = null;
+	private CommandBase		current_command = null;
 
 
-	// Use this for initialization
-	void Start () 
+
+	AttackAI				attack_ai = null;
+
+	public void Destroy()
 	{
+			
 	}
-	
-	public void InitAfterAttribute()
-	{
-		cache_transform = gameObject.transform;	
 
+	public void InitAttackAI()
+	{
 		attack_ai = new AttackAI();
 		attack_ai.my_unit = this;
+		attack_ai.InitDebugGizmos();
 
-		line_renderer = gameObject.AddComponent<LineRenderer>();
-		line_renderer.material = line_render_material;
+	}
 
-		Color line_color = HeroUnit.team_color[GetTeamID() - 1];
-		line_renderer.SetColors(line_color, line_color);
-		line_renderer.SetVertexCount(2);
-		line_renderer.SetWidth(0.05f, 0.05f);
-
+	public void InitDebugGizmos()
+	{
 		GameObject attack_range_obj = new GameObject("AttackRangeCircle");
 
 		attack_range_circle = attack_range_obj.AddComponent<CircleRenderer>();
-		attack_range_circle.Init(line_render_material);
+		attack_range_circle.Init(MaterialManager.Instance().GetMaterial("mat_line"));
 
 		attack_range_circle.SetColor(new Color(1, 0, 0, 0.2f));
 		attack_range_obj.transform.SetParent(cache_transform, false);
 
 		GameObject vision_range_obj = new GameObject("VisisonRangeCircle");
 		vision_range_circle = vision_range_obj.AddComponent<CircleRenderer>();
-		vision_range_circle.Init(line_render_material);
+		vision_range_circle.Init(MaterialManager.Instance().GetMaterial("mat_line"));
 
 		vision_range_circle.SetColor(new Color(1, 1, 0, 0.2f));
 		vision_range_obj.transform.SetParent(cache_transform, false);
@@ -103,9 +77,17 @@ public class HeroUnit : MonoBehaviour
 		UpdateCircleRenderer();
 	}
 
-	public void Destroy()
+	private void UpdateCircleRenderer()
 	{
-			
+		if(attack_range_circle)
+		{
+			attack_range_circle.SetCircle(_position, _attack_range);	
+		}
+
+		if(vision_range_circle)
+		{
+			vision_range_circle.SetCircle(_position, _attack_vision);
+		}
 	}
 
 	// 指令队列
@@ -122,7 +104,7 @@ public class HeroUnit : MonoBehaviour
 		current_command.OnStart();
 	}
 
-	public void Tick(float delta_time)
+	public override void Tick(float delta_time)
 	{
 		if(!IsAlive())
 		{
@@ -149,18 +131,7 @@ public class HeroUnit : MonoBehaviour
 
 	}
 
-	private void UpdateCircleRenderer()
-	{
-		if(attack_range_circle)
-		{
-			attack_range_circle.SetCircle(_position, _attack_range);	
-		}
 
-		if(vision_range_circle)
-		{
-			vision_range_circle.SetCircle(_position, _attack_vision);
-		}
-	}
 
 	public bool IsMoveState()
 	{
@@ -176,32 +147,7 @@ public class HeroUnit : MonoBehaviour
 		Color.yellow,
 	};
 
-	public void SetTeamID(int team_id)
-	{
-		if(_team_id != team_id)
-		{
-			_team_id = team_id;
 
-//			SkinnedMeshRenderer[] skin_mesh_renderer = GetComponentsInChildren<SkinnedMeshRenderer>();
-//
-//			for(int i = 0; i < skin_mesh_renderer.Length; ++i)
-//			{
-//				skin_mesh_renderer[i].material.SetColor("_Color", team_color[_team_id-1]);
-//			}
-//
-//			MeshRenderer[] mesh_renderer = GetComponentsInChildren<MeshRenderer>();
-//
-//			for(int i = 0; i < mesh_renderer.Length; ++i)
-//			{
-//				mesh_renderer[i].material.SetColor("_Color", team_color[_team_id-1]);
-//			}
-		}
-	}
-
-	public int GetTeamID()
-	{
-		return _team_id;	
-	}
 
 	public void SetMoveSpeedGrid(float move_spped_grid)
 	{
@@ -246,19 +192,6 @@ public class HeroUnit : MonoBehaviour
 		return vision_enemy_units.Contains(enemy_unit);
 	}
 
-	// 攻击类型决定的是否可攻击
-	public bool IsCanAttackByAttackType(HeroUnit enemy_unit)
-	{
-		bool can_attack = false;
-
-		if((enemy_unit.is_fly && can_attack_fly) || (!enemy_unit.is_fly) && can_attack_ground )
-		{
-			can_attack = true;	
-		}
-
-		return can_attack;
-	}
-
 	// 距离要可以打到，并且攻击类型符合
 	public bool IsCanAttack(HeroUnit enemy_unit)
 	{
@@ -272,9 +205,17 @@ public class HeroUnit : MonoBehaviour
 		return attack_range_square >= distance_square;
 	}
 
-	public bool IsAlive()
+	// 攻击类型决定的是否可攻击
+	public bool IsCanAttackByAttackType(HeroUnit enemy_unit)
 	{
-		return unit_hp > 0;	
+		bool can_attack = false;
+
+		if((enemy_unit.is_fly && can_attack_fly) || (!enemy_unit.is_fly) && can_attack_ground )
+		{
+			can_attack = true;	
+		}
+
+		return can_attack;
 	}
 
 	public void SetPosition(Vector3 position)
@@ -282,11 +223,6 @@ public class HeroUnit : MonoBehaviour
 		if(position != _position)
 		{
 			_position = position;
-
-			if(cache_transform == null)
-			{
-				cache_transform = gameObject.transform;
-			}
 
 			cache_transform.position = position;
 
@@ -442,7 +378,7 @@ public class HeroUnit : MonoBehaviour
 
 	}
 
-	public void OnDamage(int damage)
+	public override void OnDamage(int damage)
 	{
 		unit_hp -= damage;
 
@@ -468,8 +404,6 @@ public class HeroUnit : MonoBehaviour
 		});
 
 		mesh_node.gameObject.SetActive(false);
-
-		line_renderer.enabled = false;
 	}
 
 	// 击中效果

@@ -13,6 +13,9 @@ public class AttackAI
 	public float attack_cool_down = 0;
 	public float pursue_cool_down = 0;
 
+	// debug gizmos
+	private LineRenderer	line_renderer;
+
 	private HeroUnit FindCanAttackTarget()
 	{
 		// 找到视野范围内，第一个能攻击到的目标
@@ -32,6 +35,17 @@ public class AttackAI
 		}
 
 		return null;
+	}
+
+	public void InitDebugGizmos()
+	{
+		line_renderer = my_unit.gameObject.AddComponent<LineRenderer>();
+		line_renderer.material = MaterialManager.Instance().GetMaterial("mat_line");
+
+		Color line_color = HeroUnit.team_color[my_unit.GetTeamID() - 1];
+		line_renderer.SetColors(line_color, line_color);
+		line_renderer.SetVertexCount(2);
+		line_renderer.SetWidth(0.05f, 0.05f);	
 	}
 
 	public void Tick(float delta_time)
@@ -106,21 +120,21 @@ public class AttackAI
 
 	public void DoAttackLineRender()
 	{
-		if(target_unit != null)
+		if(target_unit != null && my_unit.IsAlive())
 		{
-			my_unit.line_renderer.enabled = true;
+			line_renderer.enabled = true;
 
 			Vector3 dir = target_unit._position - my_unit._position;
 			dir.Normalize();
 
 			Vector3 right_dir = Vector3.Cross(Vector3.up, dir);
-			my_unit.line_renderer.SetPosition(0, my_unit._position + right_dir * 0.1f);
-			my_unit.line_renderer.SetPosition(1, target_unit._position + right_dir * 0.1f);
+			line_renderer.SetPosition(0, my_unit._position + right_dir * 0.1f);
+			line_renderer.SetPosition(1, target_unit._position + right_dir * 0.1f);
 
 		}
 		else
 		{
-			my_unit.line_renderer.enabled = false;
+			line_renderer.enabled = false;
 		}
 	}
 
