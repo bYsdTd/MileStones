@@ -246,8 +246,8 @@ public class HeroUnit : MonoBehaviour
 		return vision_enemy_units.Contains(enemy_unit);
 	}
 
-	// 距离要可以打到，并且攻击类型符合
-	public bool IsCanAttack(HeroUnit enemy_unit)
+	// 攻击类型决定的是否可攻击
+	public bool IsCanAttackByAttackType(HeroUnit enemy_unit)
 	{
 		bool can_attack = false;
 
@@ -256,9 +256,15 @@ public class HeroUnit : MonoBehaviour
 			can_attack = true;	
 		}
 
-		if(!can_attack)
+		return can_attack;
+	}
+
+	// 距离要可以打到，并且攻击类型符合
+	public bool IsCanAttack(HeroUnit enemy_unit)
+	{
+		if(!IsCanAttackByAttackType(enemy_unit))
 		{
-			return false;	
+			return false;
 		}
 
 		float distance_square = (enemy_unit._position - _position).sqrMagnitude;
@@ -325,6 +331,11 @@ public class HeroUnit : MonoBehaviour
 
 	public void SetPursueTarget(HeroUnit pursue_target)
 	{
+		if(pursue_target && !IsCanAttackByAttackType(pursue_target))
+		{
+			return;
+		}
+
 		attack_ai.pursue_target = pursue_target;
 
 		attack_ai.target_unit = null;
