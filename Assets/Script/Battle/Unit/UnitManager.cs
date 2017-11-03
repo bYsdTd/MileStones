@@ -46,8 +46,15 @@ public class UnitManager
 		hero_unit.resource_key = unit_gds.resource_name;
 		hero_unit.is_move_attack = unit_gds.is_move_attack;
 		hero_unit.is_fly = unit_gds.is_fly;
+		hero_unit.can_attack_fly = unit_gds.can_attack_fly;
+		hero_unit.can_attack_ground = unit_gds.can_attack_ground;
 
-		hero_unit.SetPosition(pos);
+		int grid_x;
+		int grid_y;
+
+		BattleField.battle_field.WorldPositon2Grid(pos, out grid_x, out grid_y);
+		hero_unit.SetPosition(BattleField.battle_field.Grid2WorldPosition(grid_x, grid_y));
+
 		hero_unit.SetTeamID(team_id);
 
 		hero_unit.InitAfterAttribute();

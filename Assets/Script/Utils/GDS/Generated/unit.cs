@@ -18,6 +18,8 @@ namespace GDSKit
 		public float move_speed;
 		public bool is_move_attack;
 		public bool is_fly;
+		public bool can_attack_ground;
+		public bool can_attack_fly;
 		
 
 		private static bool _isInited_ = false;
@@ -61,6 +63,10 @@ namespace GDSKit
 			_ret_.is_move_attack = CSVParser.GetAsBool(objArr[8]);
 			
 			_ret_.is_fly = CSVParser.GetAsBool(objArr[9]);
+			
+			_ret_.can_attack_ground = CSVParser.GetAsBool(objArr[10]);
+			
+			_ret_.can_attack_fly = CSVParser.GetAsBool(objArr[11]);
 			
 			
 

@@ -38,6 +38,10 @@ public class HeroUnit : MonoBehaviour
 	public bool is_move_attack = false;
 	[HideInInspector]
 	public bool is_fly = false;
+	[HideInInspector]
+	public bool can_attack_ground = false;
+	[HideInInspector]
+	public bool can_attack_fly = false;
 
 	// 浮点数值区域
 	[HideInInspector]
@@ -226,6 +230,7 @@ public class HeroUnit : MonoBehaviour
 		UpdateCircleRenderer();
 	}
 
+	// 只考虑自己
 	public bool IsCanSeeUnitCheckOnlyMyself(HeroUnit enemy_unit)
 	{
 		float distance_square = (enemy_unit._position - _position).sqrMagnitude;
@@ -233,6 +238,7 @@ public class HeroUnit : MonoBehaviour
 		return attack_vision_square >= distance_square;
 	}
 
+	// 考虑共享视野
 	public bool IsCanSeeUnit(HeroUnit enemy_unit)
 	{
 		HashSet<HeroUnit> vision_enemy_units = BattleField.battle_field.real_time_battle_logic.battle_vision_control.vision_enemy_units[GetTeamID()];
@@ -240,8 +246,21 @@ public class HeroUnit : MonoBehaviour
 		return vision_enemy_units.Contains(enemy_unit);
 	}
 
+	// 距离要可以打到，并且攻击类型符合
 	public bool IsCanAttack(HeroUnit enemy_unit)
 	{
+		bool can_attack = false;
+
+		if((enemy_unit.is_fly && can_attack_fly) || (!enemy_unit.is_fly) && can_attack_ground )
+		{
+			can_attack = true;	
+		}
+
+		if(!can_attack)
+		{
+			return false;	
+		}
+
 		float distance_square = (enemy_unit._position - _position).sqrMagnitude;
 
 		return attack_range_square >= distance_square;
