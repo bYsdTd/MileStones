@@ -307,41 +307,6 @@ public class HeroUnit : BaseUnit
 		animator.SetBool("Running", false);
 	}
 
-	public delegate void EffectEndCallBack();
-
-	public void AddEffect(Transform node,  string effect_name, EffectEndCallBack effect_end_call_back = null)
-	{
-		GameObject effect_object = ObjectPoolManager.Instance().GetObject(effect_name);
-
-		effect_object.transform.SetParent(node, false);
-
-
-		ParticleSystem[] all_particles = effect_object.GetComponentsInChildren<ParticleSystem>();
-		for(int i = 0; i < all_particles.Length; ++i)
-		{
-			all_particles[i].Play();
-		}
-
-		ParticleEffectConfig particle_system_config = effect_object.GetComponent<ParticleEffectConfig>();
-
-		TimerManager.Instance().DelayCallFunc(delegate(float dt) {
-
-			ParticleSystem[] all_particles_stop = effect_object.GetComponentsInChildren<ParticleSystem>();
-			for(int i = 0; i < all_particles.Length; ++i)
-			{
-				all_particles_stop[i].Stop();
-			}
-
-			ObjectPoolManager.Instance().ReturnObject(effect_name, effect_object);
-
-			if(effect_end_call_back != null)
-			{
-				effect_end_call_back.Invoke();
-			}
-
-		}, particle_system_config.effect_duration);
-	}
-
 	public void PlayAttack(HeroUnit enemy_unit)
 	{
 		animator.SetTrigger("Attack1Trigger");
