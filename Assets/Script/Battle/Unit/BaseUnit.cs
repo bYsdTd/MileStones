@@ -11,8 +11,6 @@ public class BaseUnit : MonoBehaviour {
 
 	// 调试相关辅助线
 	[HideInInspector]
-	public CircleRenderer attack_range_circle;
-	[HideInInspector]
 	public CircleRenderer vision_range_circle;
 
 	// 单位属性
@@ -25,6 +23,10 @@ public class BaseUnit : MonoBehaviour {
 	protected int 			_team_id = -1;
 	[HideInInspector]
 	public int 				unit_hp = 100;
+
+	// 视野
+	private float		 	_attack_vision = 3;
+	protected float 			attack_vision_square = 1;
 
 	// 缓存transform组件
 	public Transform 		cache_transform 
@@ -71,6 +73,48 @@ public class BaseUnit : MonoBehaviour {
 		return _team_id;	
 	}
 
+	public void SetAttackVision(float attack_vision)
+	{
+		_attack_vision = attack_vision;
+
+		attack_vision_square = _attack_vision * _attack_vision;
+
+		UpdateVisionDebugGizmos();
+	}
+
+	private void UpdateVisionDebugGizmos()
+	{
+		if(vision_range_circle == null)
+		{
+			GameObject vision_range_obj = new GameObject("VisisonRangeCircle");
+			vision_range_circle = vision_range_obj.AddComponent<CircleRenderer>();
+			vision_range_circle.Init(MaterialManager.Instance().GetMaterial("mat_line"));
+
+			vision_range_circle.SetColor(new Color(1, 1, 0, 0.2f));
+			vision_range_obj.transform.SetParent(cache_transform, false);
+		}
+
+		vision_range_circle.SetCircle(_position, _attack_vision);			
+	}
+
+	public void SetPosition(Vector3 position)
+	{
+		if(position != _position)
+		{
+			_position = position;
+
+			cache_transform.position = position;
+
+			UpdateVisionDebugGizmos();
+
+			OnPositionChanged();
+		}
+	}
+
+	virtual protected void OnPositionChanged()
+	{
+		
+	}
 	virtual public void Tick(float delta_time)
 	{
 		

@@ -6,6 +6,10 @@ public class HeroUnit : BaseUnit
 {
 	public Animator animator;
 
+	// 调试相关辅助线
+	[HideInInspector]
+	public CircleRenderer attack_range_circle;
+
 	// 英雄单位相关属性
 	// 每秒0.5格
 	private float _move_speed_grid = 0;
@@ -33,8 +37,6 @@ public class HeroUnit : BaseUnit
 
 	// 射程，视野
 	private float 			_attack_range = 2;
-	private float		 	_attack_vision = 3;
-	private float 			attack_vision_square = 1;
 	private float 			attack_range_square = 1;
 
 	private CommandBase		current_command = null;
@@ -56,38 +58,29 @@ public class HeroUnit : BaseUnit
 
 	}
 
-	public void InitDebugGizmos()
+	protected override void OnPositionChanged ()
 	{
-		GameObject attack_range_obj = new GameObject("AttackRangeCircle");
+		base.OnPositionChanged ();
 
-		attack_range_circle = attack_range_obj.AddComponent<CircleRenderer>();
-		attack_range_circle.Init(MaterialManager.Instance().GetMaterial("mat_line"));
-
-		attack_range_circle.SetColor(new Color(1, 0, 0, 0.2f));
-		attack_range_obj.transform.SetParent(cache_transform, false);
-
-		GameObject vision_range_obj = new GameObject("VisisonRangeCircle");
-		vision_range_circle = vision_range_obj.AddComponent<CircleRenderer>();
-		vision_range_circle.Init(MaterialManager.Instance().GetMaterial("mat_line"));
-
-		vision_range_circle.SetColor(new Color(1, 1, 0, 0.2f));
-		vision_range_obj.transform.SetParent(cache_transform, false);
-
-
-		UpdateCircleRenderer();
+		UpdateAttackDebugGizmos();
 	}
 
-	private void UpdateCircleRenderer()
+	private void UpdateAttackDebugGizmos()
 	{
-		if(attack_range_circle)
+		if(attack_range_circle == null )
 		{
-			attack_range_circle.SetCircle(_position, _attack_range);	
+			GameObject attack_range_obj = new GameObject("AttackRangeCircle");
+
+			attack_range_circle = attack_range_obj.AddComponent<CircleRenderer>();
+			attack_range_circle.Init(MaterialManager.Instance().GetMaterial("mat_line"));
+
+			attack_range_circle.SetColor(new Color(1, 0, 0, 0.2f));
+			attack_range_obj.transform.SetParent(cache_transform, false);
+
+				
 		}
 
-		if(vision_range_circle)
-		{
-			vision_range_circle.SetCircle(_position, _attack_vision);
-		}
+		attack_range_circle.SetCircle(_position, _attack_range);
 	}
 
 	// 指令队列
@@ -159,21 +152,14 @@ public class HeroUnit : BaseUnit
 		}
 	}
 
-	public void SetAttackVision(float attack_vision)
-	{
-		_attack_vision = attack_vision;
 
-		attack_vision_square = _attack_vision * _attack_vision;
-
-		UpdateCircleRenderer();
-	}
 
 	public void SetAttackRange(float attack_range)
 	{
 		_attack_range = attack_range;
 		attack_range_square = _attack_range * _attack_range;
 
-		UpdateCircleRenderer();
+		UpdateAttackDebugGizmos();
 	}
 
 	// 只考虑自己
@@ -216,18 +202,6 @@ public class HeroUnit : BaseUnit
 		}
 
 		return can_attack;
-	}
-
-	public void SetPosition(Vector3 position)
-	{
-		if(position != _position)
-		{
-			_position = position;
-
-			cache_transform.position = position;
-
-			UpdateCircleRenderer();
-		}
 	}
 
 	public void SetDirection(Vector3 dir)

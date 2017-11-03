@@ -60,9 +60,6 @@ public class UnitManager
 		// 攻击AI
 		hero_unit.InitAttackAI();
 
-		// 调试辅助线
-		hero_unit.InitDebugGizmos();
-
 		hero_unit.PlayIdle();
 
 		if(hero_unit_list.ContainsKey(hero_unit.unit_id))
