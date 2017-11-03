@@ -2,7 +2,7 @@ SOURCE_DIR="../../../Assets/StreamingAssets/GDS/"
 BIN_DIR='../bin'
 INPUT_DIR='tmp/input'
 OUTPUT_DIR='tmp/output'
-FRONT_GDS_DIR=../../../Assets/Script/Utils/GDS/Generated
+FRONT_GDS_DIR=../../../Assets/Script/Config/GDS/Generated
 
 if [ ! -d "$INPUT_DIR" ]; then 
 	mkdir -p "$INPUT_DIR"
