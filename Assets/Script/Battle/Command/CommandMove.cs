@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-using Pathfinding.RVO;
-
 public class CommandMove : CommandBase 
 {
 	public int start_grid_x;
