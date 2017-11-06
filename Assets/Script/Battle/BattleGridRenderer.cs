@@ -31,14 +31,14 @@ public class BattleGridRenderer : MonoBehaviour
 
 		if(mesh_filter == null)
 		{
-			mesh_filter = gameObject.AddComponent<MeshFilter>();
+			mesh_filter = gameObject.GetOrAddComponent<MeshFilter>();
 		}
 
 		mesh_renderer = gameObject.GetComponent<MeshRenderer>();
 
 		if(mesh_renderer == null)
 		{
-			mesh_renderer = gameObject.AddComponent<MeshRenderer>();
+			mesh_renderer = gameObject.GetOrAddComponent<MeshRenderer>();
 		}
 
 		mesh = new Mesh();

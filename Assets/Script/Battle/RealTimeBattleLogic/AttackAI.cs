@@ -72,7 +72,7 @@ public class AttackAI
 
 	public void InitDebugGizmos()
 	{
-		line_renderer = my_unit.gameObject.AddComponent<LineRenderer>();
+		line_renderer = my_unit.gameObject.GetOrAddComponent<LineRenderer>();
 		line_renderer.material = MaterialManager.Instance().GetMaterial("mat_line");
 
 		Color line_color = HeroUnit.team_color[my_unit.GetTeamID() - 1];

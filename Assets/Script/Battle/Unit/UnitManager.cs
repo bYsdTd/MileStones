@@ -44,8 +44,10 @@ public class UnitManager
 		HeroUnit hero_unit = hero_unit_gameobj.GetComponent<HeroUnit>();
 
 		// 属性相关设置
+		hero_unit.unit_name = unit_name;
 		hero_unit.unit_type = UnitType.Hero;
 		hero_unit.unit_id = id;
+		hero_unit.revive_cd = unit_gds.revive_cd;
 		hero_unit.SetMoveSpeedGrid(unit_gds.move_speed);
 		hero_unit.SetAttackRange(unit_gds.attack_range);
 		hero_unit.SetAttackVision(unit_gds.attack_vision);
@@ -67,9 +69,7 @@ public class UnitManager
 		hero_unit.SetTeamID(team_id);
 
 		// 攻击AI
-		hero_unit.InitAttackAI();
-
-		hero_unit.PlayIdle();
+		hero_unit.InitAI();
 
 		if(all_unit_list.ContainsKey(hero_unit.unit_id))
 		{
@@ -79,6 +79,10 @@ public class UnitManager
 
 		all_unit_list.Add(hero_unit.unit_id, hero_unit);
 		hero_unit_list.Add(hero_unit.unit_id, hero_unit);
+
+		hero_unit.OnInit();
+
+		hero_unit.PlayIdle();
 
 		return hero_unit;
 	}
@@ -92,6 +96,8 @@ public class UnitManager
 		}
 
 		BaseUnit unit = all_unit_list[id];
+
+		unit.OnClear();
 
 		ObjectPoolManager.Instance().ReturnObject(resource_key, unit.gameObject);
 
@@ -117,6 +123,7 @@ public class UnitManager
 		BuildingUnit building_unit = building_unit_gameobj.GetComponent<BuildingUnit>();
 
 		// 属性相关设置
+		building_unit.unit_name = unit_name;
 		building_unit.unit_type = UnitType.Building;
 		building_unit.unit_id = id;
 		building_unit.SetAttackVision(unit_gds.vision);
@@ -142,6 +149,8 @@ public class UnitManager
 		all_unit_list.Add(building_unit.unit_id, building_unit);
 		buiding_unit_list.Add(building_unit.unit_id, building_unit);
 
+		building_unit.OnInit();
+
 		return building_unit;
 	}
 
@@ -149,6 +158,11 @@ public class UnitManager
 	private Dictionary<int, BuildingUnit> buiding_unit_list = new Dictionary<int, BuildingUnit>();
 
 	public Dictionary<int, BaseUnit> all_unit_list = new Dictionary<int, BaseUnit>();
+
+	public Dictionary<int, BuildingUnit> GetBuildingUnitList()
+	{
+		return buiding_unit_list;
+	}
 
 	public HeroUnit GetHeroUnit(int unit_id)
 	{

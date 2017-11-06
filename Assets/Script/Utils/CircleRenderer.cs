@@ -8,7 +8,7 @@ public class CircleRenderer : MonoBehaviour
 	// Use this for initialization
 	public void Init (Material line_mat) 
 	{
-		line_renderer = gameObject.AddComponent<LineRenderer>();
+		line_renderer = gameObject.GetOrAddComponent<LineRenderer>();
 		line_renderer.material = line_mat;
 		line_renderer.SetWidth(0.1f, 0.1f);
 

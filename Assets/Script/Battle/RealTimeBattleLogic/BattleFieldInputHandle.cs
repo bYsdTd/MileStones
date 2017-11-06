@@ -46,6 +46,7 @@ public class BattleFieldInputHandle
 
 		if(unit_dead == current_select_unit)
 		{
+			current_select_unit.is_selected = false;
 			current_select_unit = null;
 		}
 	}

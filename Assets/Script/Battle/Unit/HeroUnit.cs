@@ -35,6 +35,9 @@ public class HeroUnit : BaseUnit
 	[HideInInspector]
 	public float _pursue_rate = 0.5f;
 
+	[HideInInspector]
+	public float revive_cd { set; get; }
+
 	// 射程，视野
 	private float 			_attack_range = 2;
 	private float 			attack_range_square = 1;
@@ -44,17 +47,16 @@ public class HeroUnit : BaseUnit
 
 
 	AttackAI				attack_ai = null;
+	ReviveAI 				revive_ai = null;
 
-	public void Destroy()
-	{
-			
-	}
-
-	public void InitAttackAI()
+	public void InitAI()
 	{
 		attack_ai = new AttackAI();
 		attack_ai.my_unit = this;
 		attack_ai.InitDebugGizmos();
+
+		revive_ai = new ReviveAI();
+		revive_ai.my_unit = this;
 
 	}
 
@@ -71,7 +73,7 @@ public class HeroUnit : BaseUnit
 		{
 			GameObject attack_range_obj = new GameObject("AttackRangeCircle");
 
-			attack_range_circle = attack_range_obj.AddComponent<CircleRenderer>();
+			attack_range_circle = attack_range_obj.GetOrAddComponent<CircleRenderer>();
 			attack_range_circle.Init(MaterialManager.Instance().GetMaterial("mat_line"));
 
 			attack_range_circle.SetColor(new Color(1, 0, 0, 0.2f));
@@ -121,7 +123,6 @@ public class HeroUnit : BaseUnit
 
 			attack_ai.DoAttackLineRender();
 		}
-
 	}
 
 
@@ -307,5 +308,19 @@ public class HeroUnit : BaseUnit
 
 		SetDirection(enemy_unit._position - _position);
 
+	}
+
+	public override void OnDead ()
+	{
+		BuildingUnit revive_building = revive_ai.FindNeareatReviveBuilding();
+
+		if(revive_building != null)
+		{
+			revive_building.AddReviveUnit(unit_name, unit_id, GetTeamID());
+		}
+		else
+		{
+			Debug.LogError("没有找到复活的建筑 , name " + unit_name + " id: " + unit_id);
+		}
 	}
 }

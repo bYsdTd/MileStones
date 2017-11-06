@@ -20,6 +20,7 @@ namespace GDSKit
 		public bool is_fly;
 		public bool can_attack_ground;
 		public bool can_attack_fly;
+		public float revive_cd;
 		
 
 		private static bool _isInited_ = false;
@@ -67,6 +68,8 @@ namespace GDSKit
 			_ret_.can_attack_ground = CSVParser.GetAsBool(objArr[10]);
 			
 			_ret_.can_attack_fly = CSVParser.GetAsBool(objArr[11]);
+			
+			_ret_.revive_cd = CSVParser.GetAsFloat(objArr[12]);
 			
 			
 

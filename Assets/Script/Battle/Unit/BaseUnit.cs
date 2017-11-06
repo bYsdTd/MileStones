@@ -25,6 +25,8 @@ public class BaseUnit : MonoBehaviour {
 	public int 				unit_hp = 100;
 	[HideInInspector]
 	public UnitType			unit_type = UnitType.None;
+	[HideInInspector]
+	public string			unit_name = "";
 
 	// 视野
 	private float		 	_attack_vision = 3;
@@ -46,6 +48,24 @@ public class BaseUnit : MonoBehaviour {
 		get
 		{
 			return _is_selected;
+		}
+	}
+
+	virtual public void OnInit()
+	{
+		mesh_node.gameObject.SetActive(true);
+		gameObject.SetActive(true);
+	}
+
+	virtual public void OnClear()
+	{
+		gameObject.SetActive(false);
+
+		if(cache_select_effect != null)
+		{
+			ObjectPoolManager.Instance().ReturnObject("UnitSelectCircle", cache_select_effect);
+
+			cache_select_effect = null;	
 		}
 	}
 
@@ -108,7 +128,7 @@ public class BaseUnit : MonoBehaviour {
 		if(vision_range_circle == null)
 		{
 			GameObject vision_range_obj = new GameObject("VisisonRangeCircle");
-			vision_range_circle = vision_range_obj.AddComponent<CircleRenderer>();
+			vision_range_circle = vision_range_obj.GetOrAddComponent<CircleRenderer>();
 			vision_range_circle.Init(MaterialManager.Instance().GetMaterial("mat_line"));
 
 			vision_range_circle.SetColor(new Color(1, 1, 0, 0.2f));
@@ -146,12 +166,19 @@ public class BaseUnit : MonoBehaviour {
 		return unit_hp > 0;	
 	}
 
+	virtual public void OnDead()
+	{
+		
+	}
+
 	public void OnDamage(int damage)
 	{
 		unit_hp -= damage;
 
 		if(unit_hp <= 0)
 		{
+			OnDead();
+
 			EventManager.Instance().PostEvent(EventConfig.EVENT_UNIT_DEAD, new object[]{this});
 			PlayDead();	
 		}
@@ -177,7 +204,6 @@ public class BaseUnit : MonoBehaviour {
 
 		AddEffect(hited_node, dead_effect_name, delegate() {
 
-			gameObject.SetActive(false);
 			UnitManager.Instance().DestroyUnit(resource_key, unit_id);
 
 		});
