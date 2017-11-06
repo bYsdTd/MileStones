@@ -23,11 +23,11 @@ public class Battle: MonoBehaviour
 		#endif
 
 		battle_field.LoadMap(map_path);
+		// 实时战斗的时候需要初始化这个
+		battle_field.InitRealTimeLogic();
 		battle_field.SetBattleGridRenderer(battle_grid_renderer);
 		battle_field.InitUnit();
 
-		// 实时战斗的时候需要初始化这个
-		battle_field.InitRealTimeLogic();
 
 	}
 	

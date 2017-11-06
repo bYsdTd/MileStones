@@ -50,7 +50,7 @@ public class UnitManager
 		hero_unit.revive_cd = unit_gds.revive_cd;
 		hero_unit.SetMoveSpeedGrid(unit_gds.move_speed);
 		hero_unit.SetAttackRange(unit_gds.attack_range);
-		hero_unit.SetAttackVision(unit_gds.attack_vision);
+		hero_unit.attack_vision = unit_gds.attack_vision;
 		hero_unit.attack_speed = unit_gds.attack_speed;
 		hero_unit.unit_attack = unit_gds.unit_attack;
 		hero_unit.unit_hp = unit_gds.unit_hp;
@@ -126,7 +126,7 @@ public class UnitManager
 		building_unit.unit_name = unit_name;
 		building_unit.unit_type = UnitType.Building;
 		building_unit.unit_id = id;
-		building_unit.SetAttackVision(unit_gds.vision);
+		building_unit.attack_vision = unit_gds.vision;
 		building_unit.unit_hp = unit_gds.building_hp;
 		building_unit.resource_key = unit_gds.resource_name;
 		building_unit.can_revive_hero = unit_gds.can_revive_hero;

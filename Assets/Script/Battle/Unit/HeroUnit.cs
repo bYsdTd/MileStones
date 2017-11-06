@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class HeroUnit : BaseUnit 
 {
-	public Animator animator;
+	public Animator 			animator;
 
 	// 调试相关辅助线
 	[HideInInspector]

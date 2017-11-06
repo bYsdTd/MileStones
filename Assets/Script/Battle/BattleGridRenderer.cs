@@ -100,10 +100,10 @@ public class BattleGridRenderer : MonoBehaviour
 				// colors
 				Color grid_color = Color.grey;
 
-				if(battle_field.IsBlock(x, y))
-				{
-					grid_color = Color.red;
-				}
+//				if(battle_field.IsBlock(x, y))
+//				{
+//					grid_color = Color.red;
+//				}
 
 				colors[vertIndex] = grid_color;
 				colors[vertIndex + 1] = grid_color;

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class BaseUnit : MonoBehaviour {
 
+	private FoW.FogOfWarUnit		fow_unit;
+
 	// prefab 上相关的信息
 	public Transform fire_node;
 	public Transform hited_node;
@@ -29,7 +31,31 @@ public class BaseUnit : MonoBehaviour {
 	public string			unit_name = "";
 
 	// 视野
-	private float		 	_attack_vision = 3;
+	private float		 	_attack_vision = -1;
+	public float			attack_vision 
+	{
+		set
+		{
+			if(_attack_vision != value)
+			{
+				_attack_vision = value;
+
+				attack_vision_square = _attack_vision * _attack_vision;
+
+				if(fow_unit != null)
+				{
+					fow_unit.radius = _attack_vision;
+				}
+
+				UpdateVisionDebugGizmos();
+			}
+		}
+		get
+		{
+			return _attack_vision;
+		}
+	}
+
 	protected float 		attack_vision_square = 1;
 
 	private	bool			_is_selected = false;
@@ -55,6 +81,14 @@ public class BaseUnit : MonoBehaviour {
 	{
 		mesh_node.gameObject.SetActive(true);
 		gameObject.SetActive(true);
+
+		if(BattleField.battle_field.IsMyTeam(GetTeamID()))
+		{
+			fow_unit = gameObject.GetOrAddComponent<FoW.FogOfWarUnit>();
+
+			fow_unit.team = GetTeamID();
+			fow_unit.radius = attack_vision;
+		}
 	}
 
 	virtual public void OnClear()
@@ -108,6 +142,11 @@ public class BaseUnit : MonoBehaviour {
 			//				mesh_renderer[i].material.SetColor("_Color", team_color[_team_id-1]);
 			//			}
 		}
+
+		if(fow_unit != null)
+		{
+			fow_unit.team = team_id;
+		}
 	}
 
 	public int GetTeamID()
@@ -120,6 +159,11 @@ public class BaseUnit : MonoBehaviour {
 		_attack_vision = attack_vision;
 
 		attack_vision_square = _attack_vision * _attack_vision;
+
+		if(fow_unit != null)
+		{
+			fow_unit.radius = attack_vision;
+		}
 
 		UpdateVisionDebugGizmos();
 	}

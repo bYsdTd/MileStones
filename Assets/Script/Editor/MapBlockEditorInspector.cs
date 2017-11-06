@@ -39,6 +39,8 @@ public class MapEditor : Editor
 				Vector2 screen_pos = new Vector2(mouse_pos.x, SceneView.lastActiveSceneView.position.height - mouse_pos.y);
 				map_block_editor.SetBlockByScreenPosition(screen_pos);
 			}
+
+			e.Use();
 		}
 			
 		// 渲染阻挡信息

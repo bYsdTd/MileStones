@@ -135,10 +135,10 @@ public class MapBlockEditor : MonoBehaviour
 				// colors
 				Color color = Color.white;
 
-				if(IsBlock(i, j))
-				{
-					color = Color.red;
-				}
+//				if(IsBlock(i, j))
+//				{
+//					color = Color.red;
+//				}
 
 				colors[vertIndex] = color;
 				colors[vertIndex + 1] = color;
