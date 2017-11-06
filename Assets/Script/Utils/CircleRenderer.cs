@@ -10,7 +10,8 @@ public class CircleRenderer : MonoBehaviour
 	{
 		line_renderer = gameObject.GetOrAddComponent<LineRenderer>();
 		line_renderer.material = line_mat;
-		line_renderer.SetWidth(0.1f, 0.1f);
+		line_renderer.startWidth = 0.1f;
+		line_renderer.endWidth = 0.1f;
 
 		line_renderer.enabled = false;
 
@@ -18,14 +19,15 @@ public class CircleRenderer : MonoBehaviour
 
 	public void SetColor(Color color)
 	{
-		line_renderer.SetColors(color, color);
+		line_renderer.startColor = color;
+		line_renderer.endColor = color;
 	}
 
 	public void SetCircle(Vector3 center, float radius, int segement_count = 64)
 	{
 		line_renderer.enabled = true;
 
-		line_renderer.SetVertexCount (segement_count + 1);//设置线的段数
+		line_renderer.positionCount = segement_count + 1;//设置线的段数
 
 		float x;
 		float y;

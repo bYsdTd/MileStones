@@ -45,7 +45,7 @@ public class BuildingUnit : BaseUnit
 
 		if(count > 0)
 		{
-			int rand_index = Random.Rand(0, count-1);
+			int rand_index = Utils.Random.Rand(0, count-1);
 
 			Vector3 revive_position = revive_point_list[rand_index].position;
 

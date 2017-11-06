@@ -49,6 +49,20 @@ public class HeroUnit : BaseUnit
 	AttackAI				attack_ai = null;
 	ReviveAI 				revive_ai = null;
 
+	public override void OnInit ()
+	{
+		base.OnInit ();
+
+		current_command = null;
+	}
+
+	public override void OnClear ()
+	{
+		base.OnClear ();
+
+		current_command = null;
+	}
+
 	public void InitAI()
 	{
 		attack_ai = new AttackAI();

@@ -1,18 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Random 
+namespace Utils
 {
-	static System.Random random = new System.Random();
-
-	public static int Rand(int min, int max)
+	public class Random 
 	{
-		return random.Next(min, max);
-	}
+		static System.Random random = new System.Random();
 
-	public static float Rand()
-	{
-		return (float)random.NextDouble();
-	}
+		public static int Rand(int min, int max)
+		{
+			return random.Next(min, max);
+		}
 
+		public static float Rand()
+		{
+			return (float)random.NextDouble();
+		}
+
+	}	
 }
+

@@ -67,6 +67,7 @@ public class BaseUnit : MonoBehaviour {
 
 			cache_select_effect = null;	
 		}
+			
 	}
 
 	// 缓存transform组件

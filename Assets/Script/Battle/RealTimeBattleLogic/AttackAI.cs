@@ -76,9 +76,11 @@ public class AttackAI
 		line_renderer.material = MaterialManager.Instance().GetMaterial("mat_line");
 
 		Color line_color = HeroUnit.team_color[my_unit.GetTeamID() - 1];
-		line_renderer.SetColors(line_color, line_color);
-		line_renderer.SetVertexCount(2);
-		line_renderer.SetWidth(0.05f, 0.05f);	
+		line_renderer.startColor = line_color;
+		line_renderer.endColor = line_color;
+		line_renderer.positionCount = 2;
+		line_renderer.startWidth = 0.05f;
+		line_renderer.endWidth = 0.05f;
 	}
 
 	public void Tick(float delta_time)
