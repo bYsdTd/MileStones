@@ -60,6 +60,8 @@ public class BattleField
 		UnitManager.Instance().CreateHeroUnit("f15", 7, new Vector3(12, 0, 3), 1);
 		UnitManager.Instance().CreateHeroUnit("f15", 8, new Vector3(11, 0, 3), 1);
 
+		UnitManager.Instance().CreateBuildingUnit("base", 51, new Vector3(10, 0, 4), 1);
+
 		// team 2
 		UnitManager.Instance().CreateHeroUnit("soldier", 101, new Vector3(20, 0, 10), 2);
 		UnitManager.Instance().CreateHeroUnit("soldier", 102, new Vector3(21, 0, 10), 2);

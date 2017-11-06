@@ -338,7 +338,7 @@ public class HeroUnit : BaseUnit
 		AddEffect(hited_node, "hit_effect2", delegate() {
 
 			gameObject.SetActive(false);
-			UnitManager.Instance().DestroyUnit(resource_key, unit_id);
+			UnitManager.Instance().DestroyHeroUnit(resource_key, unit_id);
 
 		});
 

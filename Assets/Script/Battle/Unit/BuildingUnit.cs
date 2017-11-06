@@ -1,16 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BuildingUnit : BaseUnit {
-
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+public class BuildingUnit : BaseUnit 
+{
+	public bool can_revive_hero
+	{
+		get;
+		set;
 	}
 }

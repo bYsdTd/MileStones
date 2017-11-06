@@ -1,0 +1,6 @@
+building_name,resource_name,building_hp,vision,can_revive_hero
+string,string,int,float,bool
+单位名称,资源名称,血量,视野,是否可复活英雄单位
+key,,,,
+0,,,,
+base,sm_barak,2000,10,TRUE

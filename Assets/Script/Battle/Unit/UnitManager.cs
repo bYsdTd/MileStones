@@ -16,18 +16,26 @@ public class UnitManager
 		return instance;
 	}
 
-	private Transform cache_root_unit_node = null;
+	private Transform cache_root_unit_node
+	{
+		get
+		{
+			if(_cache_root_unit_node == null)
+			{
+				GameObject root_node = new GameObject("RootUnitNode");
+				_cache_root_unit_node = root_node.transform;
+
+				_cache_root_unit_node.position = Vector3.zero;
+			}
+
+			return _cache_root_unit_node;
+		}
+	}
+
+	private Transform _cache_root_unit_node;
 
 	public HeroUnit CreateHeroUnit(string unit_name, int id, Vector3 pos, int team_id)
 	{
-		if(cache_root_unit_node == null)
-		{
-			GameObject root_node = new GameObject("RootUnitNode");
-			cache_root_unit_node = root_node.transform;
-
-			cache_root_unit_node.position = Vector3.zero;
-		}
-
 		GDSKit.unit unit_gds = GDSKit.unit.GetInstance(unit_name);
 
 		GameObject hero_unit_gameobj = ObjectPoolManager.Instance().GetObject(unit_gds.resource_name);
@@ -73,7 +81,7 @@ public class UnitManager
 		return hero_unit;
 	}
 
-	public void DestroyUnit(string resource_key, int id)
+	public void DestroyHeroUnit(string resource_key, int id)
 	{
 		if(!hero_unit_list.ContainsKey(id))
 		{
@@ -88,7 +96,57 @@ public class UnitManager
 
 	}
 
+	public BuildingUnit CreateBuildingUnit(string unit_name, int id, Vector3 pos, int team_id)
+	{
+		GDSKit.building unit_gds = GDSKit.building.GetInstance(unit_name);
+
+		GameObject building_unit_gameobj = ObjectPoolManager.Instance().GetObject(unit_gds.resource_name);
+		building_unit_gameobj.transform.SetParent(cache_root_unit_node);
+
+		BuildingUnit building_unit = building_unit_gameobj.GetComponent<BuildingUnit>();
+
+		// 属性相关设置
+		building_unit.unit_id = id;
+		building_unit.SetAttackVision(unit_gds.vision);
+		building_unit.unit_hp = unit_gds.building_hp;
+		building_unit.resource_key = unit_gds.resource_name;
+		building_unit.can_revive_hero = unit_gds.can_revive_hero;
+
+		int grid_x;
+		int grid_y;
+
+		BattleField.battle_field.WorldPositon2Grid(pos, out grid_x, out grid_y);
+		building_unit.SetPosition(BattleField.battle_field.Grid2WorldPosition(grid_x, grid_y));
+
+		building_unit.SetTeamID(team_id);
+
+
+		if(buiding_unit_list.ContainsKey(building_unit.unit_id))
+		{
+			Debug.LogError("相同名字的unit已经在管理器里了 id : " + building_unit.unit_id);
+			return null;
+		}
+
+		buiding_unit_list.Add(building_unit.unit_id, building_unit);
+
+		return building_unit;
+	}
+
+	public void DestroyBuildingUnit(string resource_key, int id)
+	{
+		if(!buiding_unit_list.ContainsKey(id))
+		{
+			Debug.LogError("要删除的unit不在管理器里 id : " + id + " 资源: " + resource_key);
+			return;
+		}
+
+		BuildingUnit building_unit = buiding_unit_list[id];
+
+		ObjectPoolManager.Instance().ReturnObject(resource_key, building_unit.gameObject);
+	}
+
 	public Dictionary<int, HeroUnit>	hero_unit_list = new Dictionary<int, HeroUnit>();
+	public Dictionary<int, BuildingUnit> buiding_unit_list = new Dictionary<int, BuildingUnit>();
 
 	public HeroUnit GetHeroUnit(int unit_id)
 	{
@@ -109,6 +167,13 @@ public class UnitManager
 		while(enumerator.MoveNext())
 		{
 			enumerator.Current.Value.Tick(delta_time);
+		}
+
+		var building_enum = buiding_unit_list.GetEnumerator();
+
+		while(building_enum.MoveNext())
+		{
+			building_enum.Current.Value.Tick(delta_time);
 		}
 	}
 }

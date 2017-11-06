@@ -10,6 +10,7 @@ public class AssetsPathConfig
 		{"BigTank", "HeroUnit/Tank/BigTank"},
 		{"Stealth_Bomber", "HeroUnit/B2/Prefabs/Stealth_Bomber"},
 		{"war_plane_1", "HeroUnit/Aircraft/war_plane_1"},
+		{"sm_barak", "BuildingUnit/sm_barak"},
 		{"UnitSelectCircle", "Effect/UnitSelectCircle"},
 		{"fire_effect", "Effect/fire_effect"},
 		{"hit_effect1", "Effect/hit_effect1"},
