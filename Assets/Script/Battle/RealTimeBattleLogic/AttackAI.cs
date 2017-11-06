@@ -5,10 +5,10 @@ using System.Collections.Generic;
 public class AttackAI 
 {
 	public HeroUnit my_unit;
-	public HeroUnit target_unit;
+	public BaseUnit target_unit;
 
 	// 追击的目标
-	public HeroUnit pursue_target;
+	public BaseUnit pursue_target;
 
 	public float attack_cool_down = 0;
 	public float pursue_cool_down = 0;
@@ -16,7 +16,40 @@ public class AttackAI
 	// debug gizmos
 	private LineRenderer	line_renderer;
 
-	private HeroUnit FindCanAttackTarget()
+	// 攻击类型的判定unit1 能否打unit2
+	public static bool IsCanAttackByAttackType(BaseUnit unit1, BaseUnit unit2)
+	{
+		// 暂时没有能攻击的建筑
+		if(unit1.unit_type == UnitType.Building)
+		{
+			return false;
+		}
+		else if(unit1.unit_type == UnitType.Hero)
+		{
+			if(unit2.unit_type == UnitType.Building)
+			{
+				return true;
+			}
+			else if(unit2.unit_type == UnitType.Hero)
+			{
+				HeroUnit cast_unit = unit1 as HeroUnit;
+				HeroUnit enemy_unit = unit2 as HeroUnit;
+
+				bool can_attack = false;
+
+				if((enemy_unit.is_fly && cast_unit.can_attack_fly) || (!enemy_unit.is_fly) && cast_unit.can_attack_ground )
+				{
+					can_attack = true;	
+				}
+
+				return can_attack;
+			}
+		}
+
+		return false;
+	}
+
+	private BaseUnit FindCanAttackTarget()
 	{
 		// 找到视野范围内，第一个能攻击到的目标
 		if(BattleField.battle_field.real_time_battle_logic.battle_vision_control.vision_enemy_units.ContainsKey(my_unit.GetTeamID()))
@@ -26,7 +59,7 @@ public class AttackAI
 			var enumerator = vision_enemy_units.GetEnumerator();
 			while(enumerator.MoveNext())
 			{
-				HeroUnit enemy_unit = enumerator.Current;
+				BaseUnit enemy_unit = enumerator.Current;
 				if(my_unit.IsCanAttack(enemy_unit))
 				{
 					return enemy_unit;

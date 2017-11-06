@@ -5,7 +5,7 @@ public class BattleFieldInputHandle
 {
 	public Transform cache_battle_field_camera = null;
 
-	private	HeroUnit current_select_hero_unit = null;
+	private	BaseUnit current_select_unit = null;
 
 	int unit_layer_mask;
 
@@ -29,7 +29,7 @@ public class BattleFieldInputHandle
 		EventManager.Instance().UnRegisterEvent(EventConfig.EVENT_SCENE_CLICK_DOWN, OnBattleFieldClickDown);
 		EventManager.Instance().UnRegisterEvent(EventConfig.EVENT_SCENE_CLICK_MOVE, OnBattleFieldDragMove);
 		EventManager.Instance().UnRegisterEvent(EventConfig.EVENT_SCENE_CLICK_UP, OnBattleFieldClickUp);
-		EventManager.Instance().UnRegisterEvent(EventConfig.EVENT_HERO_UNIT_DEAD, OnHeroUnitDead);
+		EventManager.Instance().UnRegisterEvent(EventConfig.EVENT_UNIT_DEAD, OnUnitDead);
 	}
 
 	public void RegisterEvent()
@@ -37,16 +37,16 @@ public class BattleFieldInputHandle
 		EventManager.Instance().RegisterEvent(EventConfig.EVENT_SCENE_CLICK_DOWN, OnBattleFieldClickDown);
 		EventManager.Instance().RegisterEvent(EventConfig.EVENT_SCENE_CLICK_MOVE, OnBattleFieldDragMove);
 		EventManager.Instance().RegisterEvent(EventConfig.EVENT_SCENE_CLICK_UP, OnBattleFieldClickUp);
-		EventManager.Instance().RegisterEvent(EventConfig.EVENT_HERO_UNIT_DEAD, OnHeroUnitDead);
+		EventManager.Instance().RegisterEvent(EventConfig.EVENT_UNIT_DEAD, OnUnitDead);
 	}
 
-	public void OnHeroUnitDead(params System.Object[] all_params)
+	public void OnUnitDead(params System.Object[] all_params)
 	{
-		HeroUnit hero_unit_dead = (HeroUnit)all_params[0];
+		BaseUnit unit_dead = (BaseUnit)all_params[0];
 
-		if(hero_unit_dead == current_select_hero_unit)
+		if(unit_dead == current_select_unit)
 		{
-			current_select_hero_unit = null;
+			current_select_unit = null;
 		}
 	}
 
@@ -96,40 +96,41 @@ public class BattleFieldInputHandle
 		RaycastHit hit_info;
 		bool is_hit_unit = Physics.Raycast(camera_ray, out hit_info, Mathf.Infinity, unit_layer_mask);
 
-		HeroUnit hit_unit = null;
+		BaseUnit hit_unit = null;
 
 		if(is_hit_unit)
 		{
 			// 点中的是单位
-			hit_unit = hit_info.transform.gameObject.GetComponent<HeroUnit>();
+			hit_unit = hit_info.transform.gameObject.GetComponent<BaseUnit>();
 
 			if(BattleField.battle_field.IsMyTeam(hit_unit.GetTeamID()))
 			{
-				if(current_select_hero_unit != null)
+				if(current_select_unit != null)
 				{
-					current_select_hero_unit.SetSelected(false);
+					current_select_unit.is_selected = false;
 
-					if(current_select_hero_unit != hit_unit)
+					if(current_select_unit != hit_unit)
 					{
-						hit_unit.SetSelected(true);
-						current_select_hero_unit = hit_unit;
+						hit_unit.is_selected = true;
+						current_select_unit = hit_unit;
 					}
 					else
 					{
-						current_select_hero_unit = null;
+						current_select_unit = null;
 					}
 				}
 				else
 				{
-					hit_unit.SetSelected(true);
-					current_select_hero_unit = hit_unit;
+					hit_unit.is_selected = true;
+					current_select_unit = hit_unit;
 				}	
 			}
 			else
 			{
-				if(current_select_hero_unit != null)
+				if(current_select_unit != null && current_select_unit.unit_type == UnitType.Hero)
 				{
-					current_select_hero_unit.SetPursueTarget(hit_unit);
+					HeroUnit hero_unit = current_select_unit as HeroUnit;
+					hero_unit.SetPursueTarget(hit_unit);
 				}
 				else
 				{
@@ -140,35 +141,18 @@ public class BattleFieldInputHandle
 		else
 		{
 			// 点中的是空地
-			if(hit_map_grid && current_select_hero_unit != null)
+			if(hit_map_grid && current_select_unit != null && current_select_unit.unit_type == UnitType.Hero)
 			{
 				int grid_x = 0;
 				int grid_y = 0;
 
-				current_select_hero_unit.SetPursueTarget(null);
+				HeroUnit hero_unit = current_select_unit as HeroUnit;
+
+				hero_unit.SetPursueTarget(null);
 
 				if(BattleField.battle_field.WorldPositon2Grid(hit_position, out grid_x, out grid_y))
 				{
-//					int current_x = 0;
-//					int current_y = 0;
-//
-//					if(!BattleField.battle_field.IsBlock(grid_x, grid_y))
-//					{
-//						BattleField.battle_field.WorldPositon2Grid(current_select_hero_unit._position, out current_x, out current_y);
-//
-//						CommandMove move_command = new CommandMove();
-//						move_command.unit_id = current_select_hero_unit.unit_id;
-//						//move_command.start_frame = 10;
-//						move_command.start_grid_x = current_x;
-//						move_command.start_grid_y = current_y;
-//
-//						move_command.end_grid_x = grid_x;
-//						move_command.end_grid_y = grid_y;
-//
-//						CommandManager.Instance().DispatchCommand(move_command);
-//					}
-
-					current_select_hero_unit.Move(grid_x, grid_y);
+					hero_unit.Move(grid_x, grid_y);
 				}
 			}
 		}

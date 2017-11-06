@@ -23,10 +23,31 @@ public class BaseUnit : MonoBehaviour {
 	protected int 			_team_id = -1;
 	[HideInInspector]
 	public int 				unit_hp = 100;
+	[HideInInspector]
+	public UnitType			unit_type = UnitType.None;
 
 	// 视野
 	private float		 	_attack_vision = 3;
-	protected float 			attack_vision_square = 1;
+	protected float 		attack_vision_square = 1;
+
+	private	bool			_is_selected = false;
+	public bool 			is_selected
+	{
+		set
+		{
+			if(_is_selected != value)
+			{
+				_is_selected = value;
+
+				OnSelectedChanged();
+			}	
+		}
+
+		get
+		{
+			return _is_selected;
+		}
+	}
 
 	// 缓存transform组件
 	public Transform 		cache_transform 
@@ -125,9 +146,82 @@ public class BaseUnit : MonoBehaviour {
 		return unit_hp > 0;	
 	}
 
-	virtual public void OnDamage(int damage)
+	public void OnDamage(int damage)
 	{
-		
+		unit_hp -= damage;
+
+		if(unit_hp <= 0)
+		{
+			EventManager.Instance().PostEvent(EventConfig.EVENT_UNIT_DEAD, new object[]{this});
+			PlayDead();	
+		}
+		else
+		{
+			PlayHited();
+		}
+
+	}
+
+	public void PlayDead()
+	{
+		AddEffect(hited_node, "hit_effect2", delegate() {
+
+			gameObject.SetActive(false);
+			UnitManager.Instance().DestroyUnit(resource_key, unit_id);
+
+		});
+
+		mesh_node.gameObject.SetActive(false);
+	}
+
+	// 击中效果
+	public void PlayHited()
+	{
+		AddEffect(hited_node, "hit_effect1");
+	}
+
+	virtual public void OnSelectedChanged()
+	{
+		if(is_selected)
+		{
+			vision_range_circle.SetColor(new Color(1, 1, 0, 1));
+
+
+			if(cache_select_effect == null)
+			{
+				cache_select_effect = ObjectPoolManager.Instance().GetObject("UnitSelectCircle");	
+			}
+
+			cache_select_effect.transform.localPosition = new Vector3(0, 0.1f, 0);
+			cache_select_effect.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+
+			cache_select_effect.transform.SetParent( cache_transform, false );
+
+		}
+		else
+		{
+			vision_range_circle.SetColor(new Color(1, 1, 0, 0.2f));
+
+			ObjectPoolManager.Instance().ReturnObject("UnitSelectCircle", cache_select_effect);
+
+			cache_select_effect = null;
+		}
+	}
+
+	// 只考虑自己
+	public bool IsCanSeeUnitCheckOnlyMyself(BaseUnit enemy_unit)
+	{
+		float distance_square = (enemy_unit._position - _position).sqrMagnitude;
+
+		return attack_vision_square >= distance_square;
+	}
+
+	// 考虑共享视野
+	public bool IsCanSeeUnit(BaseUnit enemy_unit)
+	{
+		HashSet<BaseUnit> vision_enemy_units = BattleField.battle_field.real_time_battle_logic.battle_vision_control.vision_enemy_units[GetTeamID()];
+
+		return vision_enemy_units.Contains(enemy_unit);
 	}
 
 	public delegate void EffectEndCallBack();

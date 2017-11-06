@@ -162,24 +162,8 @@ public class HeroUnit : BaseUnit
 		UpdateAttackDebugGizmos();
 	}
 
-	// 只考虑自己
-	public bool IsCanSeeUnitCheckOnlyMyself(HeroUnit enemy_unit)
-	{
-		float distance_square = (enemy_unit._position - _position).sqrMagnitude;
-
-		return attack_vision_square >= distance_square;
-	}
-
-	// 考虑共享视野
-	public bool IsCanSeeUnit(HeroUnit enemy_unit)
-	{
-		HashSet<HeroUnit> vision_enemy_units = BattleField.battle_field.real_time_battle_logic.battle_vision_control.vision_enemy_units[GetTeamID()];
-
-		return vision_enemy_units.Contains(enemy_unit);
-	}
-
 	// 距离要可以打到，并且攻击类型符合
-	public bool IsCanAttack(HeroUnit enemy_unit)
+	public bool IsCanAttack(BaseUnit enemy_unit)
 	{
 		if(!IsCanAttackByAttackType(enemy_unit))
 		{
@@ -192,22 +176,30 @@ public class HeroUnit : BaseUnit
 	}
 
 	// 攻击类型决定的是否可攻击
-	public bool IsCanAttackByAttackType(HeroUnit enemy_unit)
+	public bool IsCanAttackByAttackType(BaseUnit enemy_unit)
 	{
-		bool can_attack = false;
-
-		if((enemy_unit.is_fly && can_attack_fly) || (!enemy_unit.is_fly) && can_attack_ground )
-		{
-			can_attack = true;	
-		}
-
-		return can_attack;
+		return AttackAI.IsCanAttackByAttackType(this, enemy_unit);
 	}
 
 	public void SetDirection(Vector3 dir)
 	{
 		Quaternion rotation = Quaternion.LookRotation(dir);
 		cache_transform.rotation = rotation;
+	}
+
+	public override void OnSelectedChanged ()
+	{
+		base.OnSelectedChanged ();
+
+		if(is_selected)
+		{
+			attack_range_circle.SetColor(new Color(1, 0, 0, 1));
+
+		}
+		else
+		{
+			attack_range_circle.SetColor(new Color(1, 0, 0, 0.2f));
+		}
 	}
 
 	public void SetSelected(bool is_selected)
@@ -239,7 +231,7 @@ public class HeroUnit : BaseUnit
 		}
 	}
 
-	public void SetPursueTarget(HeroUnit pursue_target)
+	public void SetPursueTarget(BaseUnit pursue_target)
 	{
 		if(pursue_target && !IsCanAttackByAttackType(pursue_target))
 		{
@@ -307,7 +299,7 @@ public class HeroUnit : BaseUnit
 		animator.SetBool("Running", false);
 	}
 
-	public void PlayAttack(HeroUnit enemy_unit)
+	public void PlayAttack(BaseUnit enemy_unit)
 	{
 		animator.SetTrigger("Attack1Trigger");
 
@@ -315,39 +307,5 @@ public class HeroUnit : BaseUnit
 
 		SetDirection(enemy_unit._position - _position);
 
-	}
-
-	public override void OnDamage(int damage)
-	{
-		unit_hp -= damage;
-
-		if(unit_hp <= 0)
-		{
-			EventManager.Instance().PostEvent(EventConfig.EVENT_HERO_UNIT_DEAD, new object[]{this});
-			PlayDead();	
-		}
-		else
-		{
-			PlayHited();
-		}
-
-	}
-
-	public void PlayDead()
-	{
-		AddEffect(hited_node, "hit_effect2", delegate() {
-
-			gameObject.SetActive(false);
-			UnitManager.Instance().DestroyHeroUnit(resource_key, unit_id);
-
-		});
-
-		mesh_node.gameObject.SetActive(false);
-	}
-
-	// 击中效果
-	public void PlayHited()
-	{
-		AddEffect(hited_node, "hit_effect1");
 	}
 }

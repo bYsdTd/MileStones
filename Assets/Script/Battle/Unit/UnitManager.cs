@@ -44,6 +44,7 @@ public class UnitManager
 		HeroUnit hero_unit = hero_unit_gameobj.GetComponent<HeroUnit>();
 
 		// 属性相关设置
+		hero_unit.unit_type = UnitType.Hero;
 		hero_unit.unit_id = id;
 		hero_unit.SetMoveSpeedGrid(unit_gds.move_speed);
 		hero_unit.SetAttackRange(unit_gds.attack_range);
@@ -70,30 +71,40 @@ public class UnitManager
 
 		hero_unit.PlayIdle();
 
-		if(hero_unit_list.ContainsKey(hero_unit.unit_id))
+		if(all_unit_list.ContainsKey(hero_unit.unit_id))
 		{
 			Debug.LogError("相同名字的unit已经在管理器里了 id : " + hero_unit.unit_id);
 			return null;
 		}
 
+		all_unit_list.Add(hero_unit.unit_id, hero_unit);
 		hero_unit_list.Add(hero_unit.unit_id, hero_unit);
 
 		return hero_unit;
 	}
 
-	public void DestroyHeroUnit(string resource_key, int id)
+	public void DestroyUnit(string resource_key, int id)
 	{
-		if(!hero_unit_list.ContainsKey(id))
+		if(!all_unit_list.ContainsKey(id))
 		{
 			Debug.LogError("要删除的unit不在管理器里 id : " + id + " 资源: " + resource_key);
 			return;
 		}
 
-		HeroUnit hero_unit = hero_unit_list[id];
+		BaseUnit unit = all_unit_list[id];
 
-		ObjectPoolManager.Instance().ReturnObject(resource_key, hero_unit.gameObject);
+		ObjectPoolManager.Instance().ReturnObject(resource_key, unit.gameObject);
 
+		all_unit_list.Remove(id);
 
+		if(unit.unit_type == UnitType.Hero)
+		{
+			hero_unit_list.Remove(id);	
+		}
+		else if(unit.unit_type == UnitType.Building)
+		{
+			buiding_unit_list.Remove(id);
+		}
 	}
 
 	public BuildingUnit CreateBuildingUnit(string unit_name, int id, Vector3 pos, int team_id)
@@ -106,6 +117,7 @@ public class UnitManager
 		BuildingUnit building_unit = building_unit_gameobj.GetComponent<BuildingUnit>();
 
 		// 属性相关设置
+		building_unit.unit_type = UnitType.Building;
 		building_unit.unit_id = id;
 		building_unit.SetAttackVision(unit_gds.vision);
 		building_unit.unit_hp = unit_gds.building_hp;
@@ -121,32 +133,22 @@ public class UnitManager
 		building_unit.SetTeamID(team_id);
 
 
-		if(buiding_unit_list.ContainsKey(building_unit.unit_id))
+		if(all_unit_list.ContainsKey(building_unit.unit_id))
 		{
 			Debug.LogError("相同名字的unit已经在管理器里了 id : " + building_unit.unit_id);
 			return null;
 		}
 
+		all_unit_list.Add(building_unit.unit_id, building_unit);
 		buiding_unit_list.Add(building_unit.unit_id, building_unit);
 
 		return building_unit;
 	}
 
-	public void DestroyBuildingUnit(string resource_key, int id)
-	{
-		if(!buiding_unit_list.ContainsKey(id))
-		{
-			Debug.LogError("要删除的unit不在管理器里 id : " + id + " 资源: " + resource_key);
-			return;
-		}
+	private Dictionary<int, HeroUnit>	hero_unit_list = new Dictionary<int, HeroUnit>();
+	private Dictionary<int, BuildingUnit> buiding_unit_list = new Dictionary<int, BuildingUnit>();
 
-		BuildingUnit building_unit = buiding_unit_list[id];
-
-		ObjectPoolManager.Instance().ReturnObject(resource_key, building_unit.gameObject);
-	}
-
-	public Dictionary<int, HeroUnit>	hero_unit_list = new Dictionary<int, HeroUnit>();
-	public Dictionary<int, BuildingUnit> buiding_unit_list = new Dictionary<int, BuildingUnit>();
+	public Dictionary<int, BaseUnit> all_unit_list = new Dictionary<int, BaseUnit>();
 
 	public HeroUnit GetHeroUnit(int unit_id)
 	{

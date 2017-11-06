@@ -77,6 +77,8 @@ public class BattleField
 
 		UnitManager.Instance().CreateHeroUnit("f15", 109, new Vector3(20, 0, 14), 2);
 		UnitManager.Instance().CreateHeroUnit("f15", 110, new Vector3(25, 0, 15), 2);
+
+		UnitManager.Instance().CreateBuildingUnit("base", 151, new Vector3(20, 0, 10), 2);
 	}
 
 	public void InitRealTimeLogic()

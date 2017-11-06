@@ -6,4 +6,4 @@ key,,,,,,,,,,,
 soldier,ToonSoldier,200,2,0.5,2,3,2,TRUE,FALSE,TRUE,FALSE
 tank,BigTank,200,5,2,5,6,1,FALSE,FALSE,TRUE,FALSE
 b2,Stealth_Bomber,200,1,1,1,10,1,FALSE,TRUE,TRUE,FALSE
-f15,war_plane_1,200,1,0.1,5,10,1,FALSE,TRUE,FALSE,TRUE
+f15,war_plane_1,200,5,0.1,5,10,1,FALSE,TRUE,FALSE,TRUE

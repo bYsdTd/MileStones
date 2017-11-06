@@ -26,6 +26,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 414238}
   - 114: {fileID: 11468356}
+  - 65: {fileID: 6571568}
   m_Layer: 8
   m_Name: sm_barak
   m_TagString: Untagged
@@ -122,6 +123,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 155118}
   m_Mesh: {fileID: 4300000, guid: c4298a431ebd5d44582bfc113b17f588, type: 3}
+--- !u!65 &6571568
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 178364}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4.25, y: 1.96, z: 2.5}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &11468356
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -141,6 +154,7 @@ MonoBehaviour:
   _position: {x: 0, y: 0, z: 0}
   resource_key: 
   unit_hp: 100
+  unit_type: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
