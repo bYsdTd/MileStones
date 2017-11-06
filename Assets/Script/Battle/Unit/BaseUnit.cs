@@ -164,7 +164,18 @@ public class BaseUnit : MonoBehaviour {
 
 	public void PlayDead()
 	{
-		AddEffect(hited_node, "hit_effect2", delegate() {
+		string dead_effect_name = "hit_effect2";
+
+		if(unit_type == UnitType.Hero)
+		{
+			dead_effect_name = "hit_effect2";
+		}
+		else if(unit_type == UnitType.Building)
+		{
+			dead_effect_name = "hit_effect3";
+		}
+
+		AddEffect(hited_node, dead_effect_name, delegate() {
 
 			gameObject.SetActive(false);
 			UnitManager.Instance().DestroyUnit(resource_key, unit_id);
