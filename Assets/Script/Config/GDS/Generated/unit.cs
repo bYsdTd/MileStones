@@ -21,6 +21,9 @@ namespace GDSKit
 		public bool can_attack_ground;
 		public bool can_attack_fly;
 		public float revive_cd;
+		public float aoe_radius;
+		public bool can_pursue;
+		public float bullet_speed;
 		
 
 		private static bool _isInited_ = false;
@@ -70,6 +73,12 @@ namespace GDSKit
 			_ret_.can_attack_fly = CSVParser.GetAsBool(objArr[11]);
 			
 			_ret_.revive_cd = CSVParser.GetAsFloat(objArr[12]);
+			
+			_ret_.aoe_radius = CSVParser.GetAsFloat(objArr[13]);
+			
+			_ret_.can_pursue = CSVParser.GetAsBool(objArr[14]);
+			
+			_ret_.bullet_speed = CSVParser.GetAsFloat(objArr[15]);
 			
 			
 

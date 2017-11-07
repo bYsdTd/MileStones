@@ -54,11 +54,16 @@ public class BattleField
 		UnitManager.Instance().CreateHeroUnit("tank", 3, new Vector3(9, 0, 2), 1);
 		UnitManager.Instance().CreateHeroUnit("tank", 4, new Vector3(10, 0, 2), 1);
 
+
+
 		UnitManager.Instance().CreateHeroUnit("b2", 5, new Vector3(10, 0, 1), 1);
 		UnitManager.Instance().CreateHeroUnit("b2", 6, new Vector3(12, 0, 1), 1);
 
 		UnitManager.Instance().CreateHeroUnit("f15", 7, new Vector3(12, 0, 3), 1);
 		UnitManager.Instance().CreateHeroUnit("f15", 8, new Vector3(11, 0, 3), 1);
+
+
+		UnitManager.Instance().CreateHeroUnit("rocket_car", 9, new Vector3(11, 0, 2), 1);
 
 		UnitManager.Instance().CreateBuildingUnit("base", 51, new Vector3(10, 0, 4), 1);
 

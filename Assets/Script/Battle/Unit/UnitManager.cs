@@ -34,6 +34,30 @@ public class UnitManager
 
 	private Transform _cache_root_unit_node;
 
+	public Transform cache_root_effect_node
+	{
+		get
+		{
+			if(_cache_root_effect_node == null)
+			{
+				GameObject root_node = new GameObject("RootEffectNode");
+				_cache_root_effect_node = root_node.transform;
+
+				_cache_root_effect_node.position = Vector3.zero;
+			}
+
+			return _cache_root_effect_node;
+		}
+	}
+
+	static int _unique_id = 0;
+	public static int GetUniqueID()
+	{
+		return _unique_id++;
+	}
+
+	private Transform _cache_root_effect_node;
+
 	public HeroUnit CreateHeroUnit(string unit_name, int id, Vector3 pos, int team_id)
 	{
 		GDSKit.unit unit_gds = GDSKit.unit.GetInstance(unit_name);
@@ -59,6 +83,9 @@ public class UnitManager
 		hero_unit.is_fly = unit_gds.is_fly;
 		hero_unit.can_attack_fly = unit_gds.can_attack_fly;
 		hero_unit.can_attack_ground = unit_gds.can_attack_ground;
+		hero_unit.can_pursue = unit_gds.can_pursue;
+		hero_unit.aoe_radius = unit_gds.aoe_radius;
+		hero_unit.bullet_speed = unit_gds.bullet_speed;
 
 		int grid_x;
 		int grid_y;

@@ -56,6 +56,15 @@ public class HeroUnit : BaseUnit
 	[HideInInspector]
 	public float revive_cd { set; get; }
 
+	[HideInInspector]
+	public bool can_pursue { set; get; }
+
+	[HideInInspector]
+	public float aoe_radius { set; get; }
+
+	[HideInInspector]
+	public float bullet_speed { set; get; }
+
 	// 射程，视野
 	private float 			_attack_range = 2;
 	private float 			attack_range_square = 1;
@@ -87,7 +96,10 @@ public class HeroUnit : BaseUnit
 	{
 		attack_ai = new AttackAI();
 		attack_ai.my_unit = this;
+
+		// 根据类型增加是否有追击的组件
 		attack_ai.InitPursueTargetComponent();
+		// 攻击类型也有不同的组件, 有弹道，没弹道等
 		attack_ai.InitAttackComponent();
 
 
@@ -298,7 +310,6 @@ public class HeroUnit : BaseUnit
 		AddEffect(fire_node, "fire_effect");
 
 		SetDirection(enemy_unit._position - _position);
-
 	}
 
 	public override void OnDead ()

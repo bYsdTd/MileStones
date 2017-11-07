@@ -10,7 +10,7 @@ public class AttackAI
 	private PursueTargetComponent pursue_target_component = null;
 
 	// 攻击执行组件 
-	private AttackTargetComponent attack_component = null;
+	private AttackComponentBase attack_component = null;
 
 	// 攻击类型的判定unit1 能否打unit2
 	public static bool IsCanAttackByAttackType(BaseUnit unit1, BaseUnit unit2)
@@ -75,10 +75,19 @@ public class AttackAI
 	{
 		if(attack_component == null)
 		{
-			attack_component = new AttackTargetComponent();
-			attack_component.my_unit = my_unit;
-			attack_component.InitDebugGizmos();
+			if(my_unit.bullet_speed == 0)
+			{
+				// 无弹道
+				attack_component = new AttackNoBulletComponent();
+			}
+			else
+			{
+				attack_component = new AttackBulletComponent();
+			}
 		}
+
+		attack_component.my_unit = my_unit;
+		attack_component.InitDebugGizmos();
 	}
 
 	public void InitPursueTargetComponent()
@@ -94,25 +103,28 @@ public class AttackAI
 
 	public void SetPursueTarget(BaseUnit pursue_target)
 	{
-		pursue_target_component.pursue_target = pursue_target;
+		if(pursue_target_component != null)
+		{
+			pursue_target_component.pursue_target = pursue_target;
 
-		attack_component.target_unit = null;
+			attack_component.target_unit = null;	
+		}
 	}
 
 	public void Tick(float delta_time)
 	{
 		attack_component.CalculateCoolDown(delta_time);
 
-		if(pursue_target_component.pursue_target != null)
+		if(pursue_target_component != null && pursue_target_component.pursue_target != null)
 		{
 			pursue_target_component.Tick(delta_time);
 		}
 		else
 		{
-			attack_component.AttackImplement();
+			attack_component.AttackImplementTick(delta_time);
 		}
 
-		attack_component.DoAttackLineRender();
+		attack_component.RenderGizmos();
 
 	}
 

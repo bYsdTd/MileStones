@@ -193,7 +193,7 @@ public class BaseUnit : MonoBehaviour {
 
 	public void SetPosition(Vector3 position)
 	{
-		if(position != _position)
+		//if(position != _position)
 		{
 			_position = position;
 
@@ -320,12 +320,9 @@ public class BaseUnit : MonoBehaviour {
 
 	public delegate void EffectEndCallBack();
 
-	public void AddEffect(Transform node,  string effect_name, EffectEndCallBack effect_end_call_back = null)
+	private GameObject AddEffectImp(string effect_name, EffectEndCallBack effect_end_call_back = null)
 	{
 		GameObject effect_object = ObjectPoolManager.Instance().GetObject(effect_name);
-
-		effect_object.transform.SetParent(node, false);
-
 
 		ParticleSystem[] all_particles = effect_object.GetComponentsInChildren<ParticleSystem>();
 		for(int i = 0; i < all_particles.Length; ++i)
@@ -351,5 +348,23 @@ public class BaseUnit : MonoBehaviour {
 			}
 
 		}, particle_system_config.effect_duration);
+
+		return effect_object;
+	}
+
+	public void AddEffect(Vector3 world_position, string effect_name, EffectEndCallBack effect_end_call_back = null)
+	{
+		GameObject effect_object = AddEffectImp(effect_name, effect_end_call_back);
+
+		effect_object.transform.SetParent(UnitManager.Instance().cache_root_effect_node, false);
+		effect_object.transform.position = world_position;
+
+	}
+
+	public void AddEffect(Transform node,  string effect_name, EffectEndCallBack effect_end_call_back = null)
+	{
+		GameObject effect_object = AddEffectImp(effect_name, effect_end_call_back);
+
+		effect_object.transform.SetParent(node, false);
 	}
 }
