@@ -87,7 +87,9 @@ public class HeroUnit : BaseUnit
 	{
 		attack_ai = new AttackAI();
 		attack_ai.my_unit = this;
-		attack_ai.InitDebugGizmos();
+		attack_ai.InitPursueTargetComponent();
+		attack_ai.InitAttackComponent();
+
 
 		revive_ai = new ReviveAI();
 		revive_ai.my_unit = this;
@@ -139,10 +141,7 @@ public class HeroUnit : BaseUnit
 
 		if(attack_ai != null)
 		{
-
 			attack_ai.Tick(delta_time);
-
-			attack_ai.DoAttackLineRender();
 		}
 	}
 
@@ -233,9 +232,7 @@ public class HeroUnit : BaseUnit
 			return;
 		}
 
-		attack_ai.pursue_target = pursue_target;
-
-		attack_ai.target_unit = null;
+		attack_ai.SetPursueTarget(pursue_target);
 
 		// 这里需要播放一个效果
 	}
