@@ -10,6 +10,9 @@ public class Battle: MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
+		Application.targetFrameRate = 60;
+		QualitySettings.vSyncCount = 0;
+
 		// 
 		GDSKit.GDSMgr.Instance().InitGDSData();
 

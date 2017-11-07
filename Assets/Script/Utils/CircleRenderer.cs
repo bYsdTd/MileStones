@@ -10,8 +10,8 @@ public class CircleRenderer : MonoBehaviour
 	{
 		line_renderer = gameObject.GetOrAddComponent<LineRenderer>();
 		line_renderer.material = line_mat;
-		line_renderer.startWidth = 0.1f;
-		line_renderer.endWidth = 0.1f;
+		line_renderer.startWidth = 0.05f;
+		line_renderer.endWidth = 0.05f;
 
 		line_renderer.enabled = false;
 

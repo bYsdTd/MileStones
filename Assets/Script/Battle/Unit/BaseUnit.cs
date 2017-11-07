@@ -12,8 +12,25 @@ public class BaseUnit : MonoBehaviour {
 	public Transform mesh_node;
 
 	// 调试相关辅助线
+	private CircleRenderer _vision_range_circle;
 	[HideInInspector]
-	public CircleRenderer vision_range_circle;
+	public CircleRenderer vision_range_circle 
+	{
+		get
+		{
+			if(_vision_range_circle == null)
+			{
+				GameObject vision_range_obj = new GameObject("VisisonRangeCircle");
+				_vision_range_circle = vision_range_obj.GetOrAddComponent<CircleRenderer>();
+				_vision_range_circle.Init(MaterialManager.Instance().GetMaterial("mat_line"));
+
+				_vision_range_circle.SetColor(new Color(1, 1, 0, 0.2f));
+				vision_range_obj.transform.SetParent(cache_transform, false);
+			}
+
+			return _vision_range_circle;
+		}
+	}
 
 	// 单位属性
 	[HideInInspector]
@@ -81,6 +98,7 @@ public class BaseUnit : MonoBehaviour {
 	{
 		mesh_node.gameObject.SetActive(true);
 		gameObject.SetActive(true);
+		vision_range_circle.gameObject.SetActive(false);
 
 		if(BattleField.battle_field.IsMyTeam(GetTeamID()))
 		{
@@ -170,16 +188,6 @@ public class BaseUnit : MonoBehaviour {
 
 	private void UpdateVisionDebugGizmos()
 	{
-		if(vision_range_circle == null)
-		{
-			GameObject vision_range_obj = new GameObject("VisisonRangeCircle");
-			vision_range_circle = vision_range_obj.GetOrAddComponent<CircleRenderer>();
-			vision_range_circle.Init(MaterialManager.Instance().GetMaterial("mat_line"));
-
-			vision_range_circle.SetColor(new Color(1, 1, 0, 0.2f));
-			vision_range_obj.transform.SetParent(cache_transform, false);
-		}
-
 		vision_range_circle.SetCircle(_position, _attack_vision);			
 	}
 
@@ -266,6 +274,8 @@ public class BaseUnit : MonoBehaviour {
 	{
 		if(is_selected)
 		{
+			vision_range_circle.gameObject.SetActive(true);
+
 			vision_range_circle.SetColor(new Color(1, 1, 0, 1));
 
 
@@ -282,6 +292,8 @@ public class BaseUnit : MonoBehaviour {
 		}
 		else
 		{
+			vision_range_circle.gameObject.SetActive(false);
+
 			vision_range_circle.SetColor(new Color(1, 1, 0, 0.2f));
 
 			ObjectPoolManager.Instance().ReturnObject("UnitSelectCircle", cache_select_effect);

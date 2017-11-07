@@ -32,6 +32,8 @@ public class GraphicStates : MonoBehaviour {
 	{
 		GUIStyle style = new GUIStyle();
 		style.fontSize = 50;
+		style.normal.textColor = Color.white;
+
 		GUI.Label(new Rect(10,10, 100, 30), string.Format("FPS: {0:F1}", currentFPS), style);
 	}
 

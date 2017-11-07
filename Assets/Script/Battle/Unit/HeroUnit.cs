@@ -7,8 +7,26 @@ public class HeroUnit : BaseUnit
 	public Animator 			animator;
 
 	// 调试相关辅助线
+	public CircleRenderer _attack_range_circle;
 	[HideInInspector]
-	public CircleRenderer attack_range_circle;
+	public CircleRenderer attack_range_circle
+	{
+		get
+		{
+			if(_attack_range_circle == null )
+			{
+				GameObject attack_range_obj = new GameObject("AttackRangeCircle");
+
+				_attack_range_circle = attack_range_obj.GetOrAddComponent<CircleRenderer>();
+				_attack_range_circle.Init(MaterialManager.Instance().GetMaterial("mat_line"));
+
+				_attack_range_circle.SetColor(new Color(1, 0, 0, 0.2f));
+				attack_range_obj.transform.SetParent(cache_transform, false);
+			}
+
+			return _attack_range_circle;
+		}
+	}
 
 	// 英雄单位相关属性
 	// 每秒0.5格
@@ -53,6 +71,8 @@ public class HeroUnit : BaseUnit
 	{
 		base.OnInit ();
 
+		attack_range_circle.gameObject.SetActive(false);
+
 		current_command = null;
 	}
 
@@ -83,19 +103,6 @@ public class HeroUnit : BaseUnit
 
 	private void UpdateAttackDebugGizmos()
 	{
-		if(attack_range_circle == null )
-		{
-			GameObject attack_range_obj = new GameObject("AttackRangeCircle");
-
-			attack_range_circle = attack_range_obj.GetOrAddComponent<CircleRenderer>();
-			attack_range_circle.Init(MaterialManager.Instance().GetMaterial("mat_line"));
-
-			attack_range_circle.SetColor(new Color(1, 0, 0, 0.2f));
-			attack_range_obj.transform.SetParent(cache_transform, false);
-
-				
-		}
-
 		attack_range_circle.SetCircle(_position, _attack_range);
 	}
 
@@ -208,41 +215,14 @@ public class HeroUnit : BaseUnit
 
 		if(is_selected)
 		{
+			attack_range_circle.gameObject.SetActive(true);
 			attack_range_circle.SetColor(new Color(1, 0, 0, 1));
 
 		}
 		else
 		{
+			attack_range_circle.gameObject.SetActive(false);
 			attack_range_circle.SetColor(new Color(1, 0, 0, 0.2f));
-		}
-	}
-
-	public void SetSelected(bool is_selected)
-	{
-		if(is_selected)
-		{
-			vision_range_circle.SetColor(new Color(1, 1, 0, 1));
-			attack_range_circle.SetColor(new Color(1, 0, 0, 1));
-
-			if(cache_select_effect == null)
-			{
-				cache_select_effect = ObjectPoolManager.Instance().GetObject("UnitSelectCircle");	
-			}
-
-			cache_select_effect.transform.localPosition = new Vector3(0, 0.1f, 0);
-			cache_select_effect.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-
-			cache_select_effect.transform.SetParent( cache_transform, false );
-
-		}
-		else
-		{
-			vision_range_circle.SetColor(new Color(1, 1, 0, 0.2f));
-			attack_range_circle.SetColor(new Color(1, 0, 0, 0.2f));
-
-			ObjectPoolManager.Instance().ReturnObject("UnitSelectCircle", cache_select_effect);
-
-			cache_select_effect = null;
 		}
 	}
 
