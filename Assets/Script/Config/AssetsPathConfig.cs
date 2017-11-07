@@ -8,6 +8,7 @@ public class AssetsPathConfig
 	{
 		{"ToonSoldier", "HeroUnit/Soldier/ToonSoldier"},
 		{"BigTank", "HeroUnit/Tank/BigTank"},
+		{"rocket_tank", "HeroUnit/RocketTank/rocket_tank"},
 		{"Stealth_Bomber", "HeroUnit/B2/Prefabs/Stealth_Bomber"},
 		{"war_plane_1", "HeroUnit/Aircraft/war_plane_1"},
 		{"sm_barak", "BuildingUnit/sm_barak"},
