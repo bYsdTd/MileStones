@@ -98,7 +98,11 @@ public class HeroUnit : BaseUnit
 		attack_ai.my_unit = this;
 
 		// 根据类型增加是否有追击的组件
-		attack_ai.InitPursueTargetComponent();
+		if(can_pursue)
+		{
+			attack_ai.InitPursueTargetComponent();	
+		}
+
 		// 攻击类型也有不同的组件, 有弹道，没弹道等
 		attack_ai.InitAttackComponent();
 

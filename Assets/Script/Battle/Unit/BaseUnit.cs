@@ -226,6 +226,12 @@ public class BaseUnit : MonoBehaviour {
 
 	public void OnDamage(int damage)
 	{
+		// 可能同时收到多个伤害, 但是只结算一次
+		if(!IsAlive())
+		{
+			return;
+		}
+
 		unit_hp -= damage;
 
 		if(unit_hp <= 0)

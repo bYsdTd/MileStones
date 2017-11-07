@@ -116,6 +116,8 @@ public class UnitManager
 
 	public void DestroyUnit(string resource_key, int id)
 	{
+		//Debug.Log("删除的unit id : " + id + " 资源: " + resource_key);
+
 		if(!all_unit_list.ContainsKey(id))
 		{
 			Debug.LogError("要删除的unit不在管理器里 id : " + id + " 资源: " + resource_key);
