@@ -6,9 +6,10 @@ namespace GDSKit
 {
 	public partial class GDSMgr
 	{
-		private string[] gdsFiles = new string[2]
+		private string[] gdsFiles = new string[3]
 		{
 			"building.csv",
+			"chat_expression.csv",
 			"unit.csv",
 			
 		};
@@ -23,7 +24,13 @@ namespace GDSKit
 				building.Initialize(CSVParser.Parse(building_data, CSVParser.PARSE_DATA).data);
 				// func.call("building", building_data);
 			}
-			string unit_data = GetGDSFileData(gdsFiles[1]);
+			string chat_expression_data = GetGDSFileData(gdsFiles[1]);
+			if (!String.IsNullOrEmpty(chat_expression_data))
+			{
+				chat_expression.Initialize(CSVParser.Parse(chat_expression_data, CSVParser.PARSE_DATA).data);
+				// func.call("chat_expression", chat_expression_data);
+			}
+			string unit_data = GetGDSFileData(gdsFiles[2]);
 			if (!String.IsNullOrEmpty(unit_data))
 			{
 				unit.Initialize(CSVParser.Parse(unit_data, CSVParser.PARSE_DATA).data);
@@ -35,6 +42,10 @@ namespace GDSKit
 		public building Getbuilding(string building_name)
 		{
 			return building.GetInstance(building_name);
+		}
+		public chat_expression Getchat_expression(string expression_name)
+		{
+			return chat_expression.GetInstance(expression_name);
 		}
 		public unit Getunit(string unit_name)
 		{
