@@ -55,7 +55,7 @@ public class PursueTargetComponent
 			int grid_x;
 			int grid_y;
 
-			if(BattleField.battle_field.WorldPositon2Grid(pursue_target._position, out grid_x, out grid_y))
+			if(BattleField.battle_field.WorldPositon2Grid(pursue_target.position, out grid_x, out grid_y))
 			{
 				my_unit.Move(grid_x, grid_y);
 			}

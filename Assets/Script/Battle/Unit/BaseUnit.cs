@@ -10,6 +10,7 @@ public class BaseUnit : MonoBehaviour {
 	public Transform fire_node;
 	public Transform hited_node;
 	public Transform mesh_node;
+	public Transform blood_hud_node;
 
 	// 调试相关辅助线
 	private CircleRenderer _vision_range_circle;
@@ -32,16 +33,44 @@ public class BaseUnit : MonoBehaviour {
 		}
 	}
 
+	// 血条渲染
+	[HideInInspector]
+	private UIProgressBar	blood_progress_;
+	[HideInInspector]
+	private GameObject		blood_hud_obj;
+
 	// 单位属性
 	[HideInInspector]
 	public int 				unit_id = -1;
 	[HideInInspector]
-	public Vector3 			_position;
+	public Vector3 			position
+	{
+		get
+		{
+			return position_;
+		}
+
+		set
+		{
+			position_ = value;
+
+			cache_transform.position = position_;
+
+			UpdateVisionDebugGizmos();
+
+			OnPositionChanged();
+		}
+	}
+
+	private Vector3			position_;
+
 	[HideInInspector]
 	public string 			resource_key;
-	protected int 			_team_id = -1;
+	protected int 			team_id_ = -1;
 	[HideInInspector]
 	public int 				unit_hp = 100;
+	[HideInInspector]
+	public int 				max_hp { set; get; }
 	[HideInInspector]
 	public UnitType			unit_type = UnitType.None;
 	[HideInInspector]
@@ -107,10 +136,26 @@ public class BaseUnit : MonoBehaviour {
 			fow_unit.team = GetTeamID();
 			fow_unit.radius = attack_vision;
 		}
+
+		if(blood_hud_obj != null)
+		{
+			Debug.LogError("初始化的时候已经有hud了，不正常! " + unit_name + " id: " + unit_id);
+		}
+
+		blood_hud_obj = ObjectPoolManager.Instance().GetObject("BloodHud");
+		blood_hud_obj.transform.SetParent(GUIManager.Instance().cache_root, false);
+		blood_hud_obj.transform.localScale = Vector3.one;
+
+		blood_progress_ = blood_hud_obj.GetComponentInChildren<UIProgressBar>();
 	}
 
 	virtual public void OnClear()
 	{
+		blood_progress_ = null;
+
+		ObjectPoolManager.Instance().ReturnObject("BloodHud", blood_hud_obj);
+		blood_hud_obj = null;
+
 		gameObject.SetActive(false);
 
 		if(cache_select_effect != null)
@@ -142,9 +187,9 @@ public class BaseUnit : MonoBehaviour {
 
 	public void SetTeamID(int team_id)
 	{
-		if(_team_id != team_id)
+		if(team_id_ != team_id)
 		{
-			_team_id = team_id;
+			team_id_ = team_id;
 
 			//			SkinnedMeshRenderer[] skin_mesh_renderer = GetComponentsInChildren<SkinnedMeshRenderer>();
 			//
@@ -169,7 +214,7 @@ public class BaseUnit : MonoBehaviour {
 
 	public int GetTeamID()
 	{
-		return _team_id;	
+		return team_id_;	
 	}
 
 	public void SetAttackVision(float attack_vision)
@@ -188,30 +233,42 @@ public class BaseUnit : MonoBehaviour {
 
 	private void UpdateVisionDebugGizmos()
 	{
-		vision_range_circle.SetCircle(_position, _attack_vision);			
-	}
-
-	public void SetPosition(Vector3 position)
-	{
-		//if(position != _position)
-		{
-			_position = position;
-
-			cache_transform.position = position;
-
-			UpdateVisionDebugGizmos();
-
-			OnPositionChanged();
-		}
+		vision_range_circle.SetCircle(position, _attack_vision);			
 	}
 
 	virtual protected void OnPositionChanged()
 	{
 		
 	}
+
+	private void UpdateBloodHud()
+	{
+		Vector3 screen_position = Camera.main.WorldToScreenPoint(blood_hud_node.position);
+		screen_position.z = 0;
+
+		blood_hud_obj.transform.localPosition = GUIManager.Instance().ScreenPosToUIPos(screen_position);
+
+		float hp_percent = unit_hp * 1.0f / max_hp;
+
+		blood_progress_.value = hp_percent;
+
+		if(hp_percent < 0.3f)
+		{
+			blood_progress_.foregroundWidget.color = Color.red;
+		}
+		else if(hp_percent < 0.5f)
+		{
+			blood_progress_.foregroundWidget.color = Color.yellow;
+		}
+		else
+		{
+			blood_progress_.foregroundWidget.color = Color.green;
+		}
+	}
+
 	virtual public void Tick(float delta_time)
 	{
-		
+		UpdateBloodHud();
 	}
 
 	public bool IsAlive()
@@ -311,7 +368,7 @@ public class BaseUnit : MonoBehaviour {
 	// 只考虑自己
 	public bool IsCanSeeUnitCheckOnlyMyself(BaseUnit enemy_unit)
 	{
-		float distance_square = (enemy_unit._position - _position).sqrMagnitude;
+		float distance_square = (enemy_unit.position - position).sqrMagnitude;
 
 		return attack_vision_square >= distance_square;
 	}

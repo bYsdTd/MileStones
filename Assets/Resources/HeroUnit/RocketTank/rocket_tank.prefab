@@ -969,6 +969,7 @@ Transform:
   m_Children:
   - {fileID: 4253196123847654}
   - {fileID: 4800789356408574}
+  - {fileID: 4890214810870064}
   - {fileID: 4476457121662358}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -2833,6 +2834,21 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 196592}
   m_IsPrefabParent: 1
+--- !u!1 &1108174157232210
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4890214810870064}
+  m_Layer: 8
+  m_Name: HitedNode
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1354261597669920
 GameObject:
   m_ObjectHideFlags: 0
@@ -2872,7 +2888,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4476457121662358}
   m_Layer: 8
-  m_Name: HitedNode
+  m_Name: BloodNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2915,11 +2931,11 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1924713553827654}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.351, z: 0}
+  m_LocalPosition: {x: 0, y: 0.754, z: -0.162}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 440076}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4800789356408574
 Transform:
@@ -2933,6 +2949,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 440076}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4890214810870064
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1108174157232210}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.351, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 440076}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &65620768813099458
 BoxCollider:
@@ -2958,10 +2987,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fire_node: {fileID: 4800789356408574}
-  hited_node: {fileID: 4476457121662358}
+  hited_node: {fileID: 4890214810870064}
   mesh_node: {fileID: 4253196123847654}
+  blood_hud_node: {fileID: 4476457121662358}
   unit_id: -1
-  _position: {x: 0, y: 0, z: 0}
   resource_key: 
   unit_hp: 100
   unit_type: 0

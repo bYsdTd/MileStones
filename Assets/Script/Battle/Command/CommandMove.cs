@@ -48,7 +48,7 @@ public class CommandMove : CommandBase
 				{
 					time_at_node.Add(0);
 
-					postion_at_node.Add(hero_unit._position);
+					postion_at_node.Add(hero_unit.position);
 					continue;
 				}
 				else
@@ -124,7 +124,7 @@ public class CommandMove : CommandBase
 		Vector3 dir = current_end_pos - current_start_pos;
 
 		dir.Normalize();
-		hero_unit.SetPosition(current_pos);
+		hero_unit.position = current_pos;
 		hero_unit.SetDirection(dir);
 
 		return false;

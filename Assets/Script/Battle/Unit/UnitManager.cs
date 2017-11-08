@@ -78,6 +78,7 @@ public class UnitManager
 		hero_unit.attack_speed = unit_gds.attack_speed;
 		hero_unit.unit_attack = unit_gds.unit_attack;
 		hero_unit.unit_hp = unit_gds.unit_hp;
+		hero_unit.max_hp = unit_gds.unit_hp;
 		hero_unit.resource_key = unit_gds.resource_name;
 		hero_unit.is_move_attack = unit_gds.is_move_attack;
 		hero_unit.is_fly = unit_gds.is_fly;
@@ -91,7 +92,7 @@ public class UnitManager
 		int grid_y;
 
 		BattleField.battle_field.WorldPositon2Grid(pos, out grid_x, out grid_y);
-		hero_unit.SetPosition(BattleField.battle_field.Grid2WorldPosition(grid_x, grid_y));
+		hero_unit.position = BattleField.battle_field.Grid2WorldPosition(grid_x, grid_y);
 
 		hero_unit.SetTeamID(team_id);
 
@@ -164,7 +165,7 @@ public class UnitManager
 		int grid_y;
 
 		BattleField.battle_field.WorldPositon2Grid(pos, out grid_x, out grid_y);
-		building_unit.SetPosition(BattleField.battle_field.Grid2WorldPosition(grid_x, grid_y));
+		building_unit.position = BattleField.battle_field.Grid2WorldPosition(grid_x, grid_y);
 
 		building_unit.SetTeamID(team_id);
 

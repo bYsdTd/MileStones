@@ -121,7 +121,7 @@ public class HeroUnit : BaseUnit
 
 	private void UpdateAttackDebugGizmos()
 	{
-		attack_range_circle.SetCircle(_position, _attack_range);
+		attack_range_circle.SetCircle(position, _attack_range);
 	}
 
 	// 指令队列
@@ -140,6 +140,8 @@ public class HeroUnit : BaseUnit
 
 	public override void Tick(float delta_time)
 	{
+		base.Tick(delta_time);
+
 		if(!IsAlive())
 		{
 			return;	
@@ -207,7 +209,7 @@ public class HeroUnit : BaseUnit
 			return false;
 		}
 
-		float distance_square = (enemy_unit._position - _position).sqrMagnitude;
+		float distance_square = (enemy_unit.position - position).sqrMagnitude;
 
 		return attack_range_square >= distance_square;
 	}
@@ -271,7 +273,7 @@ public class HeroUnit : BaseUnit
 			int current_x;
 			int current_y;
 
-			BattleField.battle_field.WorldPositon2Grid(_position, out current_x, out current_y);
+			BattleField.battle_field.WorldPositon2Grid(position, out current_x, out current_y);
 
 			CommandMove move_command = new CommandMove();
 			move_command.unit_id = unit_id;
@@ -313,7 +315,7 @@ public class HeroUnit : BaseUnit
 
 		AddEffect(fire_node, "fire_effect");
 
-		SetDirection(enemy_unit._position - _position);
+		SetDirection(enemy_unit.position - position);
 	}
 
 	public override void OnDead ()

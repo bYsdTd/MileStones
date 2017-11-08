@@ -19,5 +19,6 @@ public class AssetsPathConfig
 		{"hit_effect3", "Effect/hit_effect3"},
 		{"Missil_01", "Effect/Bullet/Missil_01"},
 		{"mat_line", "Grid/mat_line"},
+		{"BloodHud", "UI/BloodHud"},
 	};
 }

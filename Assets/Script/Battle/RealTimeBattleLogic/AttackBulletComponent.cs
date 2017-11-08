@@ -16,7 +16,7 @@ public class AttackBulletComponent : AttackComponentBase
 			BulletComponent bullet = new BulletComponent();
 			bullet.bullet_id = UnitManager.GetUniqueID();
 			bullet.bullet_speed = my_unit.bullet_speed;
-			bullet.Start(my_unit._position, attack_target_unit._position, HitCallBack);
+			bullet.Start(my_unit.position, attack_target_unit.position, HitCallBack);
 
 			all_bullets.Add(bullet);
 
@@ -54,7 +54,7 @@ public class AttackBulletComponent : AttackComponentBase
 		{
 			BaseUnit unit = enumerator.Current.Value;
 
-			if(unit.IsAlive() && unit.GetTeamID() != my_unit.GetTeamID() && (unit._position - bullet_componet.end_position).sqrMagnitude <= hit_radius_sqr)
+			if(unit.IsAlive() && unit.GetTeamID() != my_unit.GetTeamID() && (unit.position - bullet_componet.end_position).sqrMagnitude <= hit_radius_sqr)
 			{
 				unit.OnDamage(my_unit.unit_attack);
 			}

@@ -21,7 +21,7 @@ public class ReviveAI
 
 			if(building_unit.GetTeamID() == my_unit.GetTeamID())
 			{
-				float temp = (building_unit._position - my_unit._position).sqrMagnitude;
+				float temp = (building_unit.position - my_unit.position).sqrMagnitude;
 
 				if(temp < distance)
 				{

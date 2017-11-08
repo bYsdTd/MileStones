@@ -5,11 +5,11 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 418962}
-  - 33: {fileID: 3312044}
-  - 23: {fileID: 2368588}
+  - component: {fileID: 418962}
+  - component: {fileID: 3312044}
+  - component: {fileID: 2368588}
   m_Layer: 8
   m_Name: MeshNode
   m_TagString: Untagged
@@ -22,9 +22,9 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 486242}
+  - component: {fileID: 486242}
   m_Layer: 8
   m_Name: FireNode
   m_TagString: Untagged
@@ -37,11 +37,11 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 456108}
+  - component: {fileID: 456108}
   m_Layer: 8
-  m_Name: HitNode
+  m_Name: BloodNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -52,12 +52,12 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 494118}
-  - 65: {fileID: 6591094}
-  - 114: {fileID: 11458736}
-  - 95: {fileID: 9598744}
+  - component: {fileID: 494118}
+  - component: {fileID: 6591094}
+  - component: {fileID: 11458736}
+  - component: {fileID: 9598744}
   m_Layer: 8
   m_Name: Stealth_Bomber
   m_TagString: Untagged
@@ -77,18 +77,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 494118}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &456108
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 193672}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.094, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.372, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 494118}
-  m_RootOrder: 1
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &486242
 Transform:
   m_ObjectHideFlags: 1
@@ -101,6 +103,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 494118}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &494118
 Transform:
   m_ObjectHideFlags: 1
@@ -112,10 +115,12 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 418962}
-  - {fileID: 456108}
+  - {fileID: 4811875903133754}
   - {fileID: 486242}
+  - {fileID: 456108}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &2368588
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -125,22 +130,28 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 0f04485667a1d471390f145b73e56399, type: 2}
-  m_SubsetIndices: 
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
   m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 1
-  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &3312044
 MeshFilter:
@@ -189,23 +200,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef37961d4df3e44fb9c1103a9ec26b42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 9598744}
   fire_node: {fileID: 486242}
-  hited_node: {fileID: 456108}
+  hited_node: {fileID: 4811875903133754}
   mesh_node: {fileID: 418962}
-  line_render_material: {fileID: 2100000, guid: ebae4fd737dc84571a5c6369e4ab9676,
-    type: 2}
-  attack_range_circle: {fileID: 0}
-  vision_range_circle: {fileID: 0}
-  line_renderer: {fileID: 0}
+  blood_hud_node: {fileID: 456108}
   unit_id: -1
-  move_speed: 0
-  _position: {x: 0, y: 0, z: 0}
-  unit_hp: 100
-  unit_attack: 2
   resource_key: 
+  unit_hp: 100
+  unit_type: 0
+  unit_name: 
+  animator: {fileID: 9598744}
+  _attack_range_circle: {fileID: 0}
+  move_speed: 0
+  unit_attack: 2
   is_move_attack: 0
   is_fly: 0
+  can_attack_ground: 0
+  can_attack_fly: 0
   attack_speed: 1
   _pursue_rate: 0.5
 --- !u!1001 &100100000
@@ -235,3 +246,31 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 196804}
   m_IsPrefabParent: 1
+--- !u!1 &1364592353261294
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4811875903133754}
+  m_Layer: 8
+  m_Name: HitNode
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4811875903133754
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1364592353261294}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.094, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 494118}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

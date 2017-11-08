@@ -20,6 +20,11 @@ public class CommandManager
 	{
 		HeroUnit hero_unit = UnitManager.Instance().GetHeroUnit(command.unit_id);
 
+		if(hero_unit == null)
+		{
+			Debug.LogError("找不到英雄单位 id:" + command.unit_id);	
+		}
+
 		command.hero_unit = hero_unit;
 
 		hero_unit.AddCommand(command);

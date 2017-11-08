@@ -13,12 +13,12 @@ public class AttackNoBulletComponent  : AttackComponentBase
 		{
 			line_renderer.enabled = true;
 
-			Vector3 dir = target_unit._position - my_unit._position;
+			Vector3 dir = target_unit.position - my_unit.position;
 			dir.Normalize();
 
 			Vector3 right_dir = Vector3.Cross(Vector3.up, dir);
-			line_renderer.SetPosition(0, my_unit._position + right_dir * 0.1f);
-			line_renderer.SetPosition(1, target_unit._position + right_dir * 0.1f);
+			line_renderer.SetPosition(0, my_unit.position + right_dir * 0.1f);
+			line_renderer.SetPosition(1, target_unit.position + right_dir * 0.1f);
 
 		}
 		else

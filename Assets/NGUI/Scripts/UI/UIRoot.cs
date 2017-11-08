@@ -56,6 +56,7 @@ public class UIRoot : MonoBehaviour
 	public int maximumHeight = 1536;
 	
 	public int manualWidth = 2048;
+
 	public int minimumWidth = 1136;
 	
 
@@ -108,8 +109,13 @@ public class UIRoot : MonoBehaviour
 			}
 			
 			if (scalingStyle == Scaling.WidthAdaptation){
+
 				Vector2 screen = NGUITools.screenSize;
+
+				manualWidth = (int)(screen.x >= minimumWidth ? screen.x : minimumWidth);
+
 				float aspect = screen.x / screen.y;
+
 				return Mathf.RoundToInt(manualWidth / screen.x * screen.y);
 			}
 			
