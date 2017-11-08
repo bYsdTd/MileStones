@@ -558,7 +558,7 @@ MonoBehaviour:
   manualHeight: 720
   minimumHeight: 320
   maximumHeight: 1536
-  manualWidth: 1153
+  manualWidth: 1139
   minimumWidth: 1136
   adjustByDPI: 0
   shrinkPortraitUI: 0
@@ -570,7 +570,7 @@ Transform:
   m_GameObject: {fileID: 1650314025}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.0030816642, y: 0.0030816642, z: 0.0030816642}
+  m_LocalScale: {x: 0.0031201248, y: 0.0031201248, z: 0.0031201248}
   m_Children:
   - {fileID: 222499026}
   m_Father: {fileID: 0}

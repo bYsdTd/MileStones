@@ -123,8 +123,13 @@ public class BaseUnit : MonoBehaviour {
 		}
 	}
 
+	[HideInInspector]
+	public bool show_blood_hud { set; get; }
+
 	virtual public void OnInit()
 	{
+		show_blood_hud = false;
+
 		mesh_node.gameObject.SetActive(true);
 		gameObject.SetActive(true);
 		vision_range_circle.gameObject.SetActive(false);
@@ -243,26 +248,35 @@ public class BaseUnit : MonoBehaviour {
 
 	private void UpdateBloodHud()
 	{
-		Vector3 screen_position = Camera.main.WorldToScreenPoint(blood_hud_node.position);
-		screen_position.z = 0;
-
-		blood_hud_obj.transform.localPosition = GUIManager.Instance().ScreenPosToUIPos(screen_position);
-
-		float hp_percent = unit_hp * 1.0f / max_hp;
-
-		blood_progress_.value = hp_percent;
-
-		if(hp_percent < 0.3f)
+		if(show_blood_hud)
 		{
-			blood_progress_.foregroundWidget.color = Color.red;
-		}
-		else if(hp_percent < 0.5f)
-		{
-			blood_progress_.foregroundWidget.color = Color.yellow;
+			blood_hud_obj.SetActive(true);
+
+			Vector3 screen_position = Camera.main.WorldToScreenPoint(blood_hud_node.position);
+			screen_position.z = 0;
+
+			blood_hud_obj.transform.localPosition = GUIManager.Instance().ScreenPosToUIPos(screen_position);
+
+			float hp_percent = unit_hp * 1.0f / max_hp;
+
+			blood_progress_.value = hp_percent;
+
+			if(hp_percent < 0.3f)
+			{
+				blood_progress_.foregroundWidget.color = Color.red;
+			}
+			else if(hp_percent < 0.5f)
+			{
+				blood_progress_.foregroundWidget.color = Color.yellow;
+			}
+			else
+			{
+				blood_progress_.foregroundWidget.color = Color.green;
+			}	
 		}
 		else
 		{
-			blood_progress_.foregroundWidget.color = Color.green;
+			blood_hud_obj.SetActive(false);
 		}
 	}
 
@@ -288,6 +302,8 @@ public class BaseUnit : MonoBehaviour {
 		{
 			return;
 		}
+
+		show_blood_hud = true;
 
 		unit_hp -= damage;
 
