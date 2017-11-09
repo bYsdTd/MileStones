@@ -82,27 +82,35 @@ public class BattleField
 
 		Vector3 born_point2 = new Vector3(50, 0, 10);
 
-		int grid_x;
-		int grid_y;
-		WorldPositon2Grid(born_point1, out grid_x, out grid_y);
+		HeroUnit base_unit = UnitManager.Instance().CreateHeroUnit("soldier", 101, GetRandomPositionByBornPoint(born_point2), 2);
+		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
+		
+		base_unit = UnitManager.Instance().CreateHeroUnit("soldier", 102, GetRandomPositionByBornPoint(born_point2), 2);
+		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
 
-		grid_x += 10;
-		grid_y += 3;
+		base_unit = UnitManager.Instance().CreateHeroUnit("soldier", 103, GetRandomPositionByBornPoint(born_point2), 2);
+		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
 
-		UnitManager.Instance().CreateHeroUnit("soldier", 101, GetRandomPositionByBornPoint(born_point2), 2).Move(grid_x, grid_y);
-		UnitManager.Instance().CreateHeroUnit("soldier", 102, GetRandomPositionByBornPoint(born_point2), 2).Move(grid_x, grid_y);
-		UnitManager.Instance().CreateHeroUnit("soldier", 103, GetRandomPositionByBornPoint(born_point2), 2).Move(grid_x, grid_y);
+		base_unit = UnitManager.Instance().CreateHeroUnit("tank", 104, GetRandomPositionByBornPoint(born_point2), 2);
+		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
 
+		base_unit = UnitManager.Instance().CreateHeroUnit("tank", 105, GetRandomPositionByBornPoint(born_point2), 2);
+		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
 
-		UnitManager.Instance().CreateHeroUnit("tank", 104, GetRandomPositionByBornPoint(born_point2), 2).Move(grid_x, grid_y);
-		UnitManager.Instance().CreateHeroUnit("tank", 105, GetRandomPositionByBornPoint(born_point2), 2).Move(grid_x, grid_y);
-		UnitManager.Instance().CreateHeroUnit("tank", 106, GetRandomPositionByBornPoint(born_point2), 2).Move(grid_x, grid_y);
+		base_unit = UnitManager.Instance().CreateHeroUnit("tank", 106, GetRandomPositionByBornPoint(born_point2), 2);
+		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
 
-		UnitManager.Instance().CreateHeroUnit("b2", 107, GetRandomPositionByBornPoint(born_point2), 2).Move(grid_x, grid_y);
-		UnitManager.Instance().CreateHeroUnit("b2", 108, GetRandomPositionByBornPoint(born_point2), 2).Move(grid_x, grid_y);
+		base_unit = UnitManager.Instance().CreateHeroUnit("b2", 107, GetRandomPositionByBornPoint(born_point2), 2);
+		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
 
-		UnitManager.Instance().CreateHeroUnit("f15", 109, GetRandomPositionByBornPoint(born_point2), 2).Move(grid_x, grid_y);
-		UnitManager.Instance().CreateHeroUnit("f15", 110, GetRandomPositionByBornPoint(born_point2), 2).Move(grid_x, grid_y);
+		base_unit = UnitManager.Instance().CreateHeroUnit("b2", 108, GetRandomPositionByBornPoint(born_point2), 2);
+		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
+
+		base_unit = UnitManager.Instance().CreateHeroUnit("f15", 109, GetRandomPositionByBornPoint(born_point2), 2);
+		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
+
+		base_unit = UnitManager.Instance().CreateHeroUnit("f15", 110, GetRandomPositionByBornPoint(born_point2), 2);
+		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
 
 		UnitManager.Instance().CreateBuildingUnit("base", 151, born_point2, 2);
 	}

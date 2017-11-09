@@ -128,6 +128,9 @@ public class BaseUnit : MonoBehaviour {
 
 	private float show_blood_time = 5;
 
+	[HideInInspector]
+	public RobotBaseAI		robot_base_ai;
+
 	virtual public void OnInit()
 	{
 		show_blood_hud = false;
@@ -295,6 +298,16 @@ public class BaseUnit : MonoBehaviour {
 
 	virtual public void Tick(float delta_time)
 	{
+		if(!IsAlive())
+		{
+			return;	
+		}
+
+		if(robot_base_ai != null)
+		{
+			robot_base_ai.Tick(delta_time);	
+		}
+
 		UpdateBloodHud(delta_time);
 	}
 

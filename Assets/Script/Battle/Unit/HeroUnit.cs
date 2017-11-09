@@ -92,6 +92,16 @@ public class HeroUnit : BaseUnit
 		current_command = null;
 	}
 
+	public bool IsHaveAttackTarget()
+	{
+		if(attack_ai != null)
+		{
+			return attack_ai.HasAttackTarget();
+		}
+
+		return false;
+	}
+		
 	public void InitAI()
 	{
 		attack_ai = new AttackAI();
