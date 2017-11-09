@@ -126,6 +126,8 @@ public class BaseUnit : MonoBehaviour {
 	[HideInInspector]
 	public bool show_blood_hud { set; get; }
 
+	private float show_blood_time = 5;
+
 	virtual public void OnInit()
 	{
 		show_blood_hud = false;
@@ -246,33 +248,44 @@ public class BaseUnit : MonoBehaviour {
 		
 	}
 
-	private void UpdateBloodHud()
+	private void UpdateBloodHud(float delta_time)
 	{
 		if(show_blood_hud)
 		{
-			blood_hud_obj.SetActive(true);
+			show_blood_time -= delta_time;
 
-			Vector3 screen_position = Camera.main.WorldToScreenPoint(blood_hud_node.position);
-			screen_position.z = 0;
-
-			blood_hud_obj.transform.localPosition = GUIManager.Instance().ScreenPosToUIPos(screen_position);
-
-			float hp_percent = unit_hp * 1.0f / max_hp;
-
-			blood_progress_.value = hp_percent;
-
-			if(hp_percent < 0.3f)
+			if(show_blood_time <= 0)
 			{
-				blood_progress_.foregroundWidget.color = Color.red;
-			}
-			else if(hp_percent < 0.5f)
-			{
-				blood_progress_.foregroundWidget.color = Color.yellow;
+				blood_hud_obj.SetActive(false);
+				show_blood_hud = false;
 			}
 			else
 			{
-				blood_progress_.foregroundWidget.color = Color.green;
-			}	
+				blood_hud_obj.SetActive(true);
+
+				Vector3 screen_position = Camera.main.WorldToScreenPoint(blood_hud_node.position);
+				screen_position.z = 0;
+
+				blood_hud_obj.transform.localPosition = GUIManager.Instance().ScreenPosToUIPos(screen_position);
+
+				float hp_percent = unit_hp * 1.0f / max_hp;
+
+				blood_progress_.value = hp_percent;
+
+				if(hp_percent < 0.3f)
+				{
+					blood_progress_.foregroundWidget.color = Color.red;
+				}
+				else if(hp_percent < 0.5f)
+				{
+					blood_progress_.foregroundWidget.color = Color.yellow;
+				}
+				else
+				{
+					blood_progress_.foregroundWidget.color = Color.green;
+				}	
+			}
+
 		}
 		else
 		{
@@ -282,7 +295,7 @@ public class BaseUnit : MonoBehaviour {
 
 	virtual public void Tick(float delta_time)
 	{
-		UpdateBloodHud();
+		UpdateBloodHud(delta_time);
 	}
 
 	public bool IsAlive()
@@ -304,6 +317,7 @@ public class BaseUnit : MonoBehaviour {
 		}
 
 		show_blood_hud = true;
+		show_blood_time = 5;
 
 		unit_hp -= damage;
 
