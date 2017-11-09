@@ -38,6 +38,7 @@ public class BaseUnit : MonoBehaviour {
 	private UIProgressBar	blood_progress_;
 	[HideInInspector]
 	private GameObject		blood_hud_obj;
+	private GameObject		enemy_symbol_;
 
 	// 单位属性
 	[HideInInspector]
@@ -155,13 +156,19 @@ public class BaseUnit : MonoBehaviour {
 		blood_hud_obj = ObjectPoolManager.Instance().GetObject("BloodHud");
 		blood_hud_obj.transform.SetParent(GUIManager.Instance().cache_root, false);
 		blood_hud_obj.transform.localScale = Vector3.one;
+		blood_hud_obj.SetActive(true);
+
+		enemy_symbol_ = blood_hud_obj.transform.FindChild("EnemySymbol").gameObject;
 
 		blood_progress_ = blood_hud_obj.GetComponentInChildren<UIProgressBar>();
+
+		enemy_symbol_.SetActive(!BattleField.battle_field.IsMyTeam(GetTeamID()));
 	}
 
 	virtual public void OnClear()
 	{
 		blood_progress_ = null;
+		enemy_symbol_ = null;
 
 		ObjectPoolManager.Instance().ReturnObject("BloodHud", blood_hud_obj);
 		blood_hud_obj = null;
@@ -253,23 +260,23 @@ public class BaseUnit : MonoBehaviour {
 
 	private void UpdateBloodHud(float delta_time)
 	{
+		Vector3 screen_position = Camera.main.WorldToScreenPoint(blood_hud_node.position);
+		screen_position.z = 0;
+
+		blood_hud_obj.transform.localPosition = GUIManager.Instance().ScreenPosToUIPos(screen_position);
+
 		if(show_blood_hud)
 		{
 			show_blood_time -= delta_time;
 
 			if(show_blood_time <= 0)
 			{
-				blood_hud_obj.SetActive(false);
+				blood_progress_.gameObject.SetActive(false);
 				show_blood_hud = false;
 			}
 			else
 			{
-				blood_hud_obj.SetActive(true);
-
-				Vector3 screen_position = Camera.main.WorldToScreenPoint(blood_hud_node.position);
-				screen_position.z = 0;
-
-				blood_hud_obj.transform.localPosition = GUIManager.Instance().ScreenPosToUIPos(screen_position);
+				blood_progress_.gameObject.SetActive(true);
 
 				float hp_percent = unit_hp * 1.0f / max_hp;
 
@@ -286,13 +293,13 @@ public class BaseUnit : MonoBehaviour {
 				else
 				{
 					blood_progress_.foregroundWidget.color = Color.green;
-				}	
+				}
 			}
 
 		}
 		else
 		{
-			blood_hud_obj.SetActive(false);
+			blood_progress_.gameObject.SetActive(false);
 		}
 	}
 
