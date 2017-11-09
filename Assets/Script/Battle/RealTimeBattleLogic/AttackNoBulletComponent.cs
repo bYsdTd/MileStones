@@ -51,7 +51,7 @@ public class AttackNoBulletComponent  : AttackComponentBase
 		{
 			my_unit.PlayAttack(attack_target_unit);
 
-			attack_target_unit.OnDamage(my_unit.unit_attack);
+			attack_target_unit.OnDamage(my_unit);
 
 			attack_cool_down = my_unit.attack_speed;
 		}

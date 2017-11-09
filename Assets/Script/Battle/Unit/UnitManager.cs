@@ -110,7 +110,7 @@ public class UnitManager
 
 		hero_unit.OnInit();
 
-		hero_unit.PlayIdle();
+		hero_unit.Idle();
 
 		return hero_unit;
 	}

@@ -76,6 +76,16 @@ public class AttackAI
 		return false;
 	}
 
+	public bool HasPursueTarget()
+	{
+		if(pursue_target_component != null)
+		{
+			return pursue_target_component.pursue_target != null;	
+		}
+
+		return false;
+	}
+
 	public void PursueTargetEndCallback(BaseUnit target)
 	{
 		attack_component.DoAttack(target);

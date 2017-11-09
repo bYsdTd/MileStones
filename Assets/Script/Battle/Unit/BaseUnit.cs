@@ -321,12 +321,19 @@ public class BaseUnit : MonoBehaviour {
 		
 	}
 
-	public void OnDamage(int damage)
+	public void OnDamage(HeroUnit attacker)
 	{
+		int damage = attacker.unit_attack;
+
 		// 可能同时收到多个伤害, 但是只结算一次
 		if(!IsAlive())
 		{
 			return;
+		}
+
+		if(robot_base_ai != null)
+		{
+			robot_base_ai.OnHited(attacker);	
 		}
 
 		show_blood_hud = true;

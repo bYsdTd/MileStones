@@ -101,7 +101,17 @@ public class HeroUnit : BaseUnit
 
 		return false;
 	}
+
+	public bool IsHavePursueTarget()
+	{
+		if(attack_ai != null)
+		{
+			return attack_ai.HasPursueTarget();
+		}
 		
+		return false;
+	}
+
 	public void InitAI()
 	{
 		attack_ai = new AttackAI();
@@ -274,6 +284,11 @@ public class HeroUnit : BaseUnit
 		}
 
 		PlayIdle();
+
+		if(robot_base_ai != null)
+		{
+			robot_base_ai.OnIdle();
+		}
 	}
 
 	public void Move(int grid_x, int grid_y)

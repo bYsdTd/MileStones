@@ -56,7 +56,7 @@ public class AttackBulletComponent : AttackComponentBase
 
 			if(unit.IsAlive() && unit.GetTeamID() != my_unit.GetTeamID() && (unit.position - bullet_componet.end_position).sqrMagnitude <= hit_radius_sqr)
 			{
-				unit.OnDamage(my_unit.unit_attack);
+				unit.OnDamage(my_unit);
 			}
 		}
 	}
