@@ -14,6 +14,11 @@ public class MapEditor : Editor
 {
 	MapBlockEditor map_block_editor = null;
 
+	void Awake()
+	{
+		map_block_editor = target as MapBlockEditor;
+	} 
+
 	void OnEnable()
 	{
 		map_block_editor = serializedObject.targetObject as MapBlockEditor;
@@ -26,6 +31,8 @@ public class MapEditor : Editor
 
 	void OnSceneGUI()
 	{ 
+		map_block_editor.transform.position = Vector3.zero;
+
 		Event e = Event.current;
 
 		if(e.type == EventType.MouseDown && e.button == 0)
