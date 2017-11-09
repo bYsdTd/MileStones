@@ -44,46 +44,67 @@ public class BattleField
 		}
 	}
 
+	public Vector3 GetRandomPositionByBornPoint(Vector3 born_point)
+	{
+		int offset_x = Random.Range(3, 8);
+		int offset_y = Random.Range(-3, 3);
+
+		return new Vector3(born_point.x + offset_x, born_point.y, born_point.z + offset_y );
+	}
+
 	public void InitUnit()
 	{
 		// team 1
-		UnitManager.Instance().CreateHeroUnit("soldier", 0, new Vector3(10, 0, 3), 1);
-		UnitManager.Instance().CreateHeroUnit("soldier", 1, new Vector3(12, 0, 3), 1);
+		Vector3 born_point1 = new Vector3(5, 0, 30);
 
-		UnitManager.Instance().CreateHeroUnit("tank", 2, new Vector3(8, 0, 2), 1);
-		UnitManager.Instance().CreateHeroUnit("tank", 3, new Vector3(9, 0, 2), 1);
-		UnitManager.Instance().CreateHeroUnit("tank", 4, new Vector3(10, 0, 2), 1);
+		UnitManager.Instance().CreateHeroUnit("soldier", 0, GetRandomPositionByBornPoint(born_point1), 1);
+		UnitManager.Instance().CreateHeroUnit("soldier", 1, GetRandomPositionByBornPoint(born_point1), 1);
 
-
-
-		UnitManager.Instance().CreateHeroUnit("b2", 5, new Vector3(10, 0, 1), 1);
-		UnitManager.Instance().CreateHeroUnit("b2", 6, new Vector3(12, 0, 1), 1);
-
-		UnitManager.Instance().CreateHeroUnit("f15", 7, new Vector3(12, 0, 3), 1);
-		UnitManager.Instance().CreateHeroUnit("f15", 8, new Vector3(11, 0, 3), 1);
+		UnitManager.Instance().CreateHeroUnit("tank", 2, GetRandomPositionByBornPoint(born_point1), 1);
+		UnitManager.Instance().CreateHeroUnit("tank", 3, GetRandomPositionByBornPoint(born_point1), 1);
+		UnitManager.Instance().CreateHeroUnit("tank", 4, GetRandomPositionByBornPoint(born_point1), 1);
 
 
-		UnitManager.Instance().CreateHeroUnit("rocket_car", 9, new Vector3(11, 0, 2), 1);
 
-		UnitManager.Instance().CreateBuildingUnit("base", 51, new Vector3(10, 0, 4), 1);
+		UnitManager.Instance().CreateHeroUnit("b2", 5, GetRandomPositionByBornPoint(born_point1), 1);
+		UnitManager.Instance().CreateHeroUnit("b2", 6, GetRandomPositionByBornPoint(born_point1), 1);
+
+		UnitManager.Instance().CreateHeroUnit("f15", 7, GetRandomPositionByBornPoint(born_point1), 1);
+		UnitManager.Instance().CreateHeroUnit("f15", 8, GetRandomPositionByBornPoint(born_point1), 1);
+
+
+		UnitManager.Instance().CreateHeroUnit("rocket_car", 9, GetRandomPositionByBornPoint(born_point1), 1);
+
+		UnitManager.Instance().CreateBuildingUnit("base", 51, born_point1, 1);
+
 
 		// team 2
-		UnitManager.Instance().CreateHeroUnit("soldier", 101, new Vector3(20, 0, 10), 2);
-		UnitManager.Instance().CreateHeroUnit("soldier", 102, new Vector3(21, 0, 10), 2);
-		UnitManager.Instance().CreateHeroUnit("soldier", 103, new Vector3(22, 0, 10), 2);
+
+		Vector3 born_point2 = new Vector3(50, 0, 10);
+
+		int grid_x;
+		int grid_y;
+		WorldPositon2Grid(born_point1, out grid_x, out grid_y);
+
+		grid_x += 10;
+		grid_y += 3;
+
+		UnitManager.Instance().CreateHeroUnit("soldier", 101, GetRandomPositionByBornPoint(born_point2), 2).Move(grid_x, grid_y);
+		UnitManager.Instance().CreateHeroUnit("soldier", 102, GetRandomPositionByBornPoint(born_point2), 2).Move(grid_x, grid_y);
+		UnitManager.Instance().CreateHeroUnit("soldier", 103, GetRandomPositionByBornPoint(born_point2), 2).Move(grid_x, grid_y);
 
 
-		UnitManager.Instance().CreateHeroUnit("tank", 104, new Vector3(20, 0, 13), 2);
-		UnitManager.Instance().CreateHeroUnit("tank", 105, new Vector3(21, 0, 13), 2);
-		UnitManager.Instance().CreateHeroUnit("tank", 106, new Vector3(22, 0, 13), 2);
+		UnitManager.Instance().CreateHeroUnit("tank", 104, GetRandomPositionByBornPoint(born_point2), 2).Move(grid_x, grid_y);
+		UnitManager.Instance().CreateHeroUnit("tank", 105, GetRandomPositionByBornPoint(born_point2), 2).Move(grid_x, grid_y);
+		UnitManager.Instance().CreateHeroUnit("tank", 106, GetRandomPositionByBornPoint(born_point2), 2).Move(grid_x, grid_y);
 
-		UnitManager.Instance().CreateHeroUnit("b2", 107, new Vector3(20, 0, 12), 2);
-		UnitManager.Instance().CreateHeroUnit("b2", 108, new Vector3(25, 0, 13), 2);
+		UnitManager.Instance().CreateHeroUnit("b2", 107, GetRandomPositionByBornPoint(born_point2), 2).Move(grid_x, grid_y);
+		UnitManager.Instance().CreateHeroUnit("b2", 108, GetRandomPositionByBornPoint(born_point2), 2).Move(grid_x, grid_y);
 
-		UnitManager.Instance().CreateHeroUnit("f15", 109, new Vector3(20, 0, 14), 2);
-		UnitManager.Instance().CreateHeroUnit("f15", 110, new Vector3(25, 0, 15), 2);
+		UnitManager.Instance().CreateHeroUnit("f15", 109, GetRandomPositionByBornPoint(born_point2), 2).Move(grid_x, grid_y);
+		UnitManager.Instance().CreateHeroUnit("f15", 110, GetRandomPositionByBornPoint(born_point2), 2).Move(grid_x, grid_y);
 
-		UnitManager.Instance().CreateBuildingUnit("base", 151, new Vector3(20, 0, 20), 2);
+		UnitManager.Instance().CreateBuildingUnit("base", 151, born_point2, 2);
 	}
 
 	public void InitRealTimeLogic()
