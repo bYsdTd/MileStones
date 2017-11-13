@@ -51,7 +51,7 @@ public class HeroUnit : BaseUnit
 	[HideInInspector]
 	public float attack_speed = 1;
 	[HideInInspector]
-	public float _pursue_rate = 2;
+	public float _pursue_rate = 0.5f;
 
 	[HideInInspector]
 	public float revive_cd { set; get; }
