@@ -12,34 +12,35 @@ public class RobotBaseAI
 		enemy_base_position = base_position;
 		hero_unit = unit;
 
-		OnIdle();
+		//OnIdle();
 	}
 
 	public void Tick(float delta_time)
 	{
+		if(hero_unit != null && !hero_unit.IsHaveAttackTarget() && !hero_unit.IsHavePursueTarget())
+		{
+			BaseUnit unit = AttackAI.FindCanAttackTarget(hero_unit);
 
+			hero_unit.SetPursueTarget(unit);
+		}
 	}
 
 	public void OnIdle()
 	{
-		TimerManager.Instance().DelayCallFunc(delegate(float dt) {
+		if(hero_unit != null && !hero_unit.IsMoveState() && !hero_unit.IsHaveAttackTarget() && !hero_unit.IsHavePursueTarget())
+		{
+			int grid_x;
+			int grid_y;
 
-			if(hero_unit != null && !hero_unit.IsMoveState() && !hero_unit.IsHaveAttackTarget() && !hero_unit.IsHaveAttackTarget())
-			{
-				int grid_x;
-				int grid_y;
+			BattleField.battle_field.WorldPositon2Grid(enemy_base_position, out grid_x, out grid_y);
 
-				BattleField.battle_field.WorldPositon2Grid(enemy_base_position, out grid_x, out grid_y);
+			grid_x += 10;
+			grid_y += 3;
 
-				grid_x += 10;
-				grid_y += 3;
+			hero_unit.Move(grid_x, grid_y);
 
-				hero_unit.Move(grid_x, grid_y);
-
-				return;
-			}
-
-		}, 2);
+			return;
+		}
 
 	}
 

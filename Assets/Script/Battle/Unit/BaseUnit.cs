@@ -158,7 +158,7 @@ public class BaseUnit : MonoBehaviour {
 		blood_hud_obj.transform.localScale = Vector3.one;
 		blood_hud_obj.SetActive(true);
 
-		enemy_symbol_ = blood_hud_obj.transform.FindChild("EnemySymbol").gameObject;
+		enemy_symbol_ = blood_hud_obj.transform.Find("EnemySymbol").gameObject;
 
 		blood_progress_ = blood_hud_obj.GetComponentInChildren<UIProgressBar>();
 
@@ -260,6 +260,11 @@ public class BaseUnit : MonoBehaviour {
 
 	private void UpdateBloodHud(float delta_time)
 	{
+		if(blood_progress_ == null)
+		{
+			return;
+		}
+
 		Vector3 screen_position = Camera.main.WorldToScreenPoint(blood_hud_node.position);
 		screen_position.z = 0;
 
@@ -299,6 +304,11 @@ public class BaseUnit : MonoBehaviour {
 		}
 		else
 		{
+			if(blood_progress_ == null)
+			{
+				Debug.Break();
+			}
+
 			blood_progress_.gameObject.SetActive(false);
 		}
 	}

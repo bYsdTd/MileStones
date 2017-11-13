@@ -119,7 +119,7 @@ public class UILabel : UIWidget
 				return null;
 			
 			if (mEmojiSprite == null) {
-				var emojiTrans = transform.FindChild("EmojiSprite");
+				var emojiTrans = transform.Find("EmojiSprite");
 				if (emojiTrans == null) {
 					emojiTrans = new GameObject("EmojiSprite").transform;	
 					emojiTrans.parent = this.transform;

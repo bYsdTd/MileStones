@@ -295,7 +295,7 @@ public class UILabelInspector : UIWidgetInspector
 					}
                 } else {
 					var label = serializedObject.targetObject as UILabel;
-					var emojiTrans = label.transform.FindChild("EmojiSprite");
+					var emojiTrans = label.transform.Find("EmojiSprite");
 					if (emojiTrans != null) {
 						GameObject.DestroyImmediate(emojiTrans.gameObject);
 					}
@@ -315,7 +315,7 @@ public class UILabelInspector : UIWidgetInspector
 		serializedObject.ApplyModifiedProperties();
 
 		var label = serializedObject.targetObject as UILabel;
-		var emojiTrans = label.transform.FindChild("EmojiSprite");
+		var emojiTrans = label.transform.Find("EmojiSprite");
         if (emojiTrans != null)
         {
             emojiTrans.GetComponent<EmojiSprite>().atlas = obj as UIAtlas;

@@ -22,7 +22,8 @@ public class CommandManager
 
 		if(hero_unit == null)
 		{
-			Debug.LogError("找不到英雄单位 id:" + command.unit_id);	
+			Debug.LogError("找不到英雄单位 id:" + command.unit_id);
+			return;
 		}
 
 		command.hero_unit = hero_unit;
