@@ -16,9 +16,13 @@ public class FileManager
 		return instance;
 	}
 
-	public string GetWriteablePath()
+	public string GetReadOnlyPath()
 	{
 		#if UNITY_EDITOR
+
+		return Application.streamingAssetsPath + "/";
+
+		#elif UNITY_IOS
 
 		return Application.streamingAssetsPath + "/";
 
@@ -27,7 +31,7 @@ public class FileManager
 		
 	public string ReadAllText(string path)
 	{
-		string path_prefix = GetWriteablePath();
+		string path_prefix = GetReadOnlyPath();
 
 		path = path_prefix + path;
 

@@ -23,9 +23,8 @@ public class Battle: MonoBehaviour
 		BattleField.battle_field = battle_field;
 
 		string map_path = "";
-		#if UNITY_EDITOR
-		map_path = Application.dataPath + "/MapData/map_block_info";
-		#endif
+
+		map_path = FileManager.Instance().GetReadOnlyPath() + "MapData/map_block_info";
 
 		battle_field.LoadMap(map_path);
 		// 实时战斗的时候需要初始化这个

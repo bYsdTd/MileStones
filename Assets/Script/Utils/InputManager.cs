@@ -48,6 +48,7 @@ public class InputManager
 			HandleTouchEnded(mouse_pos);
 		}
 
+
 		#else
 		if(Input.touchCount > 0)
 		{
@@ -60,7 +61,7 @@ public class InputManager
 
 			if(input_touch.phase == TouchPhase.Moved)
 			{
-				HandleTouchMove(input_touch.position);
+				HandleTouchMove(input_touch.position, input_touch.deltaPosition);
 			}
 
 			if(input_touch.phase == TouchPhase.Ended)

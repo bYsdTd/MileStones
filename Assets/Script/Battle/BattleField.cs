@@ -36,7 +36,7 @@ public class BattleField
 			return;
 		}
 
-		using (FileStream stream = File.Open(path, FileMode.Open))
+		using (FileStream stream = File.OpenRead(path))
 		{
 			map_data = new MapSaveData();
 			var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
