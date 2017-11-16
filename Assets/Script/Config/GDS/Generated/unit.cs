@@ -12,18 +12,18 @@ namespace GDSKit
 		public string resource_name;
 		public int unit_hp;
 		public int unit_attack;
-		public float attack_speed;
-		public float attack_range;
-		public float attack_vision;
-		public float move_speed;
+		public int attack_speed;
+		public int attack_range;
+		public int attack_vision;
+		public int move_speed;
 		public bool is_move_attack;
 		public bool is_fly;
 		public bool can_attack_ground;
 		public bool can_attack_fly;
-		public float revive_cd;
-		public float aoe_radius;
+		public int revive_cd;
+		public int aoe_radius;
 		public bool can_pursue;
-		public float bullet_speed;
+		public int bullet_speed;
 		
 
 		private static bool _isInited_ = false;
@@ -56,13 +56,13 @@ namespace GDSKit
 			
 			_ret_.unit_attack = CSVParser.GetAsInt(objArr[3]);
 			
-			_ret_.attack_speed = CSVParser.GetAsFloat(objArr[4]);
+			_ret_.attack_speed = CSVParser.GetAsInt(objArr[4]);
 			
-			_ret_.attack_range = CSVParser.GetAsFloat(objArr[5]);
+			_ret_.attack_range = CSVParser.GetAsInt(objArr[5]);
 			
-			_ret_.attack_vision = CSVParser.GetAsFloat(objArr[6]);
+			_ret_.attack_vision = CSVParser.GetAsInt(objArr[6]);
 			
-			_ret_.move_speed = CSVParser.GetAsFloat(objArr[7]);
+			_ret_.move_speed = CSVParser.GetAsInt(objArr[7]);
 			
 			_ret_.is_move_attack = CSVParser.GetAsBool(objArr[8]);
 			
@@ -72,13 +72,13 @@ namespace GDSKit
 			
 			_ret_.can_attack_fly = CSVParser.GetAsBool(objArr[11]);
 			
-			_ret_.revive_cd = CSVParser.GetAsFloat(objArr[12]);
+			_ret_.revive_cd = CSVParser.GetAsInt(objArr[12]);
 			
-			_ret_.aoe_radius = CSVParser.GetAsFloat(objArr[13]);
+			_ret_.aoe_radius = CSVParser.GetAsInt(objArr[13]);
 			
 			_ret_.can_pursue = CSVParser.GetAsBool(objArr[14]);
 			
-			_ret_.bullet_speed = CSVParser.GetAsFloat(objArr[15]);
+			_ret_.bullet_speed = CSVParser.GetAsInt(objArr[15]);
 			
 			
 
