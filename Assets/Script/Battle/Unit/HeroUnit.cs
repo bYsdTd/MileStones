@@ -76,6 +76,8 @@ public class HeroUnit : BaseUnit
 	AttackAI				attack_ai = null;
 	ReviveAI 				revive_ai = null;
 
+	public BL.BLUnitHero	bl_unit_info;
+
 	public override void OnInit ()
 	{
 		base.OnInit ();
@@ -83,6 +85,18 @@ public class HeroUnit : BaseUnit
 		attack_range_circle.gameObject.SetActive(false);
 
 		current_command = null;
+
+		bl_unit_info = BL.BLUnitManager.Instance().GetUnit(unit_id) as BL.BLUnitHero;
+	}
+
+	public override int GetTeamID ()
+	{
+		if(bl_unit_info != null)
+		{
+			return bl_unit_info.team_id;
+		}
+
+		return 0;
 	}
 
 	public override void OnClear ()
@@ -90,6 +104,8 @@ public class HeroUnit : BaseUnit
 		base.OnClear ();
 
 		current_command = null;
+
+		bl_unit_info = null;
 	}
 
 	public bool IsHaveAttackTarget()
@@ -158,31 +174,59 @@ public class HeroUnit : BaseUnit
 		current_command.OnStart();
 	}
 
-	public override void Tick(float delta_time)
+//	public override void Tick(float delta_time)
+//	{
+//		base.Tick(delta_time);
+//
+//		if(!IsAlive())
+//		{
+//			return;	
+//		}
+//
+//		if(current_command != null)
+//		{
+//			if(current_command.Tick(delta_time))
+//			{
+//				current_command.OnEnd();
+//				// 这条指令执行完了
+//				current_command = null;
+//			}
+//		}
+//
+//		if(attack_ai != null)
+//		{
+//			attack_ai.Tick(delta_time);
+//		}
+//	}
+	public override void Tick (float delta_time)
 	{
-		base.Tick(delta_time);
+		base.Tick (delta_time);
 
-		if(!IsAlive())
+		if(bl_unit_info != null)
 		{
-			return;	
-		}
+			BL.BLIntVector3 pos = bl_unit_info.position;
 
-		if(current_command != null)
-		{
-			if(current_command.Tick(delta_time))
+			Vector3 world_pos = 0.001f * pos;
+
+			Vector3 dir = world_pos - cache_transform.position;
+
+			float distance = dir.sqrMagnitude;
+
+			dir.Normalize();
+
+			if(distance > 0.001f)
 			{
-				current_command.OnEnd();
-				// 这条指令执行完了
-				current_command = null;
+				PlayMove();
+				SetDirection(dir);
+
+				cache_transform.position += dir * bl_unit_info.move_speed * delta_time;
+			}
+			else
+			{
+				PlayIdle();
 			}
 		}
-
-		if(attack_ai != null)
-		{
-			attack_ai.Tick(delta_time);
-		}
 	}
-
 
 
 	public bool IsMoveState()

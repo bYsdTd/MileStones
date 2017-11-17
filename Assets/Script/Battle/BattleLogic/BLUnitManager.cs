@@ -28,6 +28,16 @@ namespace BL
 		private Dictionary<int, BLUnitBuilding> 	buiding_unit_list = new Dictionary<int, BLUnitBuilding>();
 		private Dictionary<int, BLUnitBase> 		all_unit_list = new Dictionary<int, BLUnitBase>();
 
+		public BLUnitBase GetUnit(int unit_id)
+		{
+			if(all_unit_list.ContainsKey(unit_id))
+			{
+				return all_unit_list[unit_id];
+			}
+
+			return null;
+		}
+
 		public BLUnitHero CreateHeroUnit(string gds_name, int id, BLIntVector3 pos, int team_id)
 		{
 			GDSKit.unit unit_gds = GDSKit.unit.GetInstance(gds_name);
@@ -96,9 +106,35 @@ namespace BL
 			}
 		}
 
-		public void Tick(int delta_frame)
+		public void Tick()
 		{
-			
+			var enumerator = all_unit_list.GetEnumerator();
+
+			while(enumerator.MoveNext())
+			{
+				BLUnitBase unit = enumerator.Current.Value;
+				unit.Tick();
+			}
+		}
+
+		public BLIntVector3 GetRandomPosition(BLIntVector3 born_point)
+		{
+			int offset_x = Random.Range(3, 8);
+			int offset_y = Random.Range(-3, 3);
+
+			return new BLIntVector3(born_point.x + offset_x * 1000, born_point.y, born_point.z + offset_y * 1000 );
+		}
+
+		public void InitUnit()
+		{
+			BLIntVector3 born_point1 = new BLIntVector3(5000, 0, 30000);
+
+			BLUnitHero hero1 = CreateHeroUnit("soldier", 0, GetRandomPosition(born_point1), 1);
+			BLUnitHero hero2 = CreateHeroUnit("soldier", 1, GetRandomPosition(born_point1), 1);
+
+			UnitManager.Instance().CreateHeroUnit(hero1.gds_name, hero1.unit_id, hero1.position.Vector3Value());
+			UnitManager.Instance().CreateHeroUnit(hero2.gds_name, hero2.unit_id, hero2.position.Vector3Value());
+
 		}
 	}	
 }

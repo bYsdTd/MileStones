@@ -49,7 +49,7 @@ public class BuildingUnit : BaseUnit
 
 			Vector3 revive_position = revive_point_list[rand_index].position;
 
-			UnitManager.Instance().CreateHeroUnit(revive_data.revive_unit_name, revive_data.unit_id, revive_position, revive_data.team_id);
+//			UnitManager.Instance().CreateHeroUnit(revive_data.revive_unit_name, revive_data.unit_id, revive_position, revive_data.team_id);
 		}
 		else
 		{

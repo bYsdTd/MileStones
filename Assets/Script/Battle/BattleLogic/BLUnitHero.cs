@@ -26,7 +26,10 @@ namespace BL
 		public int		revive_cool_down { set; get; }
 
 
-
+		public override void Tick ()
+		{
+			base.Tick ();
+		}
 
 	}	
 }

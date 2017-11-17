@@ -4,8 +4,9 @@ using UnityEngine;
 
 namespace BL
 {
-	public class BLCommandMove : BLCommandBase
+	public enum BLCommandType
 	{
-
+		None,
+		Move,
 	}	
 }

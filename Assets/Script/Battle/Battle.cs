@@ -30,22 +30,31 @@ public class Battle: MonoBehaviour
 		// 实时战斗的时候需要初始化这个
 		battle_field.InitRealTimeLogic();
 		battle_field.SetBattleGridRenderer(battle_grid_renderer);
-		battle_field.InitUnit();
 
+		// 这里逻辑层和渲染层同时初始化了
+		BL.BLTimelineController.Instance().Start();
+		BL.BLUnitManager.Instance().InitUnit();
 
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
+		// 逻辑层
+		BL.BLTimelineController.Instance().Tick();
+
 		float delta_time = Time.deltaTime;
 		InputManager.Instance().Tick(delta_time);
 		TimerManager.Instance().Tick(delta_time);
+
+		// 渲染层
 		UnitManager.Instance().Tick(delta_time);
 
 		if(battle_field != null)
 		{
 			battle_field.Tick(delta_time);
 		}
+
+
 	}
 }

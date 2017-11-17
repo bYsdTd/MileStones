@@ -23,7 +23,12 @@ namespace BL
 
 		public void AddCommand(int logic_frame, BLCommandBase command)
 		{
-			
+			if(!command_list.ContainsKey(logic_frame))
+			{
+				command_list.Add(logic_frame, new List<BLCommandBase>());
+			}
+
+			command_list[logic_frame].Add(command);
 		}
 
 		public List<BLCommandBase> GetAllCommands(int logic_frame)
@@ -36,6 +41,31 @@ namespace BL
 			{
 				return null;
 			}
+		}
+
+		public void Tick(int logic_frame)
+		{
+			List<BLCommandBase> current_all_command = GetAllCommands(logic_frame);
+
+			if(current_all_command != null)
+			{
+				for(int i = 0; i < current_all_command.Count; ++i)
+				{
+					current_all_command[i].DoCommand();
+				}
+			}
+		}
+
+		public BLCommandMove2Position CreateMove2PositionCommand(int cast_id, int cast_frame, BLIntVector3 dest_position)
+		{
+			BLCommandMove2Position move_command = new BLCommandMove2Position();
+			move_command.cast_frame = cast_frame;
+			move_command.cast_unit_id = cast_id;
+			move_command.dest_position = dest_position;
+
+			move_command.OnInit();
+
+			return move_command;
 		}
 	}	
 }

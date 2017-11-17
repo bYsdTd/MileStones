@@ -229,9 +229,9 @@ public class BaseUnit : MonoBehaviour {
 		}
 	}
 
-	public int GetTeamID()
+	virtual public int GetTeamID()
 	{
-		return team_id_;	
+		return team_id_;
 	}
 
 	public void SetAttackVision(float attack_vision)

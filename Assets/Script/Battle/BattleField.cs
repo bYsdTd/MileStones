@@ -44,96 +44,6 @@ public class BattleField
 		}
 	}
 
-	public Vector3 GetRandomPosition(Vector3 born_point)
-	{
-		int offset_x = Random.Range(3, 8);
-		int offset_y = Random.Range(-3, 3);
-
-		return new Vector3(born_point.x + offset_x, born_point.y, born_point.z + offset_y );
-	}
-
-	public void InitUnit()
-	{
-		// team 1
-		Vector3 born_point1 = new Vector3(5, 0, 30);
-
-		UnitManager.Instance().CreateHeroUnit("soldier", 0, GetRandomPosition(born_point1), 1);
-		UnitManager.Instance().CreateHeroUnit("soldier", 1, GetRandomPosition(born_point1), 1);
-
-		UnitManager.Instance().CreateHeroUnit("tank", 2, GetRandomPosition(born_point1), 1);
-		UnitManager.Instance().CreateHeroUnit("tank", 3, GetRandomPosition(born_point1), 1);
-		UnitManager.Instance().CreateHeroUnit("tank", 4, GetRandomPosition(born_point1), 1);
-
-
-
-		UnitManager.Instance().CreateHeroUnit("b2", 5, GetRandomPosition(born_point1), 1);
-		UnitManager.Instance().CreateHeroUnit("b2", 6, GetRandomPosition(born_point1), 1);
-
-		UnitManager.Instance().CreateHeroUnit("f15", 7, GetRandomPosition(born_point1), 1);
-		UnitManager.Instance().CreateHeroUnit("f15", 8, GetRandomPosition(born_point1), 1);
-
-
-		UnitManager.Instance().CreateHeroUnit("rocket_car", 9, GetRandomPosition(born_point1), 1);
-
-		UnitManager.Instance().CreateBuildingUnit("base", 51, born_point1, 1);
-
-
-		// team 2
-
-		Vector3 born_point2 = new Vector3(50, 0, 10);
-
-		HeroUnit base_unit = UnitManager.Instance().CreateHeroUnit("soldier", 101, GetRandomPosition(born_point2), 2);
-		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
-		
-		base_unit = UnitManager.Instance().CreateHeroUnit("soldier", 102, GetRandomPosition(born_point2), 2);
-		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
-
-		base_unit = UnitManager.Instance().CreateHeroUnit("soldier", 103, GetRandomPosition(born_point2), 2);
-		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
-
-		base_unit = UnitManager.Instance().CreateHeroUnit("tank", 104, GetRandomPosition(born_point2), 2);
-		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
-
-		base_unit = UnitManager.Instance().CreateHeroUnit("tank", 105, GetRandomPosition(born_point2), 2);
-		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
-
-		base_unit = UnitManager.Instance().CreateHeroUnit("tank", 106, GetRandomPosition(born_point2), 2);
-		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
-
-		base_unit = UnitManager.Instance().CreateHeroUnit("b2", 107, GetRandomPosition(born_point2), 2);
-		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
-
-		base_unit = UnitManager.Instance().CreateHeroUnit("b2", 108, GetRandomPosition(born_point2), 2);
-		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
-
-		base_unit = UnitManager.Instance().CreateHeroUnit("f15", 109, GetRandomPosition(born_point2), 2);
-		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
-
-		base_unit = UnitManager.Instance().CreateHeroUnit("f15", 110, GetRandomPosition(born_point2), 2);
-		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
-
-		UnitManager.Instance().CreateBuildingUnit("base", 151, born_point2, 2);
-
-		Vector3 born_point3 = new Vector3(18, 0, 9);
-
-		UnitManager.Instance().CreateHeroUnit("soldier", 111, GetRandomPosition(born_point3), 2);
-		UnitManager.Instance().CreateHeroUnit("soldier", 112, GetRandomPosition(born_point3), 2);
-		UnitManager.Instance().CreateHeroUnit("tank", 113, GetRandomPosition(born_point3), 2);
-
-		Vector3 born_point4 = new Vector3(22, 0, 37);
-
-		UnitManager.Instance().CreateHeroUnit("soldier", 114, GetRandomPosition(born_point4), 2);
-		UnitManager.Instance().CreateHeroUnit("soldier", 115, GetRandomPosition(born_point4), 2);
-		UnitManager.Instance().CreateHeroUnit("tank", 116, GetRandomPosition(born_point4), 2);
-
-		Vector3 born_point5 = new Vector3(30, 0, 21);
-
-		UnitManager.Instance().CreateHeroUnit("soldier", 117, GetRandomPosition(born_point5), 2);
-		UnitManager.Instance().CreateHeroUnit("soldier", 118, GetRandomPosition(born_point5), 2);
-		UnitManager.Instance().CreateHeroUnit("tank", 119, GetRandomPosition(born_point5), 2);
-
-	}
-
 	public void InitRealTimeLogic()
 	{
 		// 我的team id，先写死为1
@@ -185,6 +95,32 @@ public class BattleField
 	{
 		int x = (int)(world_position.x / map_data.map_step);
 		int y = (int)(world_position.z / map_data.map_step);
+
+		if(x >= 0 && x < map_data.map_width && y >= 0 && y < map_data.map_height)
+		{
+			grid_x = x;
+			grid_y = y;
+			return true;
+		}
+
+		grid_x = -1;
+		grid_y = -1;
+
+		return false;
+	}
+
+	public BL.BLIntVector3 Grid2BLPosition(int grid_x, int grid_y)
+	{
+		int half_step = (int)(map_data.map_step * 500);
+		BL.BLIntVector3 world_positin = new BL.BLIntVector3(grid_x * (int)map_data.map_step * 1000 + half_step, 0, grid_y * (int)map_data.map_step * 1000 + half_step);
+
+		return world_positin;
+	}
+
+	public bool BLPosition2Grid(BL.BLIntVector3 position, out int grid_x, out int grid_y)
+	{
+		int x = (int)(position.x / map_data.map_step / 1000);
+		int y = (int)(position.z / map_data.map_step / 1000 );
 
 		if(x >= 0 && x < map_data.map_width && y >= 0 && y < map_data.map_height)
 		{
@@ -266,6 +202,37 @@ public class BattleField
 		while(true);
 
 		return path_nodes;
+	}
+
+	public List<BL.BLIntVector3> SearchPath(BL.BLIntVector3 start_pos, BL.BLIntVector3 dest_pos)
+	{
+		int x_start;
+		int y_start;
+
+		int x_end;
+		int y_end;
+
+		BLPosition2Grid(start_pos, out x_start, out y_start);
+		BLPosition2Grid(dest_pos, out x_end, out y_end);
+
+		List<AStarNode> path = FindPath(x_start, y_start, x_end, y_end);
+
+		List<BL.BLIntVector3> bl_path = new List<BL.BLIntVector3>();
+
+		if(path != null)
+		{
+			bl_path.Add(start_pos);
+
+			for(int i = 0; i < path.Count; ++i)
+			{
+				BL.BLIntVector3 bl_position = Grid2BLPosition(path[i]._x,  path[i]._y);
+				bl_path.Add(bl_position);
+			}
+
+			bl_path.Add(dest_pos);
+		}
+
+		return bl_path;
 	}
 
 	public List<AStarNode> FindPath(int x_start, int y_start, int x_end, int y_end)

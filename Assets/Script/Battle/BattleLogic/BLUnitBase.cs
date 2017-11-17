@@ -17,20 +17,40 @@ namespace BL
 
 		public int				vision { set; get; }
 
+		private	BLCommandBase	current_command_;
 
-		virtual public void 	OnInit()
+
+		virtual public void OnInit()
 		{
 			
 		}
 
-		virtual public void 	OnDestroy()
+		virtual public void OnDestroy()
 		{
 			
 		}
-
-		virtual public void		Tick(int delta_frame)
-		{
 			
+		virtual public void	Tick()
+		{
+			if(current_command_ != null && current_command_.Tick())
+			{
+				current_command_.OnDestroy();
+				current_command_ = null;
+			}
+		}
+
+		public void DoCommand(BLCommandBase	command)
+		{
+			if(current_command_ != null)
+			{
+				current_command_.OnDestroy();
+
+				current_command_ = null;
+			}
+
+			current_command_ = command;
+
+			current_command_.OnInit();
 		}
 	}	
 }

@@ -58,7 +58,7 @@ public class UnitManager
 
 	private Transform _cache_root_effect_node;
 
-	public HeroUnit CreateHeroUnit(string unit_name, int id, Vector3 pos, int team_id)
+	public HeroUnit CreateHeroUnit(string unit_name, int id, Vector3 pos)
 	{
 		GDSKit.unit unit_gds = GDSKit.unit.GetInstance(unit_name);
 
@@ -71,33 +71,13 @@ public class UnitManager
 		hero_unit.unit_name = unit_name;
 		hero_unit.unit_type = UnitType.Hero;
 		hero_unit.unit_id = id;
-		hero_unit.revive_cd = unit_gds.revive_cd;
-		hero_unit.SetMoveSpeedGrid(unit_gds.move_speed);
-		hero_unit.SetAttackRange(unit_gds.attack_range);
-		hero_unit.attack_vision = unit_gds.attack_vision;
-		hero_unit.attack_speed = unit_gds.attack_speed;
-		hero_unit.unit_attack = unit_gds.unit_attack;
-		hero_unit.unit_hp = unit_gds.unit_hp;
-		hero_unit.max_hp = unit_gds.unit_hp;
 		hero_unit.resource_key = unit_gds.resource_name;
-		hero_unit.is_move_attack = unit_gds.is_move_attack;
-		hero_unit.is_fly = unit_gds.is_fly;
-		hero_unit.can_attack_fly = unit_gds.can_attack_fly;
-		hero_unit.can_attack_ground = unit_gds.can_attack_ground;
-		hero_unit.can_pursue = unit_gds.can_pursue;
-		hero_unit.aoe_radius = unit_gds.aoe_radius;
-		hero_unit.bullet_speed = unit_gds.bullet_speed;
 
 		int grid_x;
 		int grid_y;
 
 		BattleField.battle_field.WorldPositon2Grid(pos, out grid_x, out grid_y);
 		hero_unit.position = BattleField.battle_field.Grid2WorldPosition(grid_x, grid_y);
-
-		hero_unit.SetTeamID(team_id);
-
-		// 攻击AI
-		hero_unit.InitAI();
 
 		if(all_unit_list.ContainsKey(hero_unit.unit_id))
 		{
@@ -221,5 +201,87 @@ public class UnitManager
 		{
 			building_enum.Current.Value.Tick(delta_time);
 		}
+	}
+
+	public void InitUnit()
+	{
+//		// team 1
+//		Vector3 born_point1 = new Vector3(5, 0, 30);
+//
+//		CreateHeroUnit("soldier", 0, GetRandomPosition(born_point1), 1);
+//		CreateHeroUnit("soldier", 1, GetRandomPosition(born_point1), 1);
+
+//		CreateHeroUnit("tank", 2, GetRandomPosition(born_point1), 1);
+//		CreateHeroUnit("tank", 3, GetRandomPosition(born_point1), 1);
+//		CreateHeroUnit("tank", 4, GetRandomPosition(born_point1), 1);
+//
+//
+//
+//		CreateHeroUnit("b2", 5, GetRandomPosition(born_point1), 1);
+//		CreateHeroUnit("b2", 6, GetRandomPosition(born_point1), 1);
+//
+//		CreateHeroUnit("f15", 7, GetRandomPosition(born_point1), 1);
+//		CreateHeroUnit("f15", 8, GetRandomPosition(born_point1), 1);
+//
+//
+//		CreateHeroUnit("rocket_car", 9, GetRandomPosition(born_point1), 1);
+//
+//		CreateBuildingUnit("base", 51, born_point1, 1);
+
+
+//		// team 2
+//
+//		Vector3 born_point2 = new Vector3(50, 0, 10);
+//
+//		HeroUnit base_unit = CreateHeroUnit("soldier", 101, GetRandomPosition(born_point2), 2);
+//		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
+//
+//		base_unit = CreateHeroUnit("soldier", 102, GetRandomPosition(born_point2), 2);
+//		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
+//
+//		base_unit = CreateHeroUnit("soldier", 103, GetRandomPosition(born_point2), 2);
+//		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
+//
+//		base_unit = CreateHeroUnit("tank", 104, GetRandomPosition(born_point2), 2);
+//		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
+//
+//		base_unit = CreateHeroUnit("tank", 105, GetRandomPosition(born_point2), 2);
+//		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
+//
+//		base_unit = CreateHeroUnit("tank", 106, GetRandomPosition(born_point2), 2);
+//		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
+//
+//		base_unit = CreateHeroUnit("b2", 107, GetRandomPosition(born_point2), 2);
+//		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
+//
+//		base_unit = CreateHeroUnit("b2", 108, GetRandomPosition(born_point2), 2);
+//		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
+//
+//		base_unit = CreateHeroUnit("f15", 109, GetRandomPosition(born_point2), 2);
+//		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
+//
+//		base_unit = CreateHeroUnit("f15", 110, GetRandomPosition(born_point2), 2);
+//		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
+//
+//		CreateBuildingUnit("base", 151, born_point2, 2);
+//
+//		Vector3 born_point3 = new Vector3(18, 0, 9);
+//
+//		CreateHeroUnit("soldier", 111, GetRandomPosition(born_point3), 2);
+//		CreateHeroUnit("soldier", 112, GetRandomPosition(born_point3), 2);
+//		CreateHeroUnit("tank", 113, GetRandomPosition(born_point3), 2);
+//
+//		Vector3 born_point4 = new Vector3(22, 0, 37);
+//
+//		CreateHeroUnit("soldier", 114, GetRandomPosition(born_point4), 2);
+//		CreateHeroUnit("soldier", 115, GetRandomPosition(born_point4), 2);
+//		CreateHeroUnit("tank", 116, GetRandomPosition(born_point4), 2);
+//
+//		Vector3 born_point5 = new Vector3(30, 0, 21);
+//
+//		CreateHeroUnit("soldier", 117, GetRandomPosition(born_point5), 2);
+//		CreateHeroUnit("soldier", 118, GetRandomPosition(born_point5), 2);
+//		CreateHeroUnit("tank", 119, GetRandomPosition(born_point5), 2);
+
 	}
 }
