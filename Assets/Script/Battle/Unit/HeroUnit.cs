@@ -77,6 +77,7 @@ public class HeroUnit : BaseUnit
 	ReviveAI 				revive_ai = null;
 
 	public BL.BLUnitHero	bl_unit_info;
+	public bool				is_move { set; get; }
 
 	public override void OnInit ()
 	{
@@ -202,29 +203,24 @@ public class HeroUnit : BaseUnit
 	{
 		base.Tick (delta_time);
 
-		if(bl_unit_info != null)
+		if(is_move && bl_unit_info != null)
 		{
-			BL.BLIntVector3 pos = bl_unit_info.position;
+			float current_time_span = (BL.BLTimelineController.Instance().current_logic_frame_time_stamp - BL.BLTimelineController.Instance().pre_logic_frame_time_stamp);
+			//float current_elapsed = (BL.BLTimelineController.Instance().current_time_stamp - BL.BLTimelineController.Instance().pre_logic_frame_time_stamp);
+			float current_elapsed = BL.BLTimelineController.Instance().time_elapsed_from_pre_frame;
 
-			Vector3 world_pos = 0.001f * pos;
 
-			Vector3 dir = world_pos - cache_transform.position;
+			Vector3 pre_position = 0.001f * bl_unit_info.pre_position;
+			Vector3 next_position = 0.001f * bl_unit_info.position;
 
-			float distance = dir.sqrMagnitude;
+			// Debug.Log("current elapsed " + current_elapsed + " current time span " + current_time_span);
 
-			dir.Normalize();
+			Vector3 now_position = Vector3.Lerp(pre_position, next_position, current_elapsed / current_time_span);
 
-			if(distance > 0.001f)
-			{
-				PlayMove();
-				SetDirection(dir);
+			position = now_position;
 
-				cache_transform.position += dir * bl_unit_info.move_speed * delta_time;
-			}
-			else
-			{
-				PlayIdle();
-			}
+			SetDirection(next_position - pre_position);
+
 		}
 	}
 

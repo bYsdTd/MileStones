@@ -58,6 +58,28 @@ public class UnitManager
 
 	private Transform _cache_root_effect_node;
 
+	public void OnInit()
+	{
+		EventManager.Instance().RegisterEvent(EventConfig.EVENT_UNIT_START_MOVE, delegate(object[] all_params) {
+
+			int unit_id = (int)all_params[0];
+			HeroUnit unit = GetHeroUnit(unit_id);
+
+			unit.is_move = true;
+			unit.PlayMove();
+
+		});
+
+		EventManager.Instance().RegisterEvent(EventConfig.EVENT_UNIT_END_MOVE, delegate(object[] all_params) {
+			
+			int unit_id = (int)all_params[0];
+			HeroUnit unit = GetHeroUnit(unit_id);
+			unit.is_move = false;
+			unit.PlayIdle();
+
+		});	
+	}
+
 	public HeroUnit CreateHeroUnit(string unit_name, int id, Vector3 pos)
 	{
 		GDSKit.unit unit_gds = GDSKit.unit.GetInstance(unit_name);

@@ -11,7 +11,9 @@ namespace BL
 		public string			gds_name { set; get; }
 		public int				team_id { set; get; }
 
+		public BLIntVector3		pre_position { set; get; }
 		public BLIntVector3		position { set; get; }
+
 		public int				hp { set; get;}
 		public int				max_hp { set; get; }
 

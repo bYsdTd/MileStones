@@ -18,7 +18,7 @@ public class LocalServer
 
 	public void SendPackeage(BL.BLCommandBase command)
 	{
-		command.cast_frame = BL.BLTimelineController.Instance().current_frame;
+		command.cast_frame = BL.BLTimelineController.Instance().current_logic_frame;
 
 		NetManager.Instance().OnReceivePackage(command);
 	}

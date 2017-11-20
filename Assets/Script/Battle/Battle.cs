@@ -31,6 +31,7 @@ public class Battle: MonoBehaviour
 		battle_field.InitRealTimeLogic();
 		battle_field.SetBattleGridRenderer(battle_grid_renderer);
 
+		UnitManager.Instance().OnInit();
 		// 这里逻辑层和渲染层同时初始化了
 		BL.BLTimelineController.Instance().Start();
 		BL.BLUnitManager.Instance().InitUnit();
@@ -40,10 +41,11 @@ public class Battle: MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		// 逻辑层
-		BL.BLTimelineController.Instance().Tick();
-
 		float delta_time = Time.deltaTime;
+
+		// 逻辑层
+		BL.BLTimelineController.Instance().Tick(delta_time);
+
 		InputManager.Instance().Tick(delta_time);
 		TimerManager.Instance().Tick(delta_time);
 

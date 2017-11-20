@@ -29,11 +29,17 @@ namespace BL
 			current_path_node_index = 0;
 
 			hero_unit = cast_unit as BLUnitHero;
+
+			hero_unit.pre_position = start_position;
+
+			EventManager.Instance().PostEvent(EventConfig.EVENT_UNIT_START_MOVE, new object[]{ hero_unit.unit_id});
 		}
 
 		public override void OnDestroy ()
 		{
 			base.OnDestroy();
+
+			EventManager.Instance().PostEvent(EventConfig.EVENT_UNIT_END_MOVE, new object[]{ hero_unit.unit_id});
 		}
 
 		public override bool Tick ()
@@ -66,10 +72,8 @@ namespace BL
 
 			BLIntVector3 changed_pos = new BLIntVector3((int)d.x, (int)d.y, (int)d.z);
 
+			hero_unit.pre_position = hero_unit.position;
 			hero_unit.position = hero_unit.position + changed_pos;
-
-
-			//Debug.Log("x " + hero_unit.position.x + " y " + hero_unit.position.z);
 
 			return false;
 		}
