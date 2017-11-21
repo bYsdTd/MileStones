@@ -221,12 +221,17 @@ public class BattleField
 
 		if(path != null)
 		{
-			bl_path.Add(start_pos);
-
 			for(int i = 0; i < path.Count; ++i)
 			{
-				BL.BLIntVector3 bl_position = Grid2BLPosition(path[i]._x,  path[i]._y);
-				bl_path.Add(bl_position);
+				if(i == 0)
+				{
+					bl_path.Add(start_pos);
+				}
+				else
+				{
+					BL.BLIntVector3 bl_position = Grid2BLPosition(path[i]._x,  path[i]._y);
+					bl_path.Add(bl_position);	
+				}
 			}
 
 			bl_path.Add(dest_pos);

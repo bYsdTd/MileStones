@@ -28,7 +28,7 @@ namespace BL
 				command_list.Add(logic_frame, new List<BLCommandBase>());
 			}
 
-			Debug.Log("logic_frame  " + logic_frame + " add command");
+			//Debug.Log("logic_frame  " + logic_frame + " add command");
 
 			command_list[logic_frame].Add(command);
 		}
