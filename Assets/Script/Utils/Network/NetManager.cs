@@ -22,11 +22,11 @@ public class NetManager
 
 	public void Init()
 	{
-		Connect("127.0.0.1", 8086);
+		Connect("10.0.6.156", 2000);
 
 		JoinRoom packet = new JoinRoom();
 		packet.room_id = 147;
-		SendPacket(66, packet.Serialize());
+		SendPacket(1, packet.Serialize());
 	}
 
 	public void Connect(string ip, int port)
@@ -43,7 +43,7 @@ public class NetManager
 		clientSocket.MainThreadFunc();
 	}
 
-	public void SendPacket(int packet_id, byte[] packet)
+	public void SendPacket(short packet_id, byte[] packet)
 	{
 		clientSocket.SendPacket(packet_id, packet);
 	}

@@ -53,6 +53,39 @@ public class SocketBuffer
 		}
 	}
 
+	public void WriteByte(byte val)
+	{
+		lock(mutex)
+		{
+			if(1 + offset > totalSize)
+			{
+				Debug.Log("socket buffer write error");
+
+				return;
+			}
+
+			buffer[offset++] = val;
+		}
+	}
+
+	public void WriteShort(short val)
+	{
+		byte[] bytes = BitConverter.GetBytes(ByteOrderConverter.HostToNetworkOrder(val));
+		Write(bytes, bytes.Length);
+	}
+
+	public void WriteInt(int val)
+	{
+		byte[] bytes = BitConverter.GetBytes(ByteOrderConverter.HostToNetworkOrder(val));
+		Write(bytes, bytes.Length);
+	}
+
+	public void WriteUInt32(UInt32 val)
+	{
+		byte[] bytes = BitConverter.GetBytes(ByteOrderConverter.HostToNetworkOrder(val));
+		Write(bytes, bytes.Length);
+	}
+
 	public void Write(byte[] src, int len)
 	{
 		lock(mutex)

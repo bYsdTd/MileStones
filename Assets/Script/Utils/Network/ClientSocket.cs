@@ -98,8 +98,14 @@ public class ClientSocket
 	}
 
 	// 这里处理整理协议包的内容, 目前为了兼容后端
-	public void SendPacket(int packet_id, byte[] senddata)
+	public void SendPacket(short packet_id, byte[] senddata)
 	{
+		sendBuffer.WriteByte(SocketBuffer.PackageBreaker);
+		sendBuffer.WriteShort(packet_id);
+		sendBuffer.WriteByte(0);
+		sendBuffer.WriteInt(senddata.Length);
 		sendBuffer.Write(senddata, senddata.Length);
+		sendBuffer.WriteUInt32(0);
+		sendBuffer.WriteByte(SocketBuffer.PackageBreaker);
 	}
 }
