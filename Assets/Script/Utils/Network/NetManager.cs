@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text;
 
 public class NetManager  
 {
@@ -14,6 +15,37 @@ public class NetManager
 		}
 
 		return instance;
+	}
+
+
+	ClientSocket clientSocket = null;
+
+	public void Init()
+	{
+		Connect("127.0.0.1", 8086);
+
+		JoinRoom packet = new JoinRoom();
+		packet.room_id = 147;
+		SendPacket(66, packet.Serialize());
+	}
+
+	public void Connect(string ip, int port)
+	{
+		Debug.Assert(clientSocket == null);
+
+		clientSocket = new ClientSocket();
+		clientSocket.Connect(ip, port);
+	}
+
+	public void Tick(float dt) 
+	{
+		// check network mannager
+		clientSocket.MainThreadFunc();
+	}
+
+	public void SendPacket(int packet_id, byte[] packet)
+	{
+		clientSocket.SendPacket(packet_id, packet);
 	}
 
 	public void OnReceivePackage(BL.BLCommandBase command)

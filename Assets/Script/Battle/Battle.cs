@@ -15,6 +15,8 @@ public class Battle: MonoBehaviour
 
 		GUIManager.Instance().Init();
 
+		NetManager.Instance().Init();
+
 		// 
 		GDSKit.GDSMgr.Instance().InitGDSData();
 
@@ -43,6 +45,9 @@ public class Battle: MonoBehaviour
 	{
 		float delta_time = Time.deltaTime;
 
+		// 网络层
+		NetManager.Instance().Tick(delta_time);
+
 		// 逻辑层
 		BL.BLTimelineController.Instance().Tick(delta_time);
 
@@ -56,7 +61,6 @@ public class Battle: MonoBehaviour
 		{
 			battle_field.Tick(delta_time);
 		}
-
 
 	}
 }
