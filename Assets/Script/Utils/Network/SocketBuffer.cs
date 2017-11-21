@@ -96,6 +96,7 @@ public class SocketBuffer
 					break;
 				}
 
+				// 先读取包的size
 				int packet_size = BitConverter.ToInt32(buffer, DataSizeOffset);
 
 				int len = packet_size + WrapperLen;
@@ -105,14 +106,15 @@ public class SocketBuffer
 					break;
 				}
 
+				// 读取包id
 				int id = BitConverter.ToInt16(buffer, HandlerIdOfffset);
 
 				// 包头 读取完毕
 				Array.Copy(buffer, WrapperLen, buffer, 0, offset - WrapperLen);
 				offset = offset - (uint)WrapperLen;
 
+				// 处理具体的包协议
 				object proto_data = null;
-
 
 				if(id == 2)
 				{
