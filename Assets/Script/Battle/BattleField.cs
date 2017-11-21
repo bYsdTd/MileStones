@@ -227,14 +227,16 @@ public class BattleField
 				{
 					bl_path.Add(start_pos);
 				}
+				else if(i == path.Count -1)
+				{
+					bl_path.Add(dest_pos);
+				}
 				else
 				{
 					BL.BLIntVector3 bl_position = Grid2BLPosition(path[i]._x,  path[i]._y);
 					bl_path.Add(bl_position);	
 				}
 			}
-
-			bl_path.Add(dest_pos);
 		}
 
 		return bl_path;
