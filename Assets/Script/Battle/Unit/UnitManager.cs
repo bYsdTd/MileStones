@@ -94,12 +94,7 @@ public class UnitManager
 		hero_unit.unit_type = UnitType.Hero;
 		hero_unit.unit_id = id;
 		hero_unit.resource_key = unit_gds.resource_name;
-
-		int grid_x;
-		int grid_y;
-
-		BattleField.battle_field.WorldPositon2Grid(pos, out grid_x, out grid_y);
-		hero_unit.position = BattleField.battle_field.Grid2WorldPosition(grid_x, grid_y);
+		hero_unit.position = pos;
 
 		if(all_unit_list.ContainsKey(hero_unit.unit_id))
 		{
