@@ -28,6 +28,8 @@ namespace BL
 				command_list.Add(logic_frame, new List<BLCommandBase>());
 			}
 
+			Debug.Log("logic_frame  " + logic_frame + " add command");
+
 			command_list[logic_frame].Add(command);
 		}
 
@@ -62,8 +64,6 @@ namespace BL
 			move_command.cast_frame = cast_frame;
 			move_command.cast_unit_id = cast_id;
 			move_command.dest_position = dest_position;
-
-			move_command.OnInit();
 
 			return move_command;
 		}

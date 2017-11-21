@@ -11,6 +11,7 @@ namespace BL
 		public string			gds_name { set; get; }
 		public int				team_id { set; get; }
 
+		// pre position 用作逻辑层差值
 		public BLIntVector3		pre_position { set; get; }
 		public BLIntVector3		position { set; get; }
 
@@ -21,6 +22,8 @@ namespace BL
 
 		private	BLCommandBase	current_command_;
 
+		// 表现层使用数据
+		public Vector3			dir { set; get; }
 
 		virtual public void OnInit()
 		{
@@ -51,7 +54,6 @@ namespace BL
 			}
 
 			current_command_ = command;
-
 			current_command_.OnInit();
 		}
 	}	

@@ -32,6 +32,17 @@ namespace BL
 			return (int)Mathf.Sqrt(x*x + y*y + z*z);
 		}
 
+		// 做线性差值，total 是总共分成多少段，offset是距离起始点偏移了多少段
+		public static BLIntVector3 Lerp(BLIntVector3 a, BLIntVector3 b, int offset, int total)
+		{
+			BLIntVector3 result = a;
+			result.x += (b.x - a.x) * offset / total;
+			result.y += (b.y - a.y) * offset / total;
+			result.z += (b.z - a.z) * offset / total;
+
+			return result;
+		}
+
 		public static int DistanceSqr (BLIntVector3 a, BLIntVector3 b)
 		{
 			BLIntVector3 tmp = a - b;
@@ -67,6 +78,11 @@ namespace BL
 		public static Vector3 operator * (float d, BLIntVector3 a)
 		{
 			return new Vector3(a.x * d, a.y * d, a.z * d);
+		}
+
+		public override string ToString ()
+		{
+			return string.Format ("x: {0}, y: {1}, z: {2}", x, y, z);
 		}
 	}	
 }

@@ -14,7 +14,7 @@ namespace BL
 
 		public virtual void OnInit()
 		{
-			cast_unit = BLUnitManager.Instance().GetUnit(cast_unit_id);
+			
 		}
 
 		public virtual void OnDestroy()
@@ -24,6 +24,8 @@ namespace BL
 
 		public void DoCommand()
 		{
+			cast_unit = BLUnitManager.Instance().GetUnit(cast_unit_id);
+
 			if(cast_unit != null)
 			{
 				cast_unit.DoCommand(this);

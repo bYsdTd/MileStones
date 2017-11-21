@@ -18,6 +18,7 @@ public class NetManager
 
 	public void OnReceivePackage(BL.BLCommandBase command)
 	{
+
 		BL.BLCommandManager.Instance().AddCommand(command.cast_frame, command);
 
 		// 这里将来应该是跟服务器同步的地方

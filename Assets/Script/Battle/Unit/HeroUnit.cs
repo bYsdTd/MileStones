@@ -219,8 +219,10 @@ public class HeroUnit : BaseUnit
 
 			position = now_position;
 
-			SetDirection(next_position - pre_position);
-
+			if(bl_unit_info.dir != Vector3.zero)
+			{
+				SetDirection(bl_unit_info.dir);	
+			}
 		}
 	}
 
