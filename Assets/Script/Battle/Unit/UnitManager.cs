@@ -220,85 +220,13 @@ public class UnitManager
 		}
 	}
 
-	public void InitUnit()
+	public void UpdateAllFogOfWar()
 	{
-//		// team 1
-//		Vector3 born_point1 = new Vector3(5, 0, 30);
-//
-//		CreateHeroUnit("soldier", 0, GetRandomPosition(born_point1), 1);
-//		CreateHeroUnit("soldier", 1, GetRandomPosition(born_point1), 1);
+		var enumerator = all_unit_list.GetEnumerator();
 
-//		CreateHeroUnit("tank", 2, GetRandomPosition(born_point1), 1);
-//		CreateHeroUnit("tank", 3, GetRandomPosition(born_point1), 1);
-//		CreateHeroUnit("tank", 4, GetRandomPosition(born_point1), 1);
-//
-//
-//
-//		CreateHeroUnit("b2", 5, GetRandomPosition(born_point1), 1);
-//		CreateHeroUnit("b2", 6, GetRandomPosition(born_point1), 1);
-//
-//		CreateHeroUnit("f15", 7, GetRandomPosition(born_point1), 1);
-//		CreateHeroUnit("f15", 8, GetRandomPosition(born_point1), 1);
-//
-//
-//		CreateHeroUnit("rocket_car", 9, GetRandomPosition(born_point1), 1);
-//
-//		CreateBuildingUnit("base", 51, born_point1, 1);
-
-
-//		// team 2
-//
-//		Vector3 born_point2 = new Vector3(50, 0, 10);
-//
-//		HeroUnit base_unit = CreateHeroUnit("soldier", 101, GetRandomPosition(born_point2), 2);
-//		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
-//
-//		base_unit = CreateHeroUnit("soldier", 102, GetRandomPosition(born_point2), 2);
-//		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
-//
-//		base_unit = CreateHeroUnit("soldier", 103, GetRandomPosition(born_point2), 2);
-//		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
-//
-//		base_unit = CreateHeroUnit("tank", 104, GetRandomPosition(born_point2), 2);
-//		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
-//
-//		base_unit = CreateHeroUnit("tank", 105, GetRandomPosition(born_point2), 2);
-//		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
-//
-//		base_unit = CreateHeroUnit("tank", 106, GetRandomPosition(born_point2), 2);
-//		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
-//
-//		base_unit = CreateHeroUnit("b2", 107, GetRandomPosition(born_point2), 2);
-//		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
-//
-//		base_unit = CreateHeroUnit("b2", 108, GetRandomPosition(born_point2), 2);
-//		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
-//
-//		base_unit = CreateHeroUnit("f15", 109, GetRandomPosition(born_point2), 2);
-//		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
-//
-//		base_unit = CreateHeroUnit("f15", 110, GetRandomPosition(born_point2), 2);
-//		base_unit.robot_base_ai = new RobotBaseAI(base_unit, born_point1);
-//
-//		CreateBuildingUnit("base", 151, born_point2, 2);
-//
-//		Vector3 born_point3 = new Vector3(18, 0, 9);
-//
-//		CreateHeroUnit("soldier", 111, GetRandomPosition(born_point3), 2);
-//		CreateHeroUnit("soldier", 112, GetRandomPosition(born_point3), 2);
-//		CreateHeroUnit("tank", 113, GetRandomPosition(born_point3), 2);
-//
-//		Vector3 born_point4 = new Vector3(22, 0, 37);
-//
-//		CreateHeroUnit("soldier", 114, GetRandomPosition(born_point4), 2);
-//		CreateHeroUnit("soldier", 115, GetRandomPosition(born_point4), 2);
-//		CreateHeroUnit("tank", 116, GetRandomPosition(born_point4), 2);
-//
-//		Vector3 born_point5 = new Vector3(30, 0, 21);
-//
-//		CreateHeroUnit("soldier", 117, GetRandomPosition(born_point5), 2);
-//		CreateHeroUnit("soldier", 118, GetRandomPosition(born_point5), 2);
-//		CreateHeroUnit("tank", 119, GetRandomPosition(born_point5), 2);
-
+		while(enumerator.MoveNext())
+		{
+			enumerator.Current.Value.UpdateFogOfWar();
+		}
 	}
 }

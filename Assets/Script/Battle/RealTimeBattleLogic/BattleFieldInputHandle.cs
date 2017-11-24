@@ -3,6 +3,20 @@ using System.Collections;
 
 public class BattleFieldInputHandle 
 {
+	static private BattleFieldInputHandle instance = null;
+
+	static public BattleFieldInputHandle Instance()
+	{
+		if(instance == null)
+		{
+			instance = new BattleFieldInputHandle();
+		}
+
+		return instance;
+	}
+
+	public bool enabled { set; get; }
+
 	public Transform cache_battle_field_camera = null;
 
 	private	BaseUnit current_select_unit = null;
@@ -22,6 +36,8 @@ public class BattleFieldInputHandle
 		RegisterEvent();
 
 		unit_layer_mask = 1 << LayerMask.NameToLayer("Unit");
+
+		enabled = false;
 	}
 
 	public void Destroy()
@@ -53,11 +69,21 @@ public class BattleFieldInputHandle
 
 	public void OnBattleFieldClickDown(params System.Object[] all_params)
 	{
+		if(!enabled)
+		{
+			return;
+		}
+
 		current_click_down_position = (Vector2)all_params[0];
 	}
 
 	public void OnBattleFieldDragMove(params System.Object[] all_params)
 	{
+		if(!enabled)
+		{
+			return;
+		}
+
 		Vector2 delta_position = (Vector2)all_params[0];
 		Vector2 touch_position = (Vector2)all_params[1];
 
@@ -162,6 +188,11 @@ public class BattleFieldInputHandle
 
 	public void OnBattleFieldClickUp(params System.Object[] all_params)
 	{
+		if(!enabled)
+		{
+			return;
+		}
+
 		if(is_draging_battle_field)
 		{
 			is_draging_battle_field = false;
@@ -247,13 +278,22 @@ public class BattleFieldInputHandle
 				// 正常应该是按照协议的标准去发包到服务器
 				// 在收到包的时候才创建command
 
-				BL.BLIntVector3 dest_position;
-				dest_position.x = (int)(hit_position.x * 1000);
-				dest_position.y = 0;
-				dest_position.z = (int)(hit_position.z * 1000);
+//				BL.BLIntVector3 dest_position;
+//				dest_position.x = (int)(hit_position.x * 1000);
+//				dest_position.y = 0;
+//				dest_position.z = (int)(hit_position.z * 1000);
+//
+//				BL.BLCommandBase command = BL.BLCommandManager.Instance().CreateMove2PositionCommand(current_select_unit.unit_id, 0, dest_position);
+//				LocalServer.Instance().SendPackeage(command);
 
-				BL.BLCommandBase command = BL.BLCommandManager.Instance().CreateMove2PositionCommand(current_select_unit.unit_id, 0, dest_position);
-				LocalServer.Instance().SendPackeage(command);
+				BattleProto.Tick command = new BattleProto.Tick();
+				command.team_id = BattleField.battle_field.my_team_id;
+				command.command_type = 1;
+				command.cast_id = current_select_unit.unit_id;
+				command.x = (int)(hit_position.x * 1000);
+				command.y = (int)(hit_position.z * 1000);
+
+				NetManager.Instance().SendPacket(RequestId.Tick, command);
 			}
 		}
 	}

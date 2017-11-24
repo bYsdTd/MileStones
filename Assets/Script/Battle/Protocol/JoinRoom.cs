@@ -4,38 +4,25 @@ using UnityEngine;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
-[System.Serializable]
-public class JoinRoom
+namespace BattleProto
 {
-	public int	room_id { set; get; }
-
-	public byte[] Serialize()
+	public class JoinRoom : IProtoSerializer
 	{
-		MemoryStream stream = new MemoryStream();
-		BinaryFormatter bf = new BinaryFormatter();
-		bf.Serialize(stream , this);
+		public int	room_id { set; get; }
+		 
+		public int Length()
+		{
+			return 4;
+		}
 
-		byte[] data = stream.ToArray();
-		stream.Close( );
+		public void Serialize(byte[] buffer, ref int offset)
+		{
+			SerializeHelper.WriteInt(buffer, room_id, ref offset);
+		}
 
-		return data;
-	}
-
-	public static JoinRoom Deserialize(byte[] data)
-	{
-		MemoryStream stream = new MemoryStream();
-		stream.Write(data , 0 , data.Length);
-		stream.Position = 0;
-
-		BinaryFormatter bf = new BinaryFormatter();
-		JoinRoom obj = bf.Deserialize(stream) as JoinRoom;
-		stream.Close();
-
-		return obj;
-	}
-
-	public override string ToString ()
-	{
-		return string.Format ("[JoinRoom: room_id={0}]", room_id);
-	}
+		public override string ToString ()
+		{
+			return string.Format ("[JoinRoom: room_id={0}]", room_id);
+		}
+	}	
 }

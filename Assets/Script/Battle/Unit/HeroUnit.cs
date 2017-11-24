@@ -81,13 +81,13 @@ public class HeroUnit : BaseUnit
 
 	public override void OnInit ()
 	{
+		bl_unit_info = BL.BLUnitManager.Instance().GetUnit(unit_id) as BL.BLUnitHero;
+
 		base.OnInit ();
 
 		attack_range_circle.gameObject.SetActive(false);
 
 		current_command = null;
-
-		bl_unit_info = BL.BLUnitManager.Instance().GetUnit(unit_id) as BL.BLUnitHero;
 	}
 
 	public override int GetTeamID ()
@@ -206,6 +206,12 @@ public class HeroUnit : BaseUnit
 		if(is_move && bl_unit_info != null)
 		{
 			float current_time_span = (BL.BLTimelineController.Instance().current_logic_frame_time_stamp - BL.BLTimelineController.Instance().pre_logic_frame_time_stamp);
+
+			if(current_time_span == 0)
+			{
+				return;
+			}
+
 			//float current_elapsed = (BL.BLTimelineController.Instance().current_time_stamp - BL.BLTimelineController.Instance().pre_logic_frame_time_stamp);
 			float current_elapsed = BL.BLTimelineController.Instance().time_elapsed_from_pre_frame;
 

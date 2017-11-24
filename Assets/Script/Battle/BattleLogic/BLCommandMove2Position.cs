@@ -48,7 +48,7 @@ namespace BL
 					BLIntVector3 current_node = path_node[i];
 
 					int magnitude = (current_node - pre_node).Magnitude();
-					int need_frame = magnitude / hero_unit.move_speed / BLTimelineController.MS_PER_FRAME;
+					int need_frame = (int)(magnitude / hero_unit.move_speed / BLTimelineController.MS_PER_FRAME);
 
 					if(need_frame > 0)
 					{

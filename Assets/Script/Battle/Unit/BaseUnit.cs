@@ -132,6 +132,18 @@ public class BaseUnit : MonoBehaviour {
 	[HideInInspector]
 	public RobotBaseAI		robot_base_ai;
 
+	public void UpdateFogOfWar()
+	{
+		if(BattleField.battle_field.IsMyTeam(GetTeamID()))
+		{
+			fow_unit = gameObject.GetOrAddComponent<FoW.FogOfWarUnit>();
+
+			fow_unit.team = GetTeamID();
+
+			fow_unit.radius = attack_vision;
+		}	
+	}
+
 	virtual public void OnInit()
 	{
 		show_blood_hud = false;
@@ -140,13 +152,7 @@ public class BaseUnit : MonoBehaviour {
 		gameObject.SetActive(true);
 		vision_range_circle.gameObject.SetActive(false);
 
-		if(BattleField.battle_field.IsMyTeam(GetTeamID()))
-		{
-			fow_unit = gameObject.GetOrAddComponent<FoW.FogOfWarUnit>();
-
-			fow_unit.team = GetTeamID();
-			fow_unit.radius = attack_vision;
-		}
+		UpdateFogOfWar();
 
 		if(blood_hud_obj != null)
 		{
@@ -223,10 +229,7 @@ public class BaseUnit : MonoBehaviour {
 			//			}
 		}
 
-		if(fow_unit != null)
-		{
-			fow_unit.team = team_id;
-		}
+		UpdateFogOfWar();
 	}
 
 	virtual public int GetTeamID()
@@ -443,7 +446,7 @@ public class BaseUnit : MonoBehaviour {
 	// 考虑共享视野
 	public bool IsCanSeeUnit(BaseUnit enemy_unit)
 	{
-		HashSet<BaseUnit> vision_enemy_units = BattleField.battle_field.real_time_battle_logic.battle_vision_control.vision_enemy_units[GetTeamID()];
+		HashSet<BaseUnit> vision_enemy_units = BattleField.battle_field.battle_vision_control.vision_enemy_units[GetTeamID()];
 
 		return vision_enemy_units.Contains(enemy_unit);
 	}

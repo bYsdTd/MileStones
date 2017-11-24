@@ -11,11 +11,27 @@ public class BattleField
 	public static float TIME_PER_FRAME = 1.0f / FRAME_RATE;
 
 	public MapSaveData	map_data;
-	public RealTimeBattleLogic	real_time_battle_logic = null;
 
+	public int my_team_id { set; get; }
 
 	BattleGridRenderer _battle_grid_renderer;
+	public BattleVisionControl	battle_vision_control;
 
+	public string GetStateText()
+	{
+		if(BL.BLTimelineController.Instance().is_start)
+		{
+			return "战斗开始";
+		}
+		else if(BL.BLTimelineController.Instance().is_join_room)
+		{
+			return "等待其他玩家加入房间";
+		}
+		else
+		{
+			return "正在连入房间";
+		}
+	}
 
 	public void SetBattleGridRenderer(BattleGridRenderer battle_grid_renderer)
 	{
@@ -44,17 +60,15 @@ public class BattleField
 		}
 	}
 
-	public void InitRealTimeLogic()
+	public void InitLogic()
 	{
-		// 我的team id，先写死为1
-		real_time_battle_logic = new RealTimeBattleLogic();
-		real_time_battle_logic.Init(1);
+		battle_vision_control = new BattleVisionControl();
 	}
 
 	// 实时操作接口，单位是不是自己的单位
 	public bool IsMyTeam(int team_id)
 	{
-		return real_time_battle_logic.my_team_id == team_id;
+		return my_team_id == team_id;
 	}
 
 	public bool IsBlock(int x, int y)
@@ -425,9 +439,9 @@ public class BattleField
 
 	public void Tick(float delta_time)
 	{
-		if(real_time_battle_logic != null)
+		if(battle_vision_control != null)
 		{
-			real_time_battle_logic.Tick(delta_time);
+			battle_vision_control.Tick(delta_time);
 		}
 	}
 }

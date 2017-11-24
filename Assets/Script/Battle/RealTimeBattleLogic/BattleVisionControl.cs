@@ -6,8 +6,6 @@ public class BattleVisionControl
 {
 	public Dictionary<int, HashSet<BaseUnit>> vision_enemy_units = new Dictionary<int, HashSet<BaseUnit>>();
 
-	public RealTimeBattleLogic my_real_time_logic = null;
-
 	// 每帧更新能看到的单位,
 	// 所有的单位共享视野
 	public void Tick(float delta_time)

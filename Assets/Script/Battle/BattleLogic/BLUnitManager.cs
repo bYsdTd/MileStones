@@ -40,6 +40,7 @@ namespace BL
 
 		public BLUnitHero CreateHeroUnit(string gds_name, int id, BLIntVector3 pos, int team_id)
 		{
+			
 			GDSKit.unit unit_gds = GDSKit.unit.GetInstance(gds_name);
 
 			BLUnitHero hero_unit = new BLUnitHero();
@@ -78,6 +79,11 @@ namespace BL
 			hero_unit_list.Add(hero_unit.unit_id, hero_unit);
 
 			hero_unit.OnInit();
+
+			// 表现层
+			HeroUnit unit_renderer = UnitManager.Instance().CreateHeroUnit(hero_unit.gds_name, hero_unit.unit_id, hero_unit.position.Vector3Value());
+			unit_renderer.attack_vision = hero_unit.vision * 0.001f;
+			unit_renderer.SetTeamID(hero_unit.team_id);
 
 			return hero_unit;
 		}
@@ -128,12 +134,11 @@ namespace BL
 		public void InitUnit()
 		{
 			BLIntVector3 born_point1 = new BLIntVector3(5000, 0, 30000);
+			BLIntVector3 born_point2 = new BLIntVector3(9000, 0, 30000);
 
-			BLUnitHero hero1 = CreateHeroUnit("soldier", 0, GetRandomPosition(born_point1), 1);
-			BLUnitHero hero2 = CreateHeroUnit("soldier", 1, GetRandomPosition(born_point1), 1);
+			BLUnitHero hero1 = CreateHeroUnit("soldier", 0, born_point1, 1);
 
-			UnitManager.Instance().CreateHeroUnit(hero1.gds_name, hero1.unit_id, hero1.position.Vector3Value());
-			UnitManager.Instance().CreateHeroUnit(hero2.gds_name, hero2.unit_id, hero2.position.Vector3Value());
+			BLUnitHero hero2 = CreateHeroUnit("soldier", 1, born_point2, 2);
 
 		}
 	}	

@@ -481,7 +481,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1007008196}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3ec0af1344bf2204db5c3b78db3954fe, type: 3}
   m_Name: 
@@ -820,7 +820,7 @@ MonoBehaviour:
   manualHeight: 720
   minimumHeight: 320
   maximumHeight: 1536
-  manualWidth: 1157
+  manualWidth: 1287
   minimumWidth: 1136
   adjustByDPI: 0
   shrinkPortraitUI: 0
@@ -832,7 +832,7 @@ Transform:
   m_GameObject: {fileID: 1650314025}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.0030721966, y: 0.0030721966, z: 0.0030721966}
+  m_LocalScale: {x: 0.002762431, y: 0.002762431, z: 0.002762431}
   m_Children:
   - {fileID: 222499026}
   m_Father: {fileID: 0}

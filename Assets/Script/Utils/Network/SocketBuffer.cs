@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using BattleProto;
 
 public class SocketBuffer 
 {
@@ -11,12 +12,13 @@ public class SocketBuffer
 
 	public const int HandlerIdOfffset 	= 1;
 	public const int DataSizeOffset 	= 4;
+	public const int DataOffset 		= 8;
 	public const int DataSize			= 4;
 
 	// buffer array
 	byte[] buffer = null;
 	// current data offset
-	public uint offset = 0;
+	public int offset = 0;
 	int totalSize = 0;
 
 	object mutex = new object();
@@ -48,42 +50,23 @@ public class SocketBuffer
 			Array.Copy(buffer, 0, dest, 0, len);
 			Array.Copy(buffer, len, buffer, 0, offset - len);
 
-			offset = offset - (uint)len;
+			offset = offset - len;
 			return len;
 		}
 	}
 
-	public void WriteByte(byte val)
+	public void WrapSendPacket(short packet_id, IProtoSerializer packet)
 	{
 		lock(mutex)
 		{
-			if(1 + offset > totalSize)
-			{
-				Debug.Log("socket buffer write error");
-
-				return;
-			}
-
-			buffer[offset++] = val;
+			SerializeHelper.WriteByte(buffer, SocketBuffer.PackageBreaker, ref offset);
+			SerializeHelper.WriteShort(buffer, packet_id, ref offset);
+			SerializeHelper.WriteByte(buffer, 0, ref offset);
+			SerializeHelper.WriteInt(buffer, packet.Length(), ref offset);
+			packet.Serialize(buffer, ref offset);
+			SerializeHelper.WriteUInt32(buffer, 0, ref offset);
+			SerializeHelper.WriteByte(buffer, SocketBuffer.PackageBreaker, ref offset);
 		}
-	}
-
-	public void WriteShort(short val)
-	{
-		byte[] bytes = BitConverter.GetBytes(ByteOrderConverter.HostToNetworkOrder(val));
-		Write(bytes, bytes.Length);
-	}
-
-	public void WriteInt(int val)
-	{
-		byte[] bytes = BitConverter.GetBytes(ByteOrderConverter.HostToNetworkOrder(val));
-		Write(bytes, bytes.Length);
-	}
-
-	public void WriteUInt32(UInt32 val)
-	{
-		byte[] bytes = BitConverter.GetBytes(ByteOrderConverter.HostToNetworkOrder(val));
-		Write(bytes, bytes.Length);
 	}
 
 	public void Write(byte[] src, int len)
@@ -99,7 +82,7 @@ public class SocketBuffer
 
 			Array.Copy(src, 0, buffer, offset, len);
 
-			offset += (uint)len;
+			offset += len;
 		}
 	}
 
@@ -130,33 +113,43 @@ public class SocketBuffer
 				}
 
 				// 先读取包的size
-				int packet_size = BitConverter.ToInt32(buffer, DataSizeOffset);
+				int packet_size = ByteOrderConverter.NetworkToHostOrder(BitConverter.ToInt32(buffer, DataSizeOffset));
 
-				int len = packet_size + WrapperLen;
+				int proto_total_len = packet_size + WrapperLen;
 
-				if(offset < len)
+				if(offset < proto_total_len)
 				{
 					break;
 				}
 
 				// 读取包id
-				int id = BitConverter.ToInt16(buffer, HandlerIdOfffset);
-
-				// 包头 读取完毕
-				Array.Copy(buffer, WrapperLen, buffer, 0, offset - WrapperLen);
-				offset = offset - (uint)WrapperLen;
+				int id = ByteOrderConverter.NetworkToHostOrder(BitConverter.ToInt16(buffer, HandlerIdOfffset));
 
 				// 处理具体的包协议
 				object proto_data = null;
+				int proto_data_deserialize_offset = DataOffset;
 
-				if(id == 2)
+				switch(id)
 				{
-					proto_data = JoinRoomResult.Deserialize(buffer);
-				}
-				else 
-				{
-					
-				}
+				case ResponseId.JoinRoomResult:
+					{
+						proto_data = JoinRoomResult.Deserialize(buffer, ref proto_data_deserialize_offset);
+					}
+					break;
+				case ResponseId.BattleStart:
+					{
+						proto_data = BattleStart.Deserialize(buffer, ref proto_data_deserialize_offset);
+					}
+					break;
+				case ResponseId.Tick:
+					{
+						proto_data = TickList.Deserialize(buffer, ref proto_data_deserialize_offset);
+					}
+					break;
+
+				default:
+					break;
+				};
 
 				if(proto_data != null)
 				{
@@ -166,12 +159,12 @@ public class SocketBuffer
 
 					proto_data_queue.Enqueue(data);
 				}
-
+					
 				// 包体读取完毕
-				Array.Copy(buffer, packet_size, buffer, 0, offset - packet_size);
-				offset = offset - (uint)packet_size;
+				Array.Copy(buffer, proto_total_len, buffer, 0, offset - proto_total_len);
+				offset = offset - proto_total_len;
 			}
-			while(false);
+			while(true);
 		}
 	}
 }

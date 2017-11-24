@@ -48,9 +48,9 @@ public class AttackAI
 	static public BaseUnit FindCanAttackTarget(HeroUnit hero_unit)
 	{
 		// 找到视野范围内，第一个能攻击到的目标
-		if(BattleField.battle_field.real_time_battle_logic.battle_vision_control.vision_enemy_units.ContainsKey(hero_unit.GetTeamID()))
+		if(BattleField.battle_field.battle_vision_control.vision_enemy_units.ContainsKey(hero_unit.GetTeamID()))
 		{
-			var vision_enemy_units = BattleField.battle_field.real_time_battle_logic.battle_vision_control.vision_enemy_units[hero_unit.GetTeamID()];
+			var vision_enemy_units = BattleField.battle_field.battle_vision_control.vision_enemy_units[hero_unit.GetTeamID()];
 
 			var enumerator = vision_enemy_units.GetEnumerator();
 			while(enumerator.MoveNext())
