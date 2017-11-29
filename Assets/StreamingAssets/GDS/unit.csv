@@ -1,10 +1,10 @@
 unit_name,resource_name,unit_hp,unit_attack,attack_speed,attack_range,attack_vision,move_speed,is_move_attack,is_fly,can_attack_ground,can_attack_fly,revive_cd,aoe_radius,can_pursue,bullet_speed
 string,string,int,int,int,int,int,int,bool,bool,bool,bool,int,int,bool,int
-单位名称,资源名称,血量,攻击力,攻速(毫秒),攻击距离(毫米),视野(毫米),移动速度，毫米／毫秒,是否可以移动攻击,是否飞行单位,是否可以攻击地面,是否可以攻击飞行单位,复活cd(毫秒),范围伤害半径(毫米)0表示没有范围伤害,是否可追击,弹道速度，毫米／秒配置0表示瞬时，没有弹道
+单位名称,资源名称,血量,攻击力,攻速(毫秒),攻击距离(毫米),视野(毫米),移动速度，毫米／毫秒， 米／秒,是否可以移动攻击,是否飞行单位,是否可以攻击地面,是否可以攻击飞行单位,复活cd(毫秒),范围伤害半径(毫米)0表示没有范围伤害,是否可追击,弹道速度，毫米／毫秒，米／秒 配置0表示瞬时，没有弹道
 key,,,,,,,,,,,,,,,
 0,,,,,,,,,,,,,,,
-soldier,ToonSoldier,200,2,500,2000,3000,2,TRUE,FALSE,TRUE,FALSE,30000,0,TRUE,0
+soldier,ToonSoldier,200,20,500,2000,3000,2,TRUE,FALSE,TRUE,FALSE,30000,0,TRUE,0
 tank,BigTank,200,10,2000,5000,6000,1,FALSE,FALSE,TRUE,FALSE,30000,0,TRUE,0
 b2,Stealth_Bomber,200,20,1000,5000,6000,1,FALSE,TRUE,TRUE,FALSE,30000,3000,TRUE,0
 f15,war_plane_1,200,2,100,5000,6000,3,FALSE,TRUE,FALSE,TRUE,30000,0,TRUE,0
-rocket_car,rocket_tank,200,200,5000,10000,10000,3,FALSE,FALSE,TRUE,FALSE,30000,3000,FALSE,10000
+rocket_car,rocket_tank,200,200,5000,10000,10000,3,FALSE,FALSE,TRUE,FALSE,30000,3000,FALSE,10

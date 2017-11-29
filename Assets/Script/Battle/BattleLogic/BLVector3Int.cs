@@ -29,7 +29,16 @@ namespace BL
 
 		public int Magnitude()
 		{
-			return (int)Mathf.Sqrt(x*x + y*y + z*z);
+			return (int)Mathf.Sqrt(x*x*1.0f + y*y*1.0f + z*z*1.0f);
+		}
+
+		public float SqrMagnitude()
+		{
+			float x_ = (float)x;
+			float y_ = (float)y;
+			float z_ = (float)z;
+
+			return 	x_*x_ + y_*y_ + z_*z_;
 		}
 
 		// 做线性差值，total 是总共分成多少段，offset是距离起始点偏移了多少段

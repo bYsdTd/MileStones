@@ -15,6 +15,7 @@ public class Battle: MonoBehaviour
 		QualitySettings.vSyncCount = 0;
 
 		GUIManager.Instance().Init();
+		BulletManager.Instance().Init();
 
 		GDSKit.GDSMgr.Instance().InitGDSData();
 
@@ -28,18 +29,16 @@ public class Battle: MonoBehaviour
 
 		battle_field.LoadMap(map_path);
 
-		battle_field.InitLogic();
 		battle_field.SetBattleGridRenderer(battle_grid_renderer);
 		BattleFieldInputHandle.Instance().Init();
-		UnitManager.Instance().OnInit();
-
+		UnitManager.Instance().Init();
 	}
 
 	// 加入房间
 	void JoinRoom(int room_id)
 	{
 		// 这里逻辑层和渲染层同时初始化了
-		BL.BLUnitManager.Instance().InitUnit();
+		BL.BLUnitManager.Instance().InitBase();
 
 
 		// 加载完成，加入房间1
@@ -64,8 +63,10 @@ public class Battle: MonoBehaviour
 
 		// 渲染层
 		UnitManager.Instance().Tick(delta_time);
+		BulletManager.Instance().Tick(delta_time);
 
-		// 视野计算，要转移到逻辑层去
+
+		// 目前没有战场的逻辑, 这个tick是空的，逻辑都在timeline controller里
 		if(battle_field != null)
 		{
 			battle_field.Tick(delta_time);
@@ -74,6 +75,13 @@ public class Battle: MonoBehaviour
 
 	void OnApplicationQuit()
 	{
+		BattleFieldInputHandle.Instance().Destroy();
+
+		GUIManager.Instance().Destroy();
+		BulletManager.Instance().Destroy();
+
+		UnitManager.Instance().Destroy();
+
 		NetManager.Instance().Close();
 	}
 

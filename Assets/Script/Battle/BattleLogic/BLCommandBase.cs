@@ -6,11 +6,8 @@ namespace BL
 {
 	public class BLCommandBase
 	{
-		public int				cast_unit_id { set; get; }
 		public int				cast_frame { set; get; }
-		public BLCommandType	command_type { set; get; }
-
-		protected BLUnitBase	cast_unit;
+		public int				command_type { set; get; }
 
 		public virtual void OnInit()
 		{
@@ -19,17 +16,10 @@ namespace BL
 
 		public virtual void OnDestroy()
 		{
-			cast_unit = null;
 		}
 
-		public void DoCommand()
+		public virtual void DoCommand()
 		{
-			cast_unit = BLUnitManager.Instance().GetUnit(cast_unit_id);
-
-			if(cast_unit != null)
-			{
-				cast_unit.DoCommand(this);
-			}
 		}
 
 		public virtual bool Tick()

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BL
 {
-	public class BLCommandMove2Position : BLCommandBase
+	public class BLCommandMove2Position : BLCommandUnitBase
 	{
 		public BLIntVector3		dest_position;
 
@@ -25,12 +25,22 @@ namespace BL
 
 			hero_unit = cast_unit as BLUnitHero;
 
-			command_type = BLCommandType.Move;
+			command_type = TickCommandType.Move;
 
 			start_position = hero_unit.position;
 
 			// 准备数据
-			List<BLIntVector3> path_node = BattleField.battle_field.SearchPath(start_position, dest_position);
+			List<BLIntVector3> path_node = null;
+
+			if(hero_unit.is_fly)
+			{
+				path_node  = BattleField.battle_field.SearchFlyPath(start_position, dest_position);
+			}
+			else
+			{
+				path_node  = BattleField.battle_field.SearchPath(start_position, dest_position);
+			}
+
 
 			frame_at_node.Clear();
 			final_path_node.Clear();
@@ -74,14 +84,14 @@ namespace BL
 
 			current_dir = (hero_unit.position - hero_unit.pre_position).Vector3Value();
 
-			EventManager.Instance().PostEvent(EventConfig.EVENT_UNIT_START_MOVE, new object[]{ hero_unit.unit_id});	
+			EventManager.Instance().PostEvent(EventConfig.EVENT_L2R_START_MOVE, new object[]{ hero_unit.unit_id});	
 		}
 
 		public override void OnDestroy ()
 		{
 			base.OnDestroy();
 
-			EventManager.Instance().PostEvent(EventConfig.EVENT_UNIT_END_MOVE, new object[]{ hero_unit.unit_id});
+			EventManager.Instance().PostEvent(EventConfig.EVENT_L2R_END_MOVE, new object[]{ hero_unit.unit_id});
 		}
 
 		public override bool Tick ()

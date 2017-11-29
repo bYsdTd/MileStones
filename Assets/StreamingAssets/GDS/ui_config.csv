@@ -1,0 +1,6 @@
+layout_name,resource_name,class_name
+string,string,string
+界面名称,资源名称,c# 类型名
+key,,
+0,,
+hero_operate,hero_operate,UIHeroOperate

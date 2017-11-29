@@ -55,7 +55,7 @@ MonoBehaviour:
   mSprites:
   - name: blood_progress
     x: 0
-    y: 56
+    y: 108
     width: 128
     height: 8
     borderLeft: 0
@@ -67,9 +67,23 @@ MonoBehaviour:
     paddingTop: 0
     paddingBottom: 0
     rotated: 0
-  - name: symbol_22
+  - name: com_frame_quality
     x: 0
-    y: 13
+    y: 118
+    width: 43
+    height: 138
+    borderLeft: 20
+    borderRight: 20
+    borderTop: 20
+    borderBottom: 20
+    paddingLeft: 0
+    paddingRight: 0
+    paddingTop: 0
+    paddingBottom: 0
+    rotated: 0
+  - name: symbol_22
+    x: 45
+    y: 215
     width: 40
     height: 41
     borderLeft: 0

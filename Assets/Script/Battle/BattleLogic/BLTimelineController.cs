@@ -46,6 +46,13 @@ namespace BL
 
 		private float	total_time_elapsed = 0;
 
+		public void OnJoinRoom(int team_id)
+		{
+			is_join_room = true;
+
+			BLPlayerDataManager.Instance().Init();
+		}
+
 		public void Start()
 		{
 			current_logic_frame = 0;
@@ -119,10 +126,14 @@ namespace BL
 				pre_logic_frame_time_stamp = current_logic_frame_time_stamp;
 				current_logic_frame_time_stamp = total_time_elapsed;
 
+				BattleVisionControl.Instance().Tick();
+
 				// 有指令的话，分发指令
 				BLCommandManager.Instance().Tick(current_logic_frame);
 
 				BLUnitManager.Instance().Tick();
+
+				BLBulletManager.Instance().Tick();
 
 				++current_logic_frame;
 

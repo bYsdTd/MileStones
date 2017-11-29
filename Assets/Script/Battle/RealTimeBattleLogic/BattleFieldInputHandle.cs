@@ -45,7 +45,7 @@ public class BattleFieldInputHandle
 		EventManager.Instance().UnRegisterEvent(EventConfig.EVENT_SCENE_CLICK_DOWN, OnBattleFieldClickDown);
 		EventManager.Instance().UnRegisterEvent(EventConfig.EVENT_SCENE_CLICK_MOVE, OnBattleFieldDragMove);
 		EventManager.Instance().UnRegisterEvent(EventConfig.EVENT_SCENE_CLICK_UP, OnBattleFieldClickUp);
-		EventManager.Instance().UnRegisterEvent(EventConfig.EVENT_UNIT_DEAD, OnUnitDead);
+		EventManager.Instance().UnRegisterEvent(EventConfig.EVENT_L2R_PLAY_DEAD, OnUnitDead);
 	}
 
 	public void RegisterEvent()
@@ -53,14 +53,15 @@ public class BattleFieldInputHandle
 		EventManager.Instance().RegisterEvent(EventConfig.EVENT_SCENE_CLICK_DOWN, OnBattleFieldClickDown);
 		EventManager.Instance().RegisterEvent(EventConfig.EVENT_SCENE_CLICK_MOVE, OnBattleFieldDragMove);
 		EventManager.Instance().RegisterEvent(EventConfig.EVENT_SCENE_CLICK_UP, OnBattleFieldClickUp);
-		EventManager.Instance().RegisterEvent(EventConfig.EVENT_UNIT_DEAD, OnUnitDead);
+		EventManager.Instance().RegisterEvent(EventConfig.EVENT_L2R_PLAY_DEAD, OnUnitDead);
 	}
 
 	public void OnUnitDead(params System.Object[] all_params)
 	{
-		BaseUnit unit_dead = (BaseUnit)all_params[0];
+		int unit_id = (int)all_params[0];
+		BaseUnit unit_dead = UnitManager.Instance().GetUnit(unit_id);
 
-		if(unit_dead == current_select_unit)
+		if(current_select_unit != null && unit_dead == current_select_unit)
 		{
 			current_select_unit.is_selected = false;
 			current_select_unit = null;
@@ -185,6 +186,24 @@ public class BattleFieldInputHandle
 //		}
 //	}
 
+	public Vector3 GetCurrentCameraCenter()
+	{
+		Ray camera_ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0));
+
+		float distance = 0;
+
+		bool hit_map_grid = map_grid_plane.Raycast(camera_ray, out distance);
+		Vector3 hit_position = Vector3.zero;
+
+		if(hit_map_grid)
+		{
+			hit_position = camera_ray.GetPoint(distance);
+		}
+
+		hit_position.y = 0;
+
+		return hit_position;
+	}
 
 	public void OnBattleFieldClickUp(params System.Object[] all_params)
 	{
@@ -222,7 +241,7 @@ public class BattleFieldInputHandle
 			// 点中的是单位
 			hit_unit = hit_info.transform.gameObject.GetComponent<BaseUnit>();
 
-			if(BattleField.battle_field.IsMyTeam(hit_unit.GetTeamID()))
+			if(BattleField.battle_field.IsMyTeam(hit_unit.team_id))
 			{
 				if(current_select_unit != null)
 				{
@@ -288,7 +307,7 @@ public class BattleFieldInputHandle
 
 				BattleProto.Tick command = new BattleProto.Tick();
 				command.team_id = BattleField.battle_field.my_team_id;
-				command.command_type = 1;
+				command.command_type = BL.TickCommandType.Move;
 				command.cast_id = current_select_unit.unit_id;
 				command.x = (int)(hit_position.x * 1000);
 				command.y = (int)(hit_position.z * 1000);

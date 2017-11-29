@@ -120,14 +120,10 @@ public class ClientSocket
 				{
 					JoinRoomResult result = proto_data.proto as JoinRoomResult;
 
-					BL.BLTimelineController.Instance().is_join_room = true;
-
-					BattleField.battle_field.my_team_id = result.team_id;
-
-					FoW.FogOfWar.current.team = result.team_id;
-
-					UnitManager.Instance().UpdateAllFogOfWar();
-
+					// 逻辑层更新
+					BL.BLTimelineController.Instance().OnJoinRoom(result.team_id);
+					// 表现层更新
+					BattleField.battle_field.OnJoinRoom(result.team_id, result.team_id);
 				}
 				break;
 			case ResponseId.BattleStart:
@@ -148,17 +144,33 @@ public class ClientSocket
 					{
 						Tick tick = tick_list.list[i];
 
-						if(tick.command_type == 1)
+						switch(tick.command_type)
 						{
-							BL.BLIntVector3 dest_position;
-							dest_position.x = tick.x;
-							dest_position.y = 0;
-							dest_position.z = tick.y;
+						case BL.TickCommandType.Move:
+							{
+								BL.BLIntVector3 dest_position;
+								dest_position.x = tick.x;
+								dest_position.y = 0;
+								dest_position.z = tick.y;
 
-							BL.BLCommandBase command = BL.BLCommandManager.Instance().CreateMove2PositionCommand(tick.cast_id, tick_list.frame, dest_position);
+								BL.BLCommandBase command = BL.BLCommandManager.Instance().CreateMove2PositionCommand(tick.cast_id, tick_list.frame, dest_position);
 
-							BL.BLCommandManager.Instance().AddCommand(command.cast_frame, command);
-						}
+								BL.BLCommandManager.Instance().AddCommand(command.cast_frame, command);
+							}
+							break;
+						case BL.TickCommandType.PUT_HERO:
+							{
+								BL.BLCommandBase command = BL.BLCommandManager.Instance().CreatePutHeroCommand(tick.team_id, tick_list.frame, tick.hero_index);
+
+								BL.BLCommandManager.Instance().AddCommand(command.cast_frame, command);
+							}
+							break;
+						case BL.TickCommandType.PURSUE_TARGET:
+							{
+
+							}
+							break;
+						};
 					}
 
 					// 时间轴控制进行一帧, 分发指令

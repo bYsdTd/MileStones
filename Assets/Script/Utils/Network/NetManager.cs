@@ -24,7 +24,9 @@ public class NetManager
 	public void JoinRoom(int room_id)
 	{
 //		Connect("10.0.6.156", 2000);
-		Connect("127.0.0.1", 2000);
+//		Connect("127.0.0.1", 2000);
+
+		Connect("10.0.6.34", 2000);
 
 		JoinRoom packet = new JoinRoom();
 		packet.room_id = room_id;

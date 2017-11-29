@@ -67,5 +67,16 @@ namespace BL
 
 			return move_command;
 		}
+
+		public BLCommandPutHero CreatePutHeroCommand(int team_id, int cast_frame, int hero_index)
+		{
+			BLCommandPutHero command = new BLCommandPutHero();
+			command.cast_frame = cast_frame;
+			command.hero_index = hero_index;
+			command.player_id = team_id;
+			command.team_id = team_id;
+
+			return command;
+		}
 	}	
 }

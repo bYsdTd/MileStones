@@ -1335,13 +1335,19 @@ public static class NGUIEditorTools
 	/// Begin drawing the content area.
 	/// </summary>
 
+	#if UNITY_4_7 || UNITY_5_5 || UNITY_5_6
+	static public string textArea = "AS TextArea";
+	#else
+	static public string textArea = "TextArea";
+	#endif
+
 	static public void BeginContents (bool minimalistic)
 	{
 		if (!minimalistic)
 		{
 			mEndHorizontal = true;
 			GUILayout.BeginHorizontal();
-			EditorGUILayout.BeginHorizontal("AS TextArea", GUILayout.MinHeight(10f));
+			EditorGUILayout.BeginHorizontal(textArea, GUILayout.MinHeight(10f));
 		}
 		else
 		{

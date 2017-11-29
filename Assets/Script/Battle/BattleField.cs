@@ -7,15 +7,24 @@ public class BattleField
 {
 	public static BattleField battle_field = null;
 
-	public static int FRAME_RATE = 30;
-	public static float TIME_PER_FRAME = 1.0f / FRAME_RATE;
+	public const int MAX_PLAYER = 8;
+	public const int MAX_HERO_COUNT = 8;
 
 	public MapSaveData	map_data;
 
 	public int my_team_id { set; get; }
+	public int my_player_id { set; get; }
 
 	BattleGridRenderer _battle_grid_renderer;
-	public BattleVisionControl	battle_vision_control;
+
+
+	public BL.BLIntVector3[] born_point = new BL.BLIntVector3[]{
+
+		// 0 索引的保留位，team 从1开始
+		new BL.BLIntVector3(0, 0, 0),
+		new BL.BLIntVector3(2000, 0, 44000),
+		new BL.BLIntVector3(58000, 0, 2000),
+	};
 
 	public string GetStateText()
 	{
@@ -43,6 +52,28 @@ public class BattleField
 
 	}
 
+	public void OnJoinRoom(int team_id, int player_id)
+	{
+		BattleField.battle_field.my_team_id = team_id;
+		BattleField.battle_field.my_player_id = player_id;
+
+		FoW.FogOfWar.current.team = team_id;
+
+		UnitManager.Instance().UpdateAllFogOfWar();
+
+		// 更新摄像机
+		Vector3 center = BattleFieldInputHandle.Instance().GetCurrentCameraCenter();
+
+		Vector3 born_pos = born_point[player_id].Vector3Value();
+
+		Vector3 offset = born_pos - center;
+
+		Camera.main.transform.position += Vector3.right * offset.x + Vector3.forward * offset.z;
+
+		// 初始化ui
+		EventManager.Instance().PostEvent(EventConfig.EVENT_UI_OPEN, new object[]{ "hero_operate"});
+	}
+
 	public void LoadMap(string path)
 	{
 		// 地址先写死
@@ -58,11 +89,6 @@ public class BattleField
 			var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
 			map_data = (MapSaveData)binaryFormatter.Deserialize(stream);
 		}
-	}
-
-	public void InitLogic()
-	{
-		battle_vision_control = new BattleVisionControl();
 	}
 
 	// 实时操作接口，单位是不是自己的单位
@@ -216,6 +242,44 @@ public class BattleField
 		while(true);
 
 		return path_nodes;
+	}
+
+	public List<BL.BLIntVector3> SearchFlyPath(BL.BLIntVector3 start_pos, BL.BLIntVector3 dest_pos)
+	{
+		int x_start;
+		int y_start;
+
+		int x_end;
+		int y_end;
+
+		BLPosition2Grid(start_pos, out x_start, out y_start);
+		BLPosition2Grid(dest_pos, out x_end, out y_end);
+
+		List<AStarNode> path = FindFlyPath(x_start, y_start, x_end, y_end);
+
+		List<BL.BLIntVector3> bl_path = new List<BL.BLIntVector3>();
+
+		if(path != null)
+		{
+			for(int i = 0; i < path.Count; ++i)
+			{
+				if(i == 0)
+				{
+					bl_path.Add(start_pos);
+				}
+				else if(i == path.Count -1)
+				{
+					bl_path.Add(dest_pos);
+				}
+				else
+				{
+					BL.BLIntVector3 bl_position = Grid2BLPosition(path[i]._x,  path[i]._y);
+					bl_path.Add(bl_position);	
+				}
+			}
+		}
+
+		return bl_path;	
 	}
 
 	public List<BL.BLIntVector3> SearchPath(BL.BLIntVector3 start_pos, BL.BLIntVector3 dest_pos)
@@ -439,9 +503,5 @@ public class BattleField
 
 	public void Tick(float delta_time)
 	{
-		if(battle_vision_control != null)
-		{
-			battle_vision_control.Tick(delta_time);
-		}
 	}
 }

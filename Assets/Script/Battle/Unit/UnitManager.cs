@@ -58,26 +58,90 @@ public class UnitManager
 
 	private Transform _cache_root_effect_node;
 
-	public void OnInit()
+	public void Destroy()
 	{
-		EventManager.Instance().RegisterEvent(EventConfig.EVENT_UNIT_START_MOVE, delegate(object[] all_params) {
+		EventManager.Instance().UnRegisterEvent(EventConfig.EVENT_L2R_START_MOVE, OnStartMove);
 
-			int unit_id = (int)all_params[0];
-			HeroUnit unit = GetHeroUnit(unit_id);
+		EventManager.Instance().UnRegisterEvent(EventConfig.EVENT_L2R_END_MOVE, OnEndMove);
 
+		EventManager.Instance().UnRegisterEvent(EventConfig.EVENT_L2R_PLAY_ATTACK, OnPlayAttack);
+
+		EventManager.Instance().UnRegisterEvent(EventConfig.EVENT_L2R_PLAY_HIT, OnPlayHit);
+
+		EventManager.Instance().UnRegisterEvent(EventConfig.EVENT_L2R_PLAY_DEAD, OnPlayDead);
+	}
+
+	public void Init()
+	{
+		EventManager.Instance().RegisterEvent(EventConfig.EVENT_L2R_START_MOVE, OnStartMove);
+
+		EventManager.Instance().RegisterEvent(EventConfig.EVENT_L2R_END_MOVE, OnEndMove);
+
+		EventManager.Instance().RegisterEvent(EventConfig.EVENT_L2R_PLAY_ATTACK, OnPlayAttack);
+
+		EventManager.Instance().RegisterEvent(EventConfig.EVENT_L2R_PLAY_HIT, OnPlayHit);
+
+		EventManager.Instance().RegisterEvent(EventConfig.EVENT_L2R_PLAY_DEAD, OnPlayDead);
+	}
+
+	public void OnStartMove(object[] all_params)
+	{
+		int unit_id = (int)all_params[0];
+		HeroUnit unit = GetHeroUnit(unit_id);
+
+		if(unit != null)
+		{
 			unit.is_move = true;
 			unit.PlayMove();
+		}
+	}
 
-		});
+	public void OnEndMove(object[] all_params)
+	{
+		int unit_id = (int)all_params[0];
+		HeroUnit unit = GetHeroUnit(unit_id);
 
-		EventManager.Instance().RegisterEvent(EventConfig.EVENT_UNIT_END_MOVE, delegate(object[] all_params) {
-			
-			int unit_id = (int)all_params[0];
-			HeroUnit unit = GetHeroUnit(unit_id);
+		if(unit != null)
+		{
 			unit.is_move = false;
 			unit.PlayIdle();
+		}
+	}
 
-		});	
+	public void OnPlayAttack(object[] all_params)
+	{
+		int unit_id = (int)all_params[0];
+		int target_unit_id = (int)all_params[1];
+
+		HeroUnit unit = GetHeroUnit(unit_id);
+		BaseUnit target = GetUnit(target_unit_id);
+
+		if(unit != null && target != null)
+		{
+			unit.PlayAttack(target);	
+		}
+	}
+
+	public void OnPlayHit(object[] all_params)
+	{
+		int unit_id = (int)all_params[0];
+		BaseUnit unit = GetUnit(unit_id);
+
+		if(unit != null)
+		{
+			unit.PlayHited();	
+		}
+	}
+
+	public void OnPlayDead(object[] all_params)
+	{
+		int unit_id = (int)all_params[0];
+		BaseUnit unit = GetUnit(unit_id);
+
+		if(unit != null)
+		{
+			unit.PlayDead();	
+		}
 	}
 
 	public HeroUnit CreateHeroUnit(string unit_name, int id, Vector3 pos)
@@ -105,9 +169,7 @@ public class UnitManager
 		all_unit_list.Add(hero_unit.unit_id, hero_unit);
 		hero_unit_list.Add(hero_unit.unit_id, hero_unit);
 
-		hero_unit.OnInit();
-
-		hero_unit.Idle();
+		hero_unit.PlayIdle();
 
 		return hero_unit;
 	}
@@ -140,7 +202,7 @@ public class UnitManager
 		}
 	}
 
-	public BuildingUnit CreateBuildingUnit(string unit_name, int id, Vector3 pos, int team_id)
+	public BuildingUnit CreateBuildingUnit(string unit_name, int id, Vector3 pos)
 	{
 		GDSKit.building unit_gds = GDSKit.building.GetInstance(unit_name);
 
@@ -153,19 +215,8 @@ public class UnitManager
 		building_unit.unit_name = unit_name;
 		building_unit.unit_type = UnitType.Building;
 		building_unit.unit_id = id;
-		building_unit.attack_vision = unit_gds.vision;
-		building_unit.unit_hp = unit_gds.building_hp;
 		building_unit.resource_key = unit_gds.resource_name;
-		building_unit.can_revive_hero = unit_gds.can_revive_hero;
-
-		int grid_x;
-		int grid_y;
-
-		BattleField.battle_field.WorldPositon2Grid(pos, out grid_x, out grid_y);
-		building_unit.position = BattleField.battle_field.Grid2WorldPosition(grid_x, grid_y);
-
-		building_unit.SetTeamID(team_id);
-
+		building_unit.position = pos;
 
 		if(all_unit_list.ContainsKey(building_unit.unit_id))
 		{
@@ -175,8 +226,6 @@ public class UnitManager
 
 		all_unit_list.Add(building_unit.unit_id, building_unit);
 		buiding_unit_list.Add(building_unit.unit_id, building_unit);
-
-		building_unit.OnInit();
 
 		return building_unit;
 	}
@@ -196,6 +245,18 @@ public class UnitManager
 		if(hero_unit_list.ContainsKey(unit_id))
 		{
 			return hero_unit_list[unit_id];
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	public BaseUnit GetUnit(int unit_id)
+	{
+		if(all_unit_list.ContainsKey(unit_id))
+		{
+			return all_unit_list[unit_id];
 		}
 		else
 		{
@@ -226,7 +287,7 @@ public class UnitManager
 
 		while(enumerator.MoveNext())
 		{
-			enumerator.Current.Value.UpdateFogOfWar();
+			enumerator.Current.Value.UpdateTeam();
 		}
 	}
 }

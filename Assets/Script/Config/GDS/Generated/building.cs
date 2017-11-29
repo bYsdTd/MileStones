@@ -11,7 +11,7 @@ namespace GDSKit
 		public string building_name;
 		public string resource_name;
 		public int building_hp;
-		public float vision;
+		public int vision;
 		public bool can_revive_hero;
 		
 
@@ -43,7 +43,7 @@ namespace GDSKit
 			
 			_ret_.building_hp = CSVParser.GetAsInt(objArr[2]);
 			
-			_ret_.vision = CSVParser.GetAsFloat(objArr[3]);
+			_ret_.vision = CSVParser.GetAsInt(objArr[3]);
 			
 			_ret_.can_revive_hero = CSVParser.GetAsBool(objArr[4]);
 			

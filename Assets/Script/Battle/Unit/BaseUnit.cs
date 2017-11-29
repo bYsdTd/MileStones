@@ -36,9 +36,46 @@ public class BaseUnit : MonoBehaviour {
 	// 血条渲染
 	[HideInInspector]
 	private UIProgressBar	blood_progress_;
-	[HideInInspector]
-	private GameObject		blood_hud_obj;
+
+	private GameObject		blood_hud_obj_;
+	private GameObject		blood_hud_obj 
+	{
+		get
+		{
+			if(blood_hud_obj_ == null)
+			{
+				blood_hud_obj_ = ObjectPoolManager.Instance().GetObject("BloodHud");
+				blood_hud_obj_.transform.SetParent(GUIManager.Instance().cache_root, false);
+				blood_hud_obj_.transform.localScale = Vector3.one;
+				blood_hud_obj_.SetActive(true);
+			}
+
+			return blood_hud_obj_;
+		}
+
+		set
+		{
+			blood_hud_obj_ = value;
+		}
+	}
+
 	private GameObject		enemy_symbol_;
+	private GameObject		enemy_symbol
+	{
+		get
+		{
+			if(enemy_symbol_ == null)
+			{
+				enemy_symbol_ = blood_hud_obj.transform.Find("EnemySymbol").gameObject;
+			}
+			return enemy_symbol_;
+		}
+
+		set
+		{
+			enemy_symbol_ = value;
+		}
+	}
 
 	// 单位属性
 	[HideInInspector]
@@ -67,11 +104,51 @@ public class BaseUnit : MonoBehaviour {
 
 	[HideInInspector]
 	public string 			resource_key;
+
+	[HideInInspector]
+	public int				team_id 
+	{
+		set
+		{
+			team_id_ = value;
+
+			UpdateTeam();
+		}
+		get
+		{
+			return team_id_;
+		}
+	}
 	protected int 			team_id_ = -1;
+
 	[HideInInspector]
-	public int 				unit_hp = 100;
+	public int 				unit_hp 
+	{
+		get
+		{
+			if(bl_unit_info_base != null)
+			{
+				return bl_unit_info_base.hp;
+			}
+
+			return 0;
+		}
+	}
+
 	[HideInInspector]
-	public int 				max_hp { set; get; }
+	public int 				max_hp 
+	{
+		get
+		{
+			if(bl_unit_info_base != null)
+			{
+				return bl_unit_info_base.max_hp;
+			}
+
+			return 100;
+		}
+	}
+
 	[HideInInspector]
 	public UnitType			unit_type = UnitType.None;
 	[HideInInspector]
@@ -79,6 +156,7 @@ public class BaseUnit : MonoBehaviour {
 
 	// 视野
 	private float		 	_attack_vision = -1;
+	[HideInInspector]
 	public float			attack_vision 
 	{
 		set
@@ -106,6 +184,7 @@ public class BaseUnit : MonoBehaviour {
 	protected float 		attack_vision_square = 1;
 
 	private	bool			_is_selected = false;
+	[HideInInspector]
 	public bool 			is_selected
 	{
 		set
@@ -123,25 +202,41 @@ public class BaseUnit : MonoBehaviour {
 			return _is_selected;
 		}
 	}
-
+		
+	private bool show_blood_hud_;
 	[HideInInspector]
-	public bool show_blood_hud { set; get; }
+	public bool show_blood_hud 
+	{ 
+		set
+		{
+			show_blood_hud_ = value;
+			show_blood_time = 5;
+		}
+		get
+		{
+			return show_blood_hud_;
+		}
+	}
+		
+	private BL.BLUnitBase	bl_unit_info_base { set; get; }
 
 	private float show_blood_time = 5;
 
-	[HideInInspector]
-	public RobotBaseAI		robot_base_ai;
-
-	public void UpdateFogOfWar()
+	public void UpdateTeam()
 	{
-		if(BattleField.battle_field.IsMyTeam(GetTeamID()))
+		if(BattleField.battle_field.IsMyTeam(team_id))
 		{
 			fow_unit = gameObject.GetOrAddComponent<FoW.FogOfWarUnit>();
 
-			fow_unit.team = GetTeamID();
+			fow_unit.team = team_id;
 
 			fow_unit.radius = attack_vision;
 		}	
+
+		if(enemy_symbol != null)
+		{
+			enemy_symbol.SetActive(!BattleField.battle_field.IsMyTeam(team_id));	
+		}
 	}
 
 	virtual public void OnInit()
@@ -151,32 +246,22 @@ public class BaseUnit : MonoBehaviour {
 		mesh_node.gameObject.SetActive(true);
 		gameObject.SetActive(true);
 		vision_range_circle.gameObject.SetActive(false);
-
-		UpdateFogOfWar();
-
-		if(blood_hud_obj != null)
-		{
-			Debug.LogError("初始化的时候已经有hud了，不正常! " + unit_name + " id: " + unit_id);
-		}
-
-		blood_hud_obj = ObjectPoolManager.Instance().GetObject("BloodHud");
-		blood_hud_obj.transform.SetParent(GUIManager.Instance().cache_root, false);
-		blood_hud_obj.transform.localScale = Vector3.one;
-		blood_hud_obj.SetActive(true);
-
-		enemy_symbol_ = blood_hud_obj.transform.Find("EnemySymbol").gameObject;
-
+			
 		blood_progress_ = blood_hud_obj.GetComponentInChildren<UIProgressBar>();
 
-		enemy_symbol_.SetActive(!BattleField.battle_field.IsMyTeam(GetTeamID()));
+		bl_unit_info_base = BL.BLUnitManager.Instance().GetUnit(unit_id);
+
+		UpdateTeam();
 	}
 
 	virtual public void OnClear()
 	{
+		enemy_symbol = null;
 		blood_progress_ = null;
-		enemy_symbol_ = null;
+		bl_unit_info_base = null;
 
 		ObjectPoolManager.Instance().ReturnObject("BloodHud", blood_hud_obj);
+
 		blood_hud_obj = null;
 
 		gameObject.SetActive(false);
@@ -207,35 +292,6 @@ public class BaseUnit : MonoBehaviour {
 
 	// 选中特效
 	protected GameObject	cache_select_effect;
-
-	public void SetTeamID(int team_id)
-	{
-		if(team_id_ != team_id)
-		{
-			team_id_ = team_id;
-
-			//			SkinnedMeshRenderer[] skin_mesh_renderer = GetComponentsInChildren<SkinnedMeshRenderer>();
-			//
-			//			for(int i = 0; i < skin_mesh_renderer.Length; ++i)
-			//			{
-			//				skin_mesh_renderer[i].material.SetColor("_Color", team_color[_team_id-1]);
-			//			}
-			//
-			//			MeshRenderer[] mesh_renderer = GetComponentsInChildren<MeshRenderer>();
-			//
-			//			for(int i = 0; i < mesh_renderer.Length; ++i)
-			//			{
-			//				mesh_renderer[i].material.SetColor("_Color", team_color[_team_id-1]);
-			//			}
-		}
-
-		UpdateFogOfWar();
-	}
-
-	virtual public int GetTeamID()
-	{
-		return team_id_;
-	}
 
 	public void SetAttackVision(float attack_vision)
 	{
@@ -323,56 +379,12 @@ public class BaseUnit : MonoBehaviour {
 			return;	
 		}
 
-		if(robot_base_ai != null)
-		{
-			robot_base_ai.Tick(delta_time);	
-		}
-
 		UpdateBloodHud(delta_time);
 	}
 
 	public bool IsAlive()
 	{
 		return unit_hp > 0;	
-	}
-
-	virtual public void OnDead()
-	{
-		
-	}
-
-	public void OnDamage(HeroUnit attacker)
-	{
-		int damage = attacker.unit_attack;
-
-		// 可能同时收到多个伤害, 但是只结算一次
-		if(!IsAlive())
-		{
-			return;
-		}
-
-		if(robot_base_ai != null)
-		{
-			robot_base_ai.OnHited(attacker);	
-		}
-
-		show_blood_hud = true;
-		show_blood_time = 5;
-
-		unit_hp -= damage;
-
-		if(unit_hp <= 0)
-		{
-			OnDead();
-
-			EventManager.Instance().PostEvent(EventConfig.EVENT_UNIT_DEAD, new object[]{this});
-			PlayDead();	
-		}
-		else
-		{
-			PlayHited();
-		}
-
 	}
 
 	public void PlayDead()
@@ -400,6 +412,8 @@ public class BaseUnit : MonoBehaviour {
 	// 击中效果
 	public void PlayHited()
 	{
+		show_blood_hud = true;
+
 		AddEffect(hited_node, "hit_effect1");
 	}
 
@@ -433,22 +447,6 @@ public class BaseUnit : MonoBehaviour {
 
 			cache_select_effect = null;
 		}
-	}
-
-	// 只考虑自己
-	public bool IsCanSeeUnitCheckOnlyMyself(BaseUnit enemy_unit)
-	{
-		float distance_square = (enemy_unit.position - position).sqrMagnitude;
-
-		return attack_vision_square >= distance_square;
-	}
-
-	// 考虑共享视野
-	public bool IsCanSeeUnit(BaseUnit enemy_unit)
-	{
-		HashSet<BaseUnit> vision_enemy_units = BattleField.battle_field.battle_vision_control.vision_enemy_units[GetTeamID()];
-
-		return vision_enemy_units.Contains(enemy_unit);
 	}
 
 	public delegate void EffectEndCallBack();
